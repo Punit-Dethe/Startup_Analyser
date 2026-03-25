@@ -47,46 +47,11 @@ export default function Topbar({
       window.addEventListener('resize', checkScroll)
       
       // Enable horizontal scroll with mouse wheel
-      const handleWheel = (e: WheelEvent) => {
-        if (e.deltaY !== 0) {
+      const handleWheel = (e: Event) => {
+        const wheelEvent = e as WheelEvent
+        if (wheelEvent.deltaY !== 0) {
           e.preventDefault()
-          container.scrollLeft += e.deltaY
-        }
-      }
-      
-      container.addEventListener('wheel', handleWheel, { passive: false })
-      
-      return () => {
-        container.removeEventListener('scroll', checkScroll)
-        container.removeEventListener('wheel', handleWheel)
-        window.removeEventListener('resize', checkScroll)
-      }
-    }
-  }, [tabs])
-
-  // Check scroll position
-  const checkScroll = () => {
-    const container = tabsContainerRef.current
-    if (!container) return
-    
-    setCanScrollLeft(container.scrollLeft > 0)
-    setCanScrollRight(
-      container.scrollLeft < container.scrollWidth - container.clientWidth - 1
-    )
-  }
-
-  useEffect(() => {
-    checkScroll()
-    const container = tabsContainerRef.current
-    if (container) {
-      container.addEventListener('scroll', checkScroll)
-      window.addEventListener('resize', checkScroll)
-      
-      // Enable horizontal scroll with mouse wheel
-      const handleWheel = (e: WheelEvent) => {
-        if (e.deltaY !== 0) {
-          e.preventDefault()
-          container.scrollLeft += e.deltaY
+          container.scrollLeft += wheelEvent.deltaY
         }
       }
       
