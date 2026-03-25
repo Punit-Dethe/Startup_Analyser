@@ -45,23 +45,60 @@ export default function Topbar({
     if (container) {
       container.addEventListener('scroll', checkScroll)
       window.addEventListener('resize', checkScroll)
+      
+      // Enable horizontal scroll with mouse wheel
+      const handleWheel = (e: WheelEvent) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault()
+          container.scrollLeft += e.deltaY
+        }
+      }
+      
+      container.addEventListener('wheel', handleWheel, { passive: false })
+      
       return () => {
         container.removeEventListener('scroll', checkScroll)
+        container.removeEventListener('wheel', handleWheel)
         window.removeEventListener('resize', checkScroll)
       }
     }
   }, [tabs])
 
-  const scroll = (direction: 'left' | 'right') => {
+  // Check scroll position
+  const checkScroll = () => {
     const container = tabsContainerRef.current
     if (!container) return
     
-    const scrollAmount = 200
-    container.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth'
-    })
+    setCanScrollLeft(container.scrollLeft > 0)
+    setCanScrollRight(
+      container.scrollLeft < container.scrollWidth - container.clientWidth - 1
+    )
   }
+
+  useEffect(() => {
+    checkScroll()
+    const container = tabsContainerRef.current
+    if (container) {
+      container.addEventListener('scroll', checkScroll)
+      window.addEventListener('resize', checkScroll)
+      
+      // Enable horizontal scroll with mouse wheel
+      const handleWheel = (e: WheelEvent) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault()
+          container.scrollLeft += e.deltaY
+        }
+      }
+      
+      container.addEventListener('wheel', handleWheel, { passive: false })
+      
+      return () => {
+        container.removeEventListener('scroll', checkScroll)
+        container.removeEventListener('wheel', handleWheel)
+        window.removeEventListener('resize', checkScroll)
+      }
+    }
+  }, [tabs])
 
   return (
     <div className="topbar">
@@ -96,57 +133,23 @@ export default function Topbar({
         alignItems: 'center', 
         justifyContent: 'center', 
         flex: 2,
-        gap: 8,
         maxWidth: '60%',
       }}>
-        {/* Left scroll button */}
-        {canScrollLeft && (
-          <button
-            onClick={() => scroll('left')}
-            style={{
-              flexShrink: 0,
-              width: 28,
-              height: 28,
-              borderRadius: 6,
-              border: '1px solid var(--border)',
-              background: '#FAFAF9',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              color: 'var(--t-secondary)',
-              transition: 'all 0.15s ease',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = '#F0EFED'
-              e.currentTarget.style.borderColor = 'var(--border-hover)'
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = '#FAFAF9'
-              e.currentTarget.style.borderColor = 'var(--border)'
-            }}
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M15 18l-6-6 6-6"/>
-            </svg>
-          </button>
-        )}
-
         {/* Tabs container with fade edges */}
         <div style={{ 
           position: 'relative',
           flex: 1,
           overflow: 'hidden',
         }}>
-          {/* Left fade gradient */}
+          {/* Left fade gradient - transparent to white */}
           {canScrollLeft && (
             <div style={{
               position: 'absolute',
               left: 0,
               top: 0,
               bottom: 0,
-              width: 40,
-              background: 'linear-gradient(to right, var(--page-bg) 0%, transparent 100%)',
+              width: 60,
+              background: 'linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)',
               pointerEvents: 'none',
               zIndex: 5,
             }} />
@@ -164,8 +167,21 @@ export default function Topbar({
               msOverflowStyle: 'none',
               padding: '4px 0',
               WebkitOverflowScrolling: 'touch',
+              cursor: 'grab',
             }}
             className="hide-scrollbar"
+            onMouseDown={(e) => {
+              const container = e.currentTarget
+              container.style.cursor = 'grabbing'
+            }}
+            onMouseUp={(e) => {
+              const container = e.currentTarget
+              container.style.cursor = 'grab'
+            }}
+            onMouseLeave={(e) => {
+              const container = e.currentTarget
+              container.style.cursor = 'grab'
+            }}
           >
             {tabs.map(tab => {
               const isActive = tab.id === activeTab
@@ -259,53 +275,20 @@ export default function Topbar({
             })}
           </div>
 
-          {/* Right fade gradient */}
+          {/* Right fade gradient - transparent to white */}
           {canScrollRight && (
             <div style={{
               position: 'absolute',
               right: 0,
               top: 0,
               bottom: 0,
-              width: 40,
-              background: 'linear-gradient(to left, var(--page-bg) 0%, transparent 100%)',
+              width: 60,
+              background: 'linear-gradient(to left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)',
               pointerEvents: 'none',
               zIndex: 5,
             }} />
           )}
         </div>
-
-        {/* Right scroll button */}
-        {canScrollRight && (
-          <button
-            onClick={() => scroll('right')}
-            style={{
-              flexShrink: 0,
-              width: 28,
-              height: 28,
-              borderRadius: 6,
-              border: '1px solid var(--border)',
-              background: '#FAFAF9',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              color: 'var(--t-secondary)',
-              transition: 'all 0.15s ease',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = '#F0EFED'
-              e.currentTarget.style.borderColor = 'var(--border-hover)'
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = '#FAFAF9'
-              e.currentTarget.style.borderColor = 'var(--border)'
-            }}
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M9 18l6-6-6-6"/>
-            </svg>
-          </button>
-        )}
       </div>
 
       {/* ── Right actions (Right Flank) ── */}
