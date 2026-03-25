@@ -96,7 +96,7 @@ export default function Topbar({
         alignItems: 'center', 
         justifyContent: 'center', 
         flex: 2,
-        position: 'relative',
+        gap: 8,
         maxWidth: '60%',
       }}>
         {/* Left scroll button */}
@@ -104,15 +104,12 @@ export default function Topbar({
           <button
             onClick={() => scroll('left')}
             style={{
-              position: 'absolute',
-              left: 0,
-              zIndex: 10,
+              flexShrink: 0,
               width: 28,
               height: 28,
               borderRadius: 6,
               border: '1px solid var(--border)',
-              background: 'linear-gradient(to right, #FAFAF9 60%, transparent)',
-              backdropFilter: 'blur(8px)',
+              background: '#FAFAF9',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -121,11 +118,11 @@ export default function Topbar({
               transition: 'all 0.15s ease',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.background = 'linear-gradient(to right, #F0EFED 60%, transparent)'
+              e.currentTarget.style.background = '#F0EFED'
               e.currentTarget.style.borderColor = 'var(--border-hover)'
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.background = 'linear-gradient(to right, #FAFAF9 60%, transparent)'
+              e.currentTarget.style.background = '#FAFAF9'
               e.currentTarget.style.borderColor = 'var(--border)'
             }}
           >
@@ -135,111 +132,146 @@ export default function Topbar({
           </button>
         )}
 
-        {/* Scrollable tabs container */}
-        <div 
-          ref={tabsContainerRef}
-          style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 6,
-            overflowX: 'auto',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            padding: '4px 40px',
-            WebkitOverflowScrolling: 'touch',
-          }}
-          className="hide-scrollbar"
-        >
-          {tabs.map(tab => {
-            const isActive = tab.id === activeTab
-            const isTemporary = tab.isTemporary
-            
-            return (
-              <div key={tab.id} style={{ position: 'relative', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-                <button
-                  onClick={() => onTabChange(tab.id)}
-                  style={{
-                    padding: '7px 16px',
-                    paddingRight: isTemporary ? '32px' : '16px',
-                    borderRadius: 8,
-                    border: isActive ? '1px solid var(--border)' : '1px solid transparent',
-                    background: isActive ? '#FFFFFF' : 'transparent',
-                    color: isActive ? 'var(--t-primary)' : 'var(--t-muted)',
-                    fontSize: 13,
-                    fontWeight: isActive ? 600 : 500,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    transition: 'all 0.15s ease',
-                    boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
-                    position: 'relative',
-                    minWidth: 'fit-content',
-                  }}
-                  onMouseEnter={e => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = 'rgba(0,0,0,0.02)'
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = 'transparent'
-                    }
-                  }}
-                >
-                  {/* Temporary tab indicator */}
-                  {isTemporary && (
-                    <span style={{
-                      display: 'inline-block',
-                      width: 6,
-                      height: 6,
-                      borderRadius: '50%',
-                      background: brandColor,
-                      marginRight: 7,
-                    }} />
-                  )}
-                  {tab.label}
-                </button>
-                
-                {/* Close button for temporary tabs */}
-                {isTemporary && onRemoveTab && (
+        {/* Tabs container with fade edges */}
+        <div style={{ 
+          position: 'relative',
+          flex: 1,
+          overflow: 'hidden',
+        }}>
+          {/* Left fade gradient */}
+          {canScrollLeft && (
+            <div style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 40,
+              background: 'linear-gradient(to right, var(--page-bg) 0%, transparent 100%)',
+              pointerEvents: 'none',
+              zIndex: 5,
+            }} />
+          )}
+
+          {/* Scrollable tabs container */}
+          <div 
+            ref={tabsContainerRef}
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 6,
+              overflowX: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              padding: '4px 0',
+              WebkitOverflowScrolling: 'touch',
+            }}
+            className="hide-scrollbar"
+          >
+            {tabs.map(tab => {
+              const isActive = tab.id === activeTab
+              const isTemporary = tab.isTemporary
+              
+              return (
+                <div key={tab.id} style={{ position: 'relative', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onRemoveTab(tab.id)
-                    }}
+                    onClick={() => onTabChange(tab.id)}
                     style={{
-                      position: 'absolute',
-                      right: 8,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: 18,
-                      height: 18,
-                      borderRadius: 4,
-                      border: 'none',
-                      background: isActive ? 'rgba(0,0,0,0.05)' : 'transparent',
-                      color: 'var(--t-muted)',
+                      padding: '7px 16px',
+                      paddingRight: isTemporary ? '32px' : '16px',
+                      borderRadius: 8,
+                      border: isActive ? '1px solid var(--border)' : '1px solid transparent',
+                      background: isActive ? '#FFFFFF' : 'transparent',
+                      color: isActive ? 'var(--t-primary)' : 'var(--t-muted)',
+                      fontSize: 13,
+                      fontWeight: isActive ? 600 : 500,
                       cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: 14,
-                      fontWeight: 400,
+                      whiteSpace: 'nowrap',
                       transition: 'all 0.15s ease',
+                      boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+                      position: 'relative',
+                      minWidth: 'fit-content',
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.background = 'rgba(0,0,0,0.1)'
-                      e.currentTarget.style.color = 'var(--t-primary)'
+                      if (!isActive) {
+                        e.currentTarget.style.background = 'rgba(0,0,0,0.02)'
+                      }
                     }}
                     onMouseLeave={e => {
-                      e.currentTarget.style.background = isActive ? 'rgba(0,0,0,0.05)' : 'transparent'
-                      e.currentTarget.style.color = 'var(--t-muted)'
+                      if (!isActive) {
+                        e.currentTarget.style.background = 'transparent'
+                      }
                     }}
                   >
-                    ×
+                    {/* Temporary tab indicator */}
+                    {isTemporary && (
+                      <span style={{
+                        display: 'inline-block',
+                        width: 6,
+                        height: 6,
+                        borderRadius: '50%',
+                        background: brandColor,
+                        marginRight: 7,
+                      }} />
+                    )}
+                    {tab.label}
                   </button>
-                )}
-              </div>
-            )
-          })}
+                  
+                  {/* Close button for temporary tabs */}
+                  {isTemporary && onRemoveTab && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onRemoveTab(tab.id)
+                      }}
+                      style={{
+                        position: 'absolute',
+                        right: 8,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: 18,
+                        height: 18,
+                        borderRadius: 4,
+                        border: 'none',
+                        background: isActive ? 'rgba(0,0,0,0.05)' : 'transparent',
+                        color: 'var(--t-muted)',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 14,
+                        fontWeight: 400,
+                        transition: 'all 0.15s ease',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = 'rgba(0,0,0,0.1)'
+                        e.currentTarget.style.color = 'var(--t-primary)'
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = isActive ? 'rgba(0,0,0,0.05)' : 'transparent'
+                        e.currentTarget.style.color = 'var(--t-muted)'
+                      }}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Right fade gradient */}
+          {canScrollRight && (
+            <div style={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              bottom: 0,
+              width: 40,
+              background: 'linear-gradient(to left, var(--page-bg) 0%, transparent 100%)',
+              pointerEvents: 'none',
+              zIndex: 5,
+            }} />
+          )}
         </div>
 
         {/* Right scroll button */}
@@ -247,15 +279,12 @@ export default function Topbar({
           <button
             onClick={() => scroll('right')}
             style={{
-              position: 'absolute',
-              right: 0,
-              zIndex: 10,
+              flexShrink: 0,
               width: 28,
               height: 28,
               borderRadius: 6,
               border: '1px solid var(--border)',
-              background: 'linear-gradient(to left, #FAFAF9 60%, transparent)',
-              backdropFilter: 'blur(8px)',
+              background: '#FAFAF9',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -264,11 +293,11 @@ export default function Topbar({
               transition: 'all 0.15s ease',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.background = 'linear-gradient(to left, #F0EFED 60%, transparent)'
+              e.currentTarget.style.background = '#F0EFED'
               e.currentTarget.style.borderColor = 'var(--border-hover)'
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.background = 'linear-gradient(to left, #FAFAF9 60%, transparent)'
+              e.currentTarget.style.background = '#FAFAF9'
               e.currentTarget.style.borderColor = 'var(--border)'
             }}
           >
