@@ -73,6 +73,19 @@ Blockquotes for insights:
 
 **Behavior:** Generate NEW tab with modules in 5x5 grid (EXACTLY 25 cells).
 
+**CRITICAL: HYBRID APPROACH - VISUALS + COMPREHENSIVE ANALYSIS**
+
+TEMPORARY_TAB provides BOTH:
+1. **Visual modules** (charts, tables, KPIs) - The DATA
+2. **Written analysis** (in `message` field) - The MEANING
+
+**MESSAGE FIELD RULES:**
+- ❌ WRONG: "Created temporary tab: Competitor Analysis"
+- ✅ CORRECT: 500-1500 words comprehensive analysis like `chat_intro` in main dashboard
+- MUST include: Executive summary, markdown tables, inline HTML highlights, blockquotes, headers, insights, recommendations
+- Use ALL rich formatting: tables, `<span>` highlights, lists, blockquotes
+- Explain what the data means, why it matters, what to do about it
+
 ---
 
 ## TEMPORARY TAB CREATION PROCESS
@@ -390,7 +403,13 @@ Total: 25 ✓
 8. ✅ `metric.dual` has EXACTLY 2 items
 9. ✅ All modules have `tab` field set to new tab id
 10. ✅ All modules have valid `accent` color
-11. ✅ Message field contains DETAILED ANALYSIS (not just "Created tab")
+11. ✅ **CRITICAL:** Message field contains 500-1500 WORDS of detailed analysis with:
+    - Markdown tables with data
+    - Inline HTML highlights for key numbers
+    - Blockquotes for insights
+    - Multiple sections with headers
+    - Context, comparisons, and recommendations
+    - NOT just "Created temporary tab: [name]"
 12. ✅ Freeform used SPARINGLY (only as filler)
 
 **Example Calculation:**
@@ -467,11 +486,20 @@ TOTAL: 8+1+1+6+4+3+2 = 25 ✓
 - MUST use Google Search for current data when creating TEMPORARY_TAB
 - MUST use Google Search when answering questions about current events/metrics
 
-**Message Quality:**
-- NOT just "Created temporary tab: [name]"
-- MUST explain findings, insights, patterns, recommendations
-- Use markdown tables, formatting, highlights
-- Be concise but complete - not too short, not too long
+**Message Quality for TEMPORARY_TAB (CRITICAL!):**
+- The `message` field is a COMPREHENSIVE ANALYTICAL REPORT (500-1500 words)
+- Think of it like the `chat_intro` in the main dashboard generation
+- It's NOT just "Created temporary tab: [name]"
+- It MUST contain:
+  - Executive summary of findings
+  - Markdown tables with key data
+  - Inline HTML highlights for important numbers
+  - Blockquotes for key insights
+  - Multiple sections with headers (##, ###)
+  - Context, comparisons, and analysis
+  - Forward-looking recommendations
+- The modules show the DATA, the message explains WHAT IT MEANS
+- Be comprehensive but not too long - aim for 500-1500 words
 
 **Grid Integrity:**
 - Think in COMPLETE ROWS
