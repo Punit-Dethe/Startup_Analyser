@@ -24,14 +24,9 @@ COPY prompts/ ./prompts/
 # Set environment variables
 ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONUNBUFFERED=1
-ENV PORT=8000
 
-# Expose port
+# Expose port (Railway will set PORT dynamically)
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD python -c "import requests; requests.get('http://localhost:8000/health')"
-
-# Run application
-CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT}
+# Run application (uses Railway's $PORT variable)
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
