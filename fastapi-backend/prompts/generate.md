@@ -135,19 +135,29 @@ DO NOT exceed 400 words. DO NOT write long paragraphs without formatting. USE ta
 
 ## RULE 3: BRAND-APPROPRIATE COLOR SELECTION
 
-**STEP 1: IDENTIFY BRAND COLORS**
+**CRITICAL: PRIMARY COLOR = BRAND'S SIGNATURE COLOR**
+
+The `primary` color MUST be the brand's main signature color:
+- Apple → Black (#000000)
+- Spotify → Green (#1DB954)
+- Netflix → Red (#E50914)
+- Facebook → Blue (#1877F2)
+
 - Google → Use Google's 4 colors: Blue (#4285F4), Red (#EA4335), Yellow (#FBBC04), Green (#34A853)
 - Apple → Use Apple grays and blues: Space Gray (#1D1D1F), Silver (#C7C7CC), Blue (#007AFF), Black (#000000)
 - Discord → Use Discord purples: Blurple (#5865F2), Dark Purple (#4752C4), Light Purple (#7289DA), Gray (#99AAB5)
-- Spotify → Use Spotify greens: Green (#1DB954), Dark Green (#1AA34A), Black (#191414), White (#FFFFFF)
-- Netflix → Use Netflix reds: Red (#E50914), Dark Red (#B20710), Black (#221F1F), White (#FFFFFF)
+- Spotify → Use Spotify greens: Green (#1DB954), Dark Green (#1AA34A), Black (#191414), Space Gray (#1D1D1F)
+- Netflix → Use Netflix reds: Red (#E50914), Dark Red (#B20710), Black (#221F1F), Space Gray (#1D1D1F)
 
-**STEP 2: CREATE THEME VARIATIONS**
-If brand has 1-2 signature colors, create variations:
-- Primary: Brand color
-- Secondary: Darker shade of brand color
-- Tertiary: Lighter shade or complementary color
-- Quaternary: Neutral (gray/black) or accent color
+**STEP 1: IDENTIFY BRAND'S PRIMARY COLOR**
+Research the brand and use their official primary brand color.
+
+**STEP 2: CREATE COMPLEMENTARY COLORS**
+Build secondary, tertiary, quaternary colors that complement the primary:
+- Use variations (lighter/darker shades)
+- Use brand's secondary colors if they exist
+- Use neutrals (grays, blacks) for balance
+- Ensure all colors work together as a cohesive palette
 
 **STEP 3: ENSURE CONTRAST**
 Background is white. Make sure colors are not too light and are clearly visible.
@@ -155,42 +165,103 @@ Background is white. Make sure colors are not too light and are clearly visible.
 **FALLBACK COLORS (if brand unknown):**
 ```json
 "colors": {
-  "primary": "#86868B",
-  "secondary": "#C7C7CC",
-  "tertiary": "#007AFF",
-  "quaternary": "#1D1D1F"
+  "primary": "#1D1D1F",
+  "secondary": "#007AFF",
+  "tertiary": "#5E5CE6",
+  "quaternary": "#86868B"
 }
 ```
 
 ---
 
-## RULE 4: GRID = 25 CELLS
+## RULE 4: THE 5x5 GRID = 25 CELLS
 
-Every tab MUST total exactly 25 cells.
+Every tab is a **5x5 grid = 25 cells total**. Think of it like Tetris blocks.
 
-Formula: Sum of (width × height) = 25
+**⚠️ CRITICAL: GRID FLOWS LEFT-TO-RIGHT, ROW-BY-ROW ⚠️**
 
-Valid sizes:
-- Width: 1, 2, 3, 4, or 5
-- Height: 1, 2, 3, 4, or 5
+The grid is NOT freeform Tetris! It flows like reading a book: left to right, top to bottom.
 
-Grid flows LEFT-TO-RIGHT, TOP-TO-BOTTOM (like reading).
-
-Plan ROW-BY-ROW:
-- Row 1: modules must add up to width 5
-- Row 2: modules must add up to width 5
-- Row 3: modules must add up to width 5
-- Row 4: modules must add up to width 5
-- Row 5: modules must add up to width 5
-
-Example:
+**THE GRID:**
 ```
-Row 1: 3x1 + 2x1 = 5 ✓
-Row 2: 4x1 + 1x1 = 5 ✓
-Row 3-4: 3x2 + 2x2 = 10 (fills 2 rows) ✓
-Row 5: 5x1 = 5 ✓
-Total: 5+5+10+5 = 25 ✓
+┌─────┬─────┬─────┬─────┬─────┐
+│  1  │  2  │  3  │  4  │  5  │  ← Row 1
+├─────┼─────┼─────┼─────┼─────┤
+│  6  │  7  │  8  │  9  │ 10  │  ← Row 2
+├─────┼─────┼─────┼─────┼─────┤
+│ 11  │ 12  │ 13  │ 14  │ 15  │  ← Row 3
+├─────┼─────┼─────┼─────┼─────┤
+│ 16  │ 17  │ 18  │ 19  │ 20  │  ← Row 4
+├─────┼─────┼─────┼─────┼─────┤
+│ 21  │ 22  │ 23  │ 24  │ 25  │  ← Row 5
+└─────┴─────┴─────┴─────┴─────┘
 ```
+
+**YOU MUST PLAN ROW-BY-ROW:**
+- Row 1: Modules must add up to width 5
+- Row 2: Modules must add up to width 5
+- Row 3: Modules must add up to width 5
+- Row 4: Modules must add up to width 5
+- Row 5: Modules must add up to width 5
+
+**EXAMPLE - CORRECT ROW-BY-ROW PLANNING:**
+```
+Row 1: 3x1 table + 2x1 dual = 5 width ✓
+Row 2: 4x1 stats + 1x1 KPI = 5 width ✓
+Row 3-4: 2x2 chart + 3x2 table = 10 cells (fills 2 rows) ✓
+Row 5: 5x1 stats = 5 width ✓
+Total: 5+5+10+5 = 25 cells ✓
+```
+
+**VISUAL EXAMPLE - How a tab fills:**
+```
+┌─────────────────┬─────┬─────┐
+│                 │ KPI │ KPI │  ← 4x2 chart (8 cells) + 1x1 KPI + 1x1 KPI
+│   4x2 Chart     │  1  │  2  │
+├─────────────────┴─────┴─────┤
+│                 │           │
+│   3x2 Table     │ 2x2 Donut │  ← 3x2 table (6 cells) + 2x2 donut (4 cells)
+│                 │           │
+├─────────────────┴───────────┤
+│   3x1 Stats     │ 2x1 Dual  │  ← 3x1 stats (3 cells) + 2x1 dual (2 cells)
+└─────────────────┴───────────┘
+
+Total: 8+1+1+6+4+3+2 = 25 ✓ PERFECT!
+```
+
+**ABSOLUTE RULES:**
+1. **MUST fill ALL 25 cells** - NO GAPS, NO EMPTY SPACES
+2. **Maximum width: 5** (never 6, 7, 8... - will break!)
+3. **Maximum height: 5** (never 6, 7, 8... - will break!)
+4. **Calculate as you go**: Keep a running total until you hit exactly 25
+
+**SAFE PATTERNS:**
+
+Pattern 1: Full-Width Rows
+```
+5x1 + 5x1 + 5x1 + 5x1 + 5x1 = 25 ✓
+```
+
+Pattern 2: Mixed Widths
+```
+Row 1: 3x1 + 2x1 = 5
+Row 2: 4x1 + 1x1 = 5
+Row 3: 2x1 + 2x1 + 1x1 = 5
+Row 4: 5x1 = 5
+Row 5: 5x1 = 5
+Total: 25 ✓
+```
+
+Pattern 3: Tall Modules
+```
+Row 1-2: 3x2 + 2x2 = 10 cells (fills 2 rows)
+Row 3-4: 4x2 + 1x2 = 10 cells (fills 2 rows)
+Row 5: 5x1 = 5 cells
+Total: 25 ✓
+```
+
+**THE GOLDEN RULE:**
+Think in COMPLETE ROWS. Each row must have modules that add up to exactly 5 width.
 
 ---
 
