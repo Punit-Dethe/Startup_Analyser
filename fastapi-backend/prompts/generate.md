@@ -1,505 +1,482 @@
-# KORE Dashboard Generation Prompt
+# KORE Dashboard Generation
 
-**OUTPUT RAW JSON ONLY. NO MARKDOWN FENCES. NO EXPLANATIONS.**
-
----
-
-## ⚠️ CRITICAL RULES - READ FIRST ⚠️
-
-**CHART DATA STRUCTURE (MOST COMMON MISTAKE!):**
-
-1. **For `chart.bar`, `chart.line`, `chart.area`, `chart.hbar`:**
-   - Use: `"series": [10, 20, 30, 40]` (flat array)
-   - DO NOT use `series_list`!
-
-2. **For `chart.grouped` ONLY:**
-   - Use: `"series_list": [{"name": "A", "values": [10, 20]}, {"name": "B", "values": [15, 25]}]`
-   - DO NOT use `series`!
-
-3. **For `chart.pie`, `chart.donut`:**
-   - MUST be size `2x2` (never `1x1`, `3x3`, etc.)
-   - Use: `"segments": [{"label": "A", "value": 45, "color_key": "primary"}]`
-
-**GRID FILLING:**
-- Every tab MUST have exactly 25 cells (5x5 grid)
-- Plan row-by-row: each row must add up to width 5
-- Count as you go: keep running total until you hit 25
+OUTPUT RAW JSON ONLY. NO MARKDOWN FENCES.
 
 ---
 
-## THE 5x5 GRID RULE (MOST CRITICAL!)
+## STEP 0: THINK FIRST (MANDATORY!)
 
-Every tab is a **5x5 grid = 25 cells total**. Think of it like Tetris blocks.
+BEFORE creating any JSON, you MUST complete this thinking process:
 
-**⚠️ CRITICAL: GRID FLOWS LEFT-TO-RIGHT, ROW-BY-ROW ⚠️**
+### 1. UNDERSTAND THE QUERY
+- What is the user asking for?
+- What type of analysis? (company, comparison, market, financial, etc.)
+- What is the main subject?
+- What time period or scope?
 
-The grid is NOT freeform Tetris! It flows like reading a book: left to right, top to bottom.
+### 2. GATHER & RATIONALIZE DATA
+- What data do I have or can infer?
+- What are the key metrics? (revenue, profit, market share, growth, etc.)
+- What are the trends? (growing, declining, stable)
+- What are the comparisons? (vs competitors, vs previous period, vs targets)
+- What are the insights? (strengths, weaknesses, opportunities, threats)
 
-**YOU MUST PLAN ROW-BY-ROW:**
-- Row 1: Modules must add up to width 5
-- Row 2: Modules must add up to width 5
-- Row 3: Modules must add up to width 5
-- Row 4: Modules must add up to width 5
-- Row 5: Modules must add up to width 5
+### 3. CATEGORIZE INFORMATION
+- Financial data → Financials tab
+- Product/service data → Products/Services tab
+- Market data → Market/Competition tab
+- Strategic data → Strategy/Outlook tab
+- Operational data → Operations tab
 
-**EXAMPLE - CORRECT ROW-BY-ROW PLANNING:**
-```
-Row 1: 3x1 table + 2x1 dual = 5 width ✓
-Row 2: 4x1 stats + 1x1 KPI = 5 width ✓
-Row 3: 2x2 chart + 3x2 table (both start here)
-Row 4: (2x2 chart continues) + (3x2 table continues) = 5 width ✓
-Row 5: 5x1 stats = 5 width ✓
-Total: 5+5+5+5+5 = 25 cells ✓
-```
+### 4. CHOOSE VISUALIZATION TYPES
+For each piece of data, decide:
+- Trend over time? → `chart.line` or `chart.area`
+- Comparison between items? → `chart.bar` or `chart.grouped`
+- Part of whole? → `chart.pie` or `chart.donut`
+- Single number? → `metric.kpi`
+- Two related numbers? → `metric.dual`
+- List of items? → `table`
+- Progress to goal? → `gauge`
 
-**EXAMPLE - WRONG (WILL BREAK!):**
-```
-5x3 table (15 cells) + 3x1 stats (3) + 2x1 dual (2) + 1x1 KPI (1) + 2x2 chart (4) = 25 cells
-BUT: After the 5x3 table fills rows 1-3, the remaining modules don't align properly!
-Result: Modules overflow outside the grid ❌
-```
+### 5. PLAN TABS
+- How many logical sections? (2-7 tabs)
+- What goes in each tab?
+- What's the most important tab? (make it first)
 
-**THE GRID:**
-```
-┌─────┬─────┬─────┬─────┬─────┐
-│  1  │  2  │  3  │  4  │  5  │  ← Row 1
-├─────┼─────┼─────┼─────┼─────┤
-│  6  │  7  │  8  │  9  │ 10  │  ← Row 2
-├─────┼─────┼─────┼─────┼─────┤
-│ 11  │ 12  │ 13  │ 14  │ 15  │  ← Row 3
-├─────┼─────┼─────┼─────┼─────┤
-│ 16  │ 17  │ 18  │ 19  │ 20  │  ← Row 4
-├─────┼─────┼─────┼─────┼─────┤
-│ 21  │ 22  │ 23  │ 24  │ 25  │  ← Row 5
-└─────┴─────┴─────┴─────┴─────┘
-  ↑     ↑     ↑     ↑     ↑
- Col1  Col2  Col3  Col4  Col5
-```
+### 6. PLAN GRID LAYOUT (PER TAB)
+- List all modules for this tab
+- Calculate cells: width × height for each
+- Plan row-by-row to ensure = 25 cells
+- Adjust sizes if needed
 
-**ABSOLUTE RULES:**
-1. **MUST fill ALL 25 cells** - NO GAPS, NO EMPTY SPACES
-2. **Maximum width: 5** (never 6, 7, 8... - will break!)
-3. **Maximum height: 5** (never 6, 7, 8... - will break!)
-4. **Modules CANNOT go outside the grid** - they must stay inside the 5x5 boundary
-5. **Calculate as you go**: Keep a running total until you hit exactly 25
+### 7. VERIFY BEFORE OUTPUT
+- Do I have real data (not placeholders)?
+- Are all chart types correct?
+- Does each tab = 25 cells?
+- Is chat intro ≤400 words?
+- Are colors dark enough?
 
-**HOW MODULES FILL THE GRID (LIKE TETRIS):**
-- A `3x2` module = 3 columns wide × 2 rows tall = 6 cells
-- A `1x1` module = 1 column × 1 row = 1 cell
-- A `5x1` module = 5 columns wide × 1 row tall = 5 cells (fills entire row)
-
-**VISUAL EXAMPLE - How a tab fills:**
-```
-┌─────────────────┬─────┬─────┐
-│                 │ KPI │ KPI │  ← 4x2 chart (8 cells) + 1x1 KPI (1) + 1x1 KPI (1) = 10 cells
-│   4x2 Chart     │  1  │  2  │
-├─────────────────┴─────┴─────┤
-│                 │           │
-│   3x2 Table     │ 2x2 Donut │  ← 3x2 table (6 cells) + 2x2 donut (4 cells) = 10 cells
-│                 │           │
-├─────────────────┴───────────┤
-│   3x1 Stats     │ 2x1 Dual  │  ← 3x1 stats (3 cells) + 2x1 dual (2 cells) = 5 cells
-└─────────────────┴───────────┘
-
-Total: 10 + 10 + 5 = 25 ✓ PERFECT!
-```
-
-**CRITICAL: UNDERSTAND GRID FLOW (CSS Grid Auto-Placement)**
-
-The grid fills LEFT-TO-RIGHT, TOP-TO-BOTTOM like reading a book. Modules are placed in the order you list them.
-
-**SAFE PATTERNS THAT ALWAYS WORK:**
-
-**Pattern 1: Full-Width Rows**
-```
-Row 1: 5x1 module (fills entire row) = 5 cells
-Row 2: 5x1 module (fills entire row) = 5 cells
-Row 3: 5x1 module (fills entire row) = 5 cells
-Row 4: 5x1 module (fills entire row) = 5 cells
-Row 5: 5x1 module (fills entire row) = 5 cells
-Total: 25 ✓
-```
-
-**Pattern 2: Mixed Widths (MUST add up to 5 per row)**
-```
-Row 1: 3x1 + 2x1 = 5 cells
-Row 2: 4x1 + 1x1 = 5 cells
-Row 3: 2x1 + 2x1 + 1x1 = 5 cells
-Row 4: 5x1 = 5 cells
-Row 5: 5x1 = 5 cells
-Total: 25 ✓
-```
-
-**Pattern 3: Tall Modules (CAREFUL!)**
-```
-Row 1-2: 3x2 + 2x2 = 10 cells (fills 2 rows)
-Row 3-4: 4x2 + 1x2 = 10 cells (fills 2 rows)
-Row 5: 5x1 = 5 cells
-Total: 25 ✓
-```
-
-**DANGEROUS PATTERNS (AVOID!):**
-❌ `5x3` table + random small modules → Grid can't fit them properly!
-❌ `4x3` chart + `3x2` table → Doesn't align to rows, creates gaps!
-
-**THE GOLDEN RULE:**
-Think in COMPLETE ROWS. Each row must have modules that add up to exactly 5 width.
-
-**STEP-BY-STEP FILLING PROCESS:**
-1. Plan your layout ROW BY ROW
-2. For each row, choose modules whose widths add up to 5
-3. If using tall modules (height > 1), make sure the NEXT row also accounts for them
-4. Keep a running total until you hit 25 cells
-5. Use small fillers (`1x1`, `2x1`) to complete partial rows
-
-**WRONG vs RIGHT:**
-❌ WRONG: `5x3` table (15) + `3x1` stats (3) + `2x1` dual (2) + `1x1` KPI (1) + `2x2` chart (4) = 25 but WON'T FIT!
-✅ RIGHT: Plan row-by-row to ensure proper flow
+ONLY AFTER completing steps 1-7, proceed to create JSON.
 
 ---
 
-## JSON Structure
+## RULE 1: CHART DATA STRUCTURE
+
+**IF type = `chart.grouped`:**
+```json
+"series_list": [
+  {"name": "Series A", "values": [10, 20, 30]},
+  {"name": "Series B", "values": [15, 25, 35]}
+]
+```
+
+**IF type = `chart.line`, `chart.area`, `chart.bar`, `chart.hbar`, or `chart.radar`:**
+```json
+"series": [10, 20, 30, 40, 50]
+```
+
+**IF type = `chart.pie` or `chart.donut`:**
+```json
+"size": "2x2",
+"segments": [
+  {"label": "A", "value": 45, "color_key": "primary"},
+  {"label": "B", "value": 30, "color_key": "secondary"}
+]
+```
+
+**IF type = `chart.waterfall`:**
+```json
+"labels": ["Start", "Add", "Subtract", "End"],
+"invisible": [0, 100, 120, 0],
+"series": [100, 20, -10, 110]
+```
+
+---
+
+## RULE 2: CHAT INTRO LENGTH
+
+MAXIMUM 400 WORDS.
+
+Structure:
+```
+# [Company]: Key Insights
+
+[2-3 sentences overview]
+
+## Financial Snapshot
+- Revenue: $X.XB (↗ +X%)
+- Profit: $X.XB (↘ -X%)
+- [2-3 more metrics]
+
+## Key Strengths
+- [One sentence]
+- [One sentence]
+- [One sentence]
+
+## Key Challenges
+- [One sentence]
+- [One sentence]
+
+## Outlook
+[2-3 sentences]
+```
+
+DO NOT exceed 400 words. DO NOT write long paragraphs. DO NOT include tables.
+
+---
+
+## RULE 3: COLOR CONTRAST
+
+ONLY use these colors (choose 4):
+- `#2563EB` Blue
+- `#DC2626` Red
+- `#16A34A` Green
+- `#9333EA` Purple
+- `#EA580C` Orange
+- `#0891B2` Cyan
+- `#CA8A04` Yellow
+- `#E11D48` Pink
+- `#7C3AED` Violet
+- `#0D9488` Teal
+
+DO NOT use light/pastel colors. DO NOT use colors lighter than these.
+
+---
+
+## RULE 4: GRID = 25 CELLS
+
+Every tab MUST total exactly 25 cells.
+
+Formula: Sum of (width × height) = 25
+
+Valid sizes:
+- Width: 1, 2, 3, 4, or 5
+- Height: 1, 2, 3, 4, or 5
+
+Grid flows LEFT-TO-RIGHT, TOP-TO-BOTTOM (like reading).
+
+Plan ROW-BY-ROW:
+- Row 1: modules must add up to width 5
+- Row 2: modules must add up to width 5
+- Row 3: modules must add up to width 5
+- Row 4: modules must add up to width 5
+- Row 5: modules must add up to width 5
+
+Example:
+```
+Row 1: 3x1 + 2x1 = 5 ✓
+Row 2: 4x1 + 1x1 = 5 ✓
+Row 3-4: 3x2 + 2x2 = 10 (fills 2 rows) ✓
+Row 5: 5x1 = 5 ✓
+Total: 5+5+10+5 = 25 ✓
+```
+
+---
+
+## JSON STRUCTURE
 
 ```json
 {
   "meta": {
     "subject": "Company Name",
     "mode": "company",
-    "brand_color": "#HEX",
-    "colors": {"primary":"#HEX", "secondary":"#HEX", "tertiary":"#HEX", "quaternary":"#HEX"},
+    "brand_color": "#2563EB",
+    "colors": {
+      "primary": "#2563EB",
+      "secondary": "#DC2626",
+      "tertiary": "#16A34A",
+      "quaternary": "#9333EA"
+    },
     "logo_initials": "XX",
     "page_title": "Title",
     "page_subtitle": "Subtitle"
   },
   "tabs": [
-    {"id": "tab-id", "label": "Tab Label"}
+    {"id": "tab1", "label": "Overview"}
   ],
-  "chat_intro": "Executive summary...",
+  "chat_intro": "[Max 400 words]",
   "modules": [
-    {"id": "unique-id", "tab": "tab-id", "type": "chart.line", "size": "3x2", "accent": "primary", "data": {...}}
+    {
+      "id": "mod1",
+      "tab": "tab1",
+      "type": "chart.line",
+      "size": "4x2",
+      "accent": "primary",
+      "data": {...}
+    }
   ]
 }
 ```
 
 ---
 
-## Module Types & Sizes
+## MODULE TYPES
 
-**⚠️ CRITICAL: CHART DATA STRUCTURE RULES ⚠️**
-
-**FOR SINGLE-SERIES CHARTS** (`chart.line`, `chart.area`, `chart.bar`, `chart.hbar`):
-- Use `"series": [10, 20, 30]` (FLAT array of numbers)
-- DO NOT use `series_list`!
-
-**FOR MULTI-SERIES CHARTS** (`chart.grouped` ONLY):
-- Use `"series_list": [{"name": "A", "values": [10, 20]}, {"name": "B", "values": [15, 25]}]`
-- DO NOT use `series`!
-
-**WRONG EXAMPLES (DO NOT DO THIS!):**
-❌ `chart.bar` with `series_list` → Will break!
-❌ `chart.line` with `series_list` → Will break!
-❌ `chart.donut` with size `1x1` → Must be `2x2`!
-
----
-
-**VALID MODULE SIZES (5x5 GRID ONLY):**
-
-Width options: 1, 2, 3, 4, 5
-Height options: 1, 2, 3, 4, 5
-Examples: 1x1, 2x1, 3x2, 4x3, 5x5, etc.
-INVALID: 6x2, 5x6, 7x1, etc. (will BREAK!)
-
----
-
-**KPIs & Gauges:**
-- `metric.kpi` (1x1 ONLY): `{title, value, delta, direction: "up"|"down"|"neutral", sparkline: [numbers]}`
-- `metric.dual` (2x1 ONLY): `{title, kpis: [{title, value, delta, direction, sparkline}]}`
-- `gauge` (1x1, 2x1, 2x2): `{title, value, max, unit, label, description}`
-
-**Charts:**
-
-**SINGLE-SERIES CHARTS** (use `series` as flat array):
-- `chart.line`, `chart.area`, `chart.bar`, `chart.hbar` (sizes: 2x2, 3x2, 4x2, 3x3, 4x3, 5x3, 5x4)
-  
-  **CORRECT EXAMPLE:**
-  ```json
-  {
-    "type": "chart.bar",
-    "data": {
-      "title": "Revenue Growth",
-      "subtitle": "Last 5 years",
-      "labels": ["2019", "2020", "2021", "2022", "2023"],
-      "series": [100, 120, 150, 180, 200]
-    }
+### KPIs
+**`metric.kpi` (1x1 only)**
+```json
+{
+  "type": "metric.kpi",
+  "size": "1x1",
+  "data": {
+    "title": "Revenue",
+    "value": "$1.2B",
+    "delta": "+15%",
+    "direction": "up",
+    "sparkline": [10, 12, 11, 15, 18]
   }
-  ```
-  
-  **WRONG - DO NOT DO THIS:**
-  ```json
-  {
-    "type": "chart.bar",
-    "data": {
-      "series_list": [{"name": "Revenue", "values": [100, 120, 150]}]
-    }
+}
+```
+
+**`metric.dual` (2x1 only)**
+```json
+{
+  "type": "metric.dual",
+  "size": "2x1",
+  "data": {
+    "title": "Performance",
+    "kpis": [
+      {"title": "Revenue", "value": "$1.2B", "delta": "+15%", "direction": "up", "sparkline": [10,12,15]},
+      {"title": "Profit", "value": "$200M", "delta": "-5%", "direction": "down", "sparkline": [20,18,15]}
+    ]
   }
-  ```
+}
+```
 
-**MULTI-SERIES CHARTS** (use `series_list` with objects):
-- `chart.grouped` (sizes: 2x2, 3x2, 3x3, 4x3, 5x3)
-  
-  **CORRECT EXAMPLE:**
-  ```json
-  {
-    "type": "chart.grouped",
-    "data": {
-      "title": "Revenue Comparison",
-      "subtitle": "Product A vs Product B",
-      "labels": ["Q1", "Q2", "Q3", "Q4"],
-      "series_list": [
-        {"name": "Product A", "values": [100, 120, 140, 160]},
-        {"name": "Product B", "values": [80, 90, 110, 130]}
-      ]
-    }
+**`gauge` (1x1, 2x1, 2x2)**
+```json
+{
+  "type": "gauge",
+  "size": "2x1",
+  "data": {
+    "title": "Market Share",
+    "value": 65,
+    "max": 100,
+    "unit": "%",
+    "label": "Target: 70%",
+    "description": "Q4 2023"
   }
-  ```
+}
+```
 
-**PIE/DONUT CHARTS** (MUST be 2x2 size):
-- `chart.pie`, `chart.donut` (2x2 ONLY - NO 1x1, 3x3, or other sizes!)
-  
-  **CORRECT EXAMPLE:**
-  ```json
-  {
-    "type": "chart.donut",
-    "size": "2x2",
-    "data": {
-      "title": "Market Share",
-      "subtitle": "By segment",
-      "segments": [
-        {"label": "Segment A", "value": 45, "color_key": "primary"},
-        {"label": "Segment B", "value": 30, "color_key": "secondary"},
-        {"label": "Segment C", "value": 25, "color_key": "tertiary"}
-      ]
-    }
+### Single-Series Charts (use `series`)
+**`chart.line`, `chart.area`, `chart.bar`, `chart.hbar`**
+Sizes: 2x2, 3x2, 4x2, 3x3, 4x3, 5x3, 5x4
+```json
+{
+  "type": "chart.bar",
+  "size": "4x2",
+  "data": {
+    "title": "Quarterly Revenue",
+    "subtitle": "FY2023",
+    "labels": ["Q1", "Q2", "Q3", "Q4"],
+    "series": [100, 120, 140, 160]
   }
-  ```
-  
-  **WRONG - DO NOT DO THIS:**
-  ```json
-  {
-    "type": "chart.donut",
-    "size": "1x1"
+}
+```
+
+**`chart.radar` (2x2, 3x3)**
+```json
+{
+  "type": "chart.radar",
+  "size": "2x2",
+  "data": {
+    "title": "Performance Metrics",
+    "subtitle": "5 key areas",
+    "labels": ["Speed", "Quality", "Cost", "Innovation", "Service"],
+    "series": [85, 90, 75, 80, 95]
   }
-  ```
+}
+```
 
-**OTHER CHARTS:**
-- `chart.radar` (2x2, 3x3): `{title, subtitle, labels: [strings], series: [numbers]}`
-- `chart.waterfall` (sizes: 3x3, 4x3, 5x3): `{title, subtitle, labels: [strings], invisible: [numbers], series: [numbers]}`
+### Multi-Series Charts (use `series_list`)
+**`chart.grouped` (2x2, 3x2, 3x3, 4x3, 5x3)**
+```json
+{
+  "type": "chart.grouped",
+  "size": "3x2",
+  "data": {
+    "title": "Revenue vs Profit",
+    "subtitle": "Quarterly comparison",
+    "labels": ["Q1", "Q2", "Q3", "Q4"],
+    "series_list": [
+      {"name": "Revenue", "values": [100, 120, 140, 160]},
+      {"name": "Profit", "values": [20, 25, 30, 35]}
+    ]
+  }
+}
+```
 
-**Tables & Lists (HEIGHT RULES - CRITICAL!):**
-- `table` (sizes: 3x1, 4x1, 5x1, 3x2, 4x2, 5x2, 3x3, 4x3, 5x3, 3x4, 4x4, 5x4, 3x5, 4x5, 5x5):
-  `{title, subtitle, columns: [{key, label}], rows: [{key: value}]}`
-  
-  **HEIGHT BASED ON ROW COUNT:**
-  - ≤3 rows → height 1 (sizes: 3x1, 4x1, 5x1)
-  - 4-6 rows → height 2 (sizes: 3x2, 4x2, 5x2)
-  - 7-10 rows → height 3 (sizes: 3x3, 4x3, 5x3)
-  - 11-15 rows → height 4 (sizes: 3x4, 4x4, 5x4)
-  - 16+ rows → height 5 (sizes: 3x5, 4x5, 5x5)
+### Pie Charts (use `segments`)
+**`chart.pie`, `chart.donut` (2x2 ONLY)**
+```json
+{
+  "type": "chart.donut",
+  "size": "2x2",
+  "data": {
+    "title": "Market Share",
+    "subtitle": "By segment",
+    "segments": [
+      {"label": "Segment A", "value": 45, "color_key": "primary"},
+      {"label": "Segment B", "value": 30, "color_key": "secondary"},
+      {"label": "Segment C", "value": 25, "color_key": "tertiary"}
+    ]
+  }
+}
+```
 
-- `feed.news` (same sizes and height rules as table):
-  `{title, subtitle, items: [{headline, source, date, sentiment: "positive"|"negative"}]}`
+### Waterfall Charts
+**`chart.waterfall` (3x3, 4x3, 5x3)**
+```json
+{
+  "type": "chart.waterfall",
+  "size": "4x3",
+  "data": {
+    "title": "Cash Flow Analysis",
+    "subtitle": "FY2023",
+    "labels": ["Start", "Revenue", "Costs", "Taxes", "End"],
+    "invisible": [0, 1000, 1500, 1300, 0],
+    "series": [1000, 500, -200, -100, 1200]
+  }
+}
+```
 
-**Decorative:**
-- `deco.stats` (3x1, 4x1, 5x1 ONLY):
-  `{title, subtitle, metrics: [{label, value}]}`
-- `deco.timeline` (4x2, 5x2 ONLY):
-  `{title, subtitle, points: [{year, event, status: "done"|"active"}]}`
+### Tables
+**`table` (3x1, 4x1, 5x1, 3x2, 4x2, 5x2, 3x3, 4x3, 5x3, 3x4, 4x4, 5x4, 3x5, 4x5, 5x5)**
+```json
+{
+  "type": "table",
+  "size": "4x2",
+  "data": {
+    "title": "Top Products",
+    "subtitle": "By revenue",
+    "columns": [
+      {"key": "product", "label": "Product"},
+      {"key": "revenue", "label": "Revenue"},
+      {"key": "growth", "label": "Growth"}
+    ],
+    "rows": [
+      {"product": "Product A", "revenue": "$500M", "growth": "+15%"},
+      {"product": "Product B", "revenue": "$300M", "growth": "+8%"}
+    ]
+  }
+}
+```
 
-**Special:**
-- `canvas.bmc` (5x4 or 5x5 ONLY):
-  `{title, cells: [{section, points: [strings]}]}`
-- `freeform` (1x1, 2x1, 1x2, 2x2, 3x1 - use ONLY for gaps!):
-  `{html: "<div>HTML here</div>"}`
-  - **LAST RESORT ONLY**: Use when 1-4 cells remain after all data modules
-  - **NEVER for data**: Use KPIs, charts, tables for data
-  - **Only for visual elements**: Brand logos, founding year, HQ location
+Height by row count:
+- ≤3 rows → height 1
+- 4-6 rows → height 2
+- 7-10 rows → height 3
+- 11-15 rows → height 4
+- 16+ rows → height 5
+
+### News Feed
+**`feed.news` (same sizes as table)**
+```json
+{
+  "type": "feed.news",
+  "size": "4x2",
+  "data": {
+    "title": "Recent News",
+    "subtitle": "Last 7 days",
+    "items": [
+      {"headline": "Company announces Q4 results", "source": "Reuters", "date": "2024-01-15", "sentiment": "positive"},
+      {"headline": "Stock drops on earnings miss", "source": "Bloomberg", "date": "2024-01-14", "sentiment": "negative"}
+    ]
+  }
+}
+```
+
+### Decorative
+**`deco.stats` (3x1, 4x1, 5x1 only)**
+```json
+{
+  "type": "deco.stats",
+  "size": "4x1",
+  "data": {
+    "title": "Key Metrics",
+    "subtitle": "FY2023",
+    "metrics": [
+      {"label": "Employees", "value": "15,000"},
+      {"label": "Countries", "value": "50"},
+      {"label": "Products", "value": "200"}
+    ]
+  }
+}
+```
+
+**`deco.timeline` (4x2, 5x2 only)**
+```json
+{
+  "type": "deco.timeline",
+  "size": "5x2",
+  "data": {
+    "title": "Company Milestones",
+    "subtitle": "Key events",
+    "points": [
+      {"year": "2020", "event": "Founded", "status": "done"},
+      {"year": "2022", "event": "Series A", "status": "done"},
+      {"year": "2024", "event": "IPO", "status": "active"}
+    ]
+  }
+}
+```
+
+### Special
+**`canvas.bmc` (5x4 or 5x5 only)**
+```json
+{
+  "type": "canvas.bmc",
+  "size": "5x5",
+  "data": {
+    "title": "Business Model Canvas",
+    "cells": [
+      {"section": "Key Partners", "points": ["Suppliers", "Distributors"]},
+      {"section": "Key Activities", "points": ["Manufacturing", "R&D"]},
+      {"section": "Value Propositions", "points": ["Quality", "Innovation"]}
+    ]
+  }
+}
+```
+
+**`freeform` (1x1, 2x1, 1x2, 2x2, 3x1 - LAST RESORT ONLY)**
+```json
+{
+  "type": "freeform",
+  "size": "2x1",
+  "data": {
+    "html": "<div style='text-align:center'><h2>Founded 2020</h2><p>San Francisco, CA</p></div>"
+  }
+}
+```
+Use ONLY for visual elements (logos, founding year, HQ). NEVER for data.
 
 ---
 
-## Tab Creation
+## TAB STRATEGY
 
-**DO NOT default to generic tabs!**
-
-Create 2-7 tabs based on the request:
-- "Analyze Apple" → 5-6 tabs (Overview, Financials, Products, Services, Competition, Outlook)
-- "Compare Apple vs Samsung" → 3-4 tabs (Head-to-Head, Market Share, Financials, Products)
-- "Deep dive revenue model" → 2-3 tabs (Revenue Streams, Pricing, Growth Drivers)
+Create 2-7 tabs based on query:
+- Company analysis → 5-6 tabs (Overview, Financials, Products, Competition, Outlook)
+- Comparison → 3-4 tabs (Head-to-Head, Market Share, Financials)
+- Deep dive → 2-3 tabs (focused aspect)
 
 ---
 
-## Chat Intro (CRITICAL - FULL EXECUTIVE REPORT!)
+## VALIDATION CHECKLIST
 
-The `chat_intro` field is NOT just a summary - it's a COMPREHENSIVE EXECUTIVE REPORT that appears alongside the dashboard. This is where you present your complete analysis, insights, and rationalization.
+Before output, verify:
 
-**THINK OF IT AS A PREMIUM BUSINESS REPORT:**
-- 1000-3000 words (be thorough!)
-- Use ALL your research and rationalization
-- Present insights that complement the dashboard data
-- Use rich formatting to make it visually engaging
-
-**REQUIRED STRUCTURE:**
-
-### 1. Executive Summary (2-3 paragraphs)
-Start with a high-level overview of your findings. What are the key takeaways?
-
-### 2. Detailed Analysis Sections
-Use markdown headers (`##`, `###`) to organize your analysis into clear sections:
-- Market Position & Performance
-- Financial Analysis
-- Strategic Strengths & Weaknesses
-- Competitive Landscape
-- Growth Opportunities & Risks
-- Future Outlook
-
-### 3. Rich Formatting Elements
-
-**USE MARKDOWN TABLES FOR DATA:**
-```markdown
-| Metric | Value | Change | Trend |
-|--------|-------|--------|-------|
-| Revenue | $31.6B | +6.7% | ↗ |
-| Subscribers | 247M | +8.9M | ↗ |
-| ARPU | $11.72 | -2.1% | ↘ |
-```
-
-**USE INLINE HTML FOR VISUAL HIGHLIGHTS:**
-- Positive metrics: `<span style="color:#16A34A;font-weight:700">↗ +15.2%</span>`
-- Negative metrics: `<span style="color:#DC2626;font-weight:700">↘ -8.3%</span>`
-- Warning/neutral: `<span style="color:#D97706;font-weight:700">● Stable</span>`
-- Key numbers: `<span style="color:#2563EB;font-weight:700">$31.6B</span>`
-
-**USE BLOCKQUOTES FOR KEY INSIGHTS:**
-```markdown
-> "Netflix's shift to ad-supported tiers represents a fundamental change in their business model, opening new revenue streams while maintaining premium positioning."
-```
-
-**USE LISTS FOR CLARITY:**
-- Bullet points for features, strengths, weaknesses
-- Numbered lists for sequential steps or rankings
-
-**USE HORIZONTAL RULES FOR SEPARATION:**
-```markdown
----
-```
-
-### 4. Example Structure
-
-```markdown
-# Netflix: Comprehensive Analysis
-
-Netflix continues to dominate the streaming landscape with 247 million global subscribers, though facing intensifying competition from Disney+, Amazon Prime Video, and emerging platforms. The company's recent strategic pivot to ad-supported tiers and crackdown on password sharing has yielded <span style="color:#16A34A;font-weight:700">↗ +8.9M net subscriber additions</span> in Q4 2023, exceeding analyst expectations.
-
-## Financial Performance Overview
-
-| Metric | Q4 2023 | YoY Change | Status |
-|--------|---------|------------|--------|
-| Revenue | $8.83B | <span style="color:#16A34A;font-weight:700">↗ +12.5%</span> | Strong |
-| Operating Margin | 16.9% | <span style="color:#16A34A;font-weight:700">↗ +2.1pp</span> | Improving |
-| Free Cash Flow | $6.9B | <span style="color:#16A34A;font-weight:700">↗ +35%</span> | Excellent |
-| Net Income | $938M | <span style="color:#DC2626;font-weight:700">↘ -19%</span> | Declining |
-
-The company's financial health remains robust, with revenue growth accelerating and operating margins expanding. However, net income declined due to one-time restructuring charges and increased content amortization.
-
-## Strategic Positioning
-
-### Strengths
-- **Content Library Depth**: 15,000+ titles across genres and languages
-- **Original Content Pipeline**: $17B annual content budget
-- **Global Reach**: Available in 190+ countries
-- **Technology Leadership**: Best-in-class recommendation algorithm
-
-### Challenges
-- **Intense Competition**: Disney+, HBO Max, Apple TV+ gaining share
-- **Content Costs**: Rising production expenses pressuring margins
-- **Market Saturation**: Limited growth in mature markets (US, Europe)
-- **Password Sharing**: Estimated 100M+ households sharing accounts
-
-> "The introduction of ad-supported tiers at $6.99/month addresses both affordability concerns and opens a new $10B+ advertising revenue opportunity by 2025."
-
-## Competitive Landscape
-
-Netflix faces a multi-front competitive battle:
-
-1. **Disney+ (161M subs)**: Strong IP portfolio (Marvel, Star Wars, Pixar)
-2. **Amazon Prime Video (200M+ subs)**: Bundled with Prime membership
-3. **HBO Max (97M subs)**: Premium content, Warner Bros. library
-4. **Apple TV+ (25M subs)**: Growing original content investment
-
-Despite competition, Netflix maintains <span style="color:#2563EB;font-weight:700">35% market share</span> of global streaming hours watched.
+1. ✅ `chart.grouped` uses `series_list`
+2. ✅ Other charts use `series`
+3. ✅ `chart.pie/donut` are size `2x2`
+4. ✅ Each tab = exactly 25 cells
+5. ✅ Colors from allowed list
+6. ✅ Chat intro ≤400 words
+7. ✅ All sizes valid
+8. ✅ Tables use correct height for row count
+9. ✅ All modules have accent color
+10. ✅ Valid JSON syntax
 
 ---
 
-## Future Outlook
-
-**Growth Drivers:**
-- Ad-tier adoption (currently 15M subscribers, targeting 40M by 2024)
-- Password sharing monetization ($1B+ annual revenue potential)
-- Gaming expansion (70+ titles, 180M+ downloads)
-- Live sports and events (WWE deal starting 2025)
-
-**Risk Factors:**
-- Economic downturn impacting discretionary spending
-- Regulatory challenges in key markets (India, Europe)
-- Content production delays or quality issues
-- Subscriber churn from price increases
-
-**Analyst Consensus:** <span style="color:#16A34A;font-weight:700">BUY rating</span> with 12-month price target of $485 (+18% upside)
-```
-
-**REMEMBER:**
-- Be comprehensive - this is your chance to show deep analysis
-- Use formatting to make it scannable and visually engaging
-- Include specific numbers, percentages, and data points
-- Provide actionable insights and forward-looking analysis
-- Make it feel like a premium consulting report
-
----
-
-## FINAL VALIDATION CHECKLIST (MANDATORY!)
-
-**BEFORE OUTPUTTING JSON, VERIFY EACH ITEM:**
-
-**CHART DATA STRUCTURE:**
-1. ✅ All `chart.bar`, `chart.line`, `chart.area`, `chart.hbar` use `"series": [numbers]` (NOT `series_list`)
-2. ✅ All `chart.grouped` use `"series_list": [{"name": "...", "values": [numbers]}]` (NOT `series`)
-3. ✅ All `chart.pie`, `chart.donut` have size `"2x2"` (NOT `1x1` or other sizes)
-
-**GRID FILLING (MOST IMPORTANT!):**
-4. ✅ Count total cells for EACH tab: Sum of (width × height) = EXACTLY 25
-5. ✅ No module exceeds 5 width or 5 height
-6. ✅ NO GAPS - every cell is filled
-7. ✅ Modules stay INSIDE the 5x5 grid boundaries
-
-**MODULE VALIDATION:**
-8. ✅ All module sizes are from the valid lists
-9. ✅ Tables/feeds use correct height for row count (4-6 rows = height 2, etc.)
-10. ✅ Every module has an accent color (primary, secondary, tertiary, quaternary)
-
-**JSON VALIDATION:**
-11. ✅ Valid JSON syntax (no trailing commas, proper quotes)
-12. ✅ All required fields present for each module type
-
-**EXAMPLE CALCULATION FOR ONE TAB:**
-```
-Module 1: chart.line (4x2) = 8 cells
-Module 2: metric.kpi (1x1) = 1 cell
-Module 3: metric.kpi (1x1) = 1 cell
-Module 4: table (3x2) = 6 cells
-Module 5: chart.donut (2x2) = 4 cells
-Module 6: deco.stats (3x1) = 3 cells
-Module 7: metric.dual (2x1) = 2 cells
----
-TOTAL: 8+1+1+6+4+3+2 = 25 ✓ PERFECT!
-```
-
-**NOW OUTPUT THE RAW JSON (NO MARKDOWN FENCES):**
+OUTPUT RAW JSON NOW:
