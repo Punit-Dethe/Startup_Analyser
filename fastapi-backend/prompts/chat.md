@@ -480,7 +480,7 @@ TOTAL: 8+1+1+6+4+3+2 = 25 ✓
 ```json
 {
   "action": "TEMPORARY_TAB",
-  "message": "## [Analysis Title]\n\n[Detailed analysis with tables, highlights, insights...]\n\n**Key Findings:**\n- [Finding 1]\n- [Finding 2]\n\n**Recommendation:** [Action items]",
+  "message": "[WRITE YOUR COMPREHENSIVE ANALYSIS HERE - MINIMUM 500 WORDS WITH TABLES, HIGHLIGHTS, INSIGHTS, AND RECOMMENDATIONS. DO NOT WRITE 'Created temporary tab' OR ANY SHORT DESCRIPTION. THIS MUST BE A FULL ANALYTICAL REPORT.]",
   "tab": {
     "id": "temp_[unique_id]",
     "label": "[Tab Name]",
