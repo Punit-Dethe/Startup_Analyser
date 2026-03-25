@@ -1,0 +1,91 @@
+/* src/components/modules/ModuleCard.module.css */
+
+.card {
+  background: #FFFFFF;
+  border: 1px solid #E8E8E6;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+
+  /* Enable @container queries based on card's own size */
+  container-type: size;
+  container-name: mod;
+
+  /* Start invisible for reveal animation */
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.card:hover {
+  border-color: #CFCFCC;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
+}
+
+/* Content area — generous padding, premium feel */
+.content {
+  flex: 1;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* AI-generated HTML mode */
+.htmlContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────
+   CONTAINER QUERIES
+   Module adapts based on its own pixel width
+   ───────────────────────────────────────── */
+
+/* COMPACT — visual shape only, zero text */
+@container mod (max-width: 220px) {
+  .mod-title,
+  .mod-subtitle,
+  .axis-labels,
+  .legend,
+  .footer-stats,
+  .source-text,
+  .sentiment-badge {
+    display: none !important;
+  }
+  .visual-area {
+    height: 100%;
+    padding: 4px;
+  }
+}
+
+/* SMALL — title only, no legend or footer */
+@container mod (min-width: 221px) and (max-width: 360px) {
+  .mod-title    { display: block; font-size: 10px !important; }
+  .mod-subtitle { display: none !important; }
+  .legend       { display: none !important; }
+  .footer-stats { display: none !important; }
+}
+
+/* STANDARD — title + subtitle */
+@container mod (min-width: 361px) and (max-width: 520px) {
+  .mod-title    { display: block; }
+  .mod-subtitle { display: block; }
+  .legend       { display: none !important; }
+}
+
+/* FULL — everything visible */
+@container mod (min-width: 521px) {
+  .mod-title,
+  .mod-subtitle,
+  .legend,
+  .footer-stats { display: block; }
+}

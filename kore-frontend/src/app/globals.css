@@ -1,0 +1,338 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════
+   KORE — Design System Tokens
+═══════════════════════════════════════════════ */
+
+:root {
+  /* Surfaces */
+  --page-bg: #F5F4F1;
+  --card-bg: #FFFFFF;
+  --border: #EBEBEA;
+  --border-hover: #D0D0CC;
+  --input-bg: #F7F7F5;
+
+  /* Text */
+  --t-primary: #111110;
+  --t-secondary: #3D3D3A;
+  --t-muted: #9B9B97;
+  --t-hint: #C0C0BC;
+
+  /* Accent colors */
+  --accent-brand: #5865F2;
+  /* Discord Blurple */
+  --accent-green: #23A559;
+  /* Discord Green */
+  --accent-amber: #FEE75C;
+  /* Discord Yellow */
+  --accent-purple: #EB459E;
+  /* Discord Fuchsia */
+  --accent-teal: #0D9488;
+  --accent-blue: #2563EB;
+
+  /* Semantic */
+  --positive: #16A34A;
+  --positive-bg: #DCFCE7;
+  --negative: #DC2626;
+  --negative-bg: #FEE2E2;
+  --neutral: #6B7280;
+  --neutral-bg: #F3F4F6;
+
+  /* Layout */
+  --topbar-height: 52px;
+  --chat-width: 480px;
+  --grid-gap: 10px;
+}
+
+/* ═══════════════════════════════════════════════
+   Base Reset
+═══════════════════════════════════════════════ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* Hide scrollbars everywhere while keeping scroll functionality */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE / Edge */
+}
+
+/* Chrome, Safari, WebKit */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--page-bg);
+  color: var(--t-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════════════════════════════════
+   App Shell
+═══════════════════════════════════════════════ */
+#app-shell {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--page-bg);
+}
+
+/* ═══════════════════════════════════════════════
+   Topbar
+═══════════════════════════════════════════════ */
+.topbar {
+  height: var(--topbar-height);
+  flex-shrink: 0;
+  background: #FFFFFF;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  gap: 0;
+  z-index: 10;
+}
+
+/* ═══════════════════════════════════════════════
+   Body Row (chat + grid)
+═══════════════════════════════════════════════ */
+.body-row {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════
+   Chat Panel
+═══════════════════════════════════════════════ */
+.chat-panel {
+  width: var(--chat-width);
+  flex-shrink: 0;
+  background: #FAFAFA;
+  border-right: 1px solid var(--border);
+  box-shadow: inset -4px 0 16px rgba(0, 0, 0, 0.015);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
+
+/* ═══════════════════════════════════════════════
+   Module Grid
+═══════════════════════════════════════════════ */
+.grid-area {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+}
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+  grid-template-rows: repeat(5, minmax(100px, 1fr));
+  gap: var(--grid-gap);
+  flex: 1;
+  padding: 12px 14px;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+
+/* ═══════════════════════════════════════════════
+   Module size classes — col × row
+═══════════════════════════════════════════════ */
+.mod-1x1 {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.mod-1x2 {
+  grid-column: span 1;
+  grid-row: span 2;
+}
+
+.mod-1x3 {
+  grid-column: span 1;
+  grid-row: span 3;
+}
+
+.mod-2x1 {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.mod-2x2 {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.mod-2x3 {
+  grid-column: span 2;
+  grid-row: span 3;
+}
+
+.mod-3x1 {
+  grid-column: span 3;
+  grid-row: span 1;
+}
+
+.mod-3x2 {
+  grid-column: span 3;
+  grid-row: span 2;
+}
+
+.mod-3x3 {
+  grid-column: span 3;
+  grid-row: span 3;
+}
+
+.mod-4x1 {
+  grid-column: span 4;
+  grid-row: span 1;
+}
+
+.mod-4x2 {
+  grid-column: span 4;
+  grid-row: span 2;
+}
+
+.mod-4x3 {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+.mod-4x4 {
+  grid-column: span 4;
+  grid-row: span 4;
+}
+
+.mod-4x5 {
+  grid-column: span 4;
+  grid-row: span 5;
+}
+
+.mod-5x1 {
+  grid-column: span 5;
+  grid-row: span 1;
+}
+
+.mod-5x2 {
+  grid-column: span 5;
+  grid-row: span 2;
+}
+
+.mod-5x3 {
+  grid-column: span 5;
+  grid-row: span 3;
+}
+
+.mod-5x4 {
+  grid-column: span 5;
+  grid-row: span 4;
+}
+
+.mod-5x5 {
+  grid-column: span 5;
+  grid-row: span 5;
+}
+
+/* ═══════════════════════════════════════════════
+   Scrollbar styles
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* ═══════════════════════════════════════════════
+   Reveal animation
+═══════════════════════════════════════════════ */
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-revealed {
+  animation: card-reveal 0.35s ease forwards;
+}
+
+/* ═══════════════════════════════════════════════
+   Loading shimmer
+═══════════════════════════════════════════════ */
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #F0EFEd 25%, #E8E7E4 50%, #F0EFED 75%);
+  background-size: 400px 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: 8px;
+}
+
+/* ═══════════════════════════════════════════════
+   Pulse dot
+═══════════════════════════════════════════════ */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  70% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #22C55E;
+  animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
