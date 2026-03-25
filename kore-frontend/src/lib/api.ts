@@ -15,6 +15,13 @@ export async function generateDashboard(query: string): Promise<GenerateResponse
       ? localStorage.getItem('currentGeminiApiKey') 
       : null
 
+    // Debug logging
+    if (apiKey) {
+      console.log('[KORE] Using custom API key:', apiKey.substring(0, 20) + '...')
+    } else {
+      console.log('[KORE] No custom API key selected, using backend default')
+    }
+
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 
@@ -71,6 +78,13 @@ export async function sendChatMessage(payload: ChatPayload): Promise<ChatRespons
   const apiKey = typeof window !== 'undefined' 
     ? localStorage.getItem('currentGeminiApiKey') 
     : null
+
+  // Debug logging
+  if (apiKey) {
+    console.log('[KORE] Using custom API key:', apiKey.substring(0, 20) + '...')
+  } else {
+    console.log('[KORE] No custom API key selected, using backend default')
+  }
 
   const res = await fetch('/api/chat', {
     method: 'POST',

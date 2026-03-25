@@ -50,6 +50,7 @@ export default function Topbar({
     const selectedKey = apiKeys.find(k => k.id === keyId)
     if (selectedKey) {
       localStorage.setItem('currentGeminiApiKey', selectedKey.key)
+      console.log(`[KORE] API Key switched to: ${selectedKey.name} (${selectedKey.key.substring(0, 20)}...)`)
     }
   }
 
