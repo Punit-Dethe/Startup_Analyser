@@ -22,10 +22,14 @@ app = FastAPI(
     description="FastAPI backend for KORE dashboard with direct Gemini API integration"
 )
 
-# CORS middleware
+# CORS middleware - allow frontend origins
+# In production, allow all origins temporarily for testing
+# TODO: Restrict to specific frontend URL after testing
+allowed_origins = ["*"] if settings.is_production else [settings.FRONTEND_URL]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
