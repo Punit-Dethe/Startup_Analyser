@@ -25,9 +25,34 @@ class GeminiClient:
             api_key: Google Gemini API key
             model: Model name (default: gemini-2.5-flash)
         """
-        genai.configure(api_key=api_key)
+        self.api_key = api_key
         self.model_name = model
+        genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel(model)
+    
+    def reconfigure(self, api_key: str) -> None:
+        """
+        Reconfigure client with a different API key.
+        
+        Args:
+            api_key: New Google Gemini API key
+        """
+        self.api_key = api_key
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel(self.model_name)
+        logger.info(f"Gemini client reconfigured with new API key: {api_key[:20]}...")
+        self.model = genai.GenerativeModel(model)
+    
+    def reconfigure(self, api_key: str) -> None:
+        """
+        Reconfigure client with a different API key.
+        
+        Args:
+            api_key: New Google Gemini API key
+        """
+        self.api_key = api_key
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel(self.model_name)
     
     async def generate(
         self,
@@ -41,7 +66,7 @@ class GeminiClient:
         """
         Generate response from Gemini API.
         
-        Args:
+        Args:   
             prompt: User prompt
             system_prompt: System instructions
             temperature: Sampling temperature (0.0-1.0)
