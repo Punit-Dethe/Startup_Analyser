@@ -25,8 +25,12 @@ COPY prompts/ ./prompts/
 ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONUNBUFFERED=1
 
+# Copy startup script
+COPY start.sh ./start.sh
+RUN chmod +x start.sh
+
 # Expose port (Railway will set PORT dynamically)
 EXPOSE 8000
 
-# Run application (uses Railway's $PORT variable)
-CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+# Run application via startup script
+CMD ["./start.sh"]
