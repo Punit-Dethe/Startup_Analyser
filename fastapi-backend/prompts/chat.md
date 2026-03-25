@@ -73,18 +73,34 @@ Blockquotes for insights:
 
 **Behavior:** Generate NEW tab with modules in 5x5 grid (EXACTLY 25 cells).
 
-**CRITICAL: HYBRID APPROACH - VISUALS + COMPREHENSIVE ANALYSIS**
+**🚨 CRITICAL: MESSAGE FIELD MUST CONTAIN COMPREHENSIVE ANALYSIS 🚨**
+
+**ABSOLUTE RULE: THE MESSAGE FIELD IS NOT A NOTIFICATION!**
 
 TEMPORARY_TAB provides BOTH:
 1. **Visual modules** (charts, tables, KPIs) - The DATA
 2. **Written analysis** (in `message` field) - The MEANING
 
 **MESSAGE FIELD RULES:**
-- ❌ WRONG: "Created temporary tab: Competitor Analysis"
-- ✅ CORRECT:  not too short not too long, just enought to express the information, comprehensive analysis
-- ADVICED to include: Executive summary, markdown tables, inline HTML highlights, blockquotes, headers, insights, recommendations
-- Use ALL rich formatting: tables, `<span>` highlights, lists, blockquotes
-- Explain what the data means, why it matters, what to do about it
+- ❌ FORBIDDEN: "Created temporary tab: Competitor Analysis"
+- ❌ FORBIDDEN: "Created temporary tab: [name]"
+- ❌ FORBIDDEN: Short one-sentence descriptions
+- ✅ REQUIRED: Comprehensive executive analysis (not too short, not too long - enough to fully explain)
+- ✅ REQUIRED: Multiple paragraphs with detailed insights
+- ✅ REQUIRED: Markdown tables with data comparisons
+- ✅ REQUIRED: Inline HTML highlights for key numbers
+- ✅ REQUIRED: Headers (##, ###) to organize sections
+- ✅ REQUIRED: Blockquotes for key insights
+- ✅ REQUIRED: Lists for strengths/weaknesses/opportunities
+- ✅ REQUIRED: Forward-looking recommendations
+
+**THINK OF MESSAGE AS:**
+- Like the `chat_intro` in main dashboard generation
+- A complete analytical report that stands alone
+- Explains what the data means, why it matters, what to do about it
+- Uses ALL rich formatting capabilities
+
+**IF YOUR MESSAGE JUST SAYS "Created temporary tab", YOU FAILED THE REQUIREMENT!**
 
 ---
 
@@ -403,14 +419,16 @@ Total: 25 ✓
 8. ✅ `metric.dual` has EXACTLY 2 items
 9. ✅ All modules have `tab` field set to new tab id
 10. ✅ All modules have valid `accent` color
-11. ✅ **CRITICAL:** Message field contains 500-1500 WORDS of detailed analysis with:
-    - Markdown tables with data
-    - Inline HTML highlights for key numbers
-    - Blockquotes for insights
-    - Multiple sections with headers
-    - Context, comparisons, and recommendations
-    - NOT just "Created temporary tab: [name]"
-12. ✅ Freeform used SPARINGLY (only as filler)
+11. ✅ **CRITICAL:** Message field DOES NOT say "Created temporary tab" or similar short text
+12. ✅ **CRITICAL:** Message field contains comprehensive analysis with:
+    - Multiple paragraphs (not just 1-2 sentences)
+    - At least one markdown table with data
+    - At least 3 inline HTML highlights for numbers
+    - At least one blockquote for key insight
+    - Multiple headers (##, ###) organizing sections
+    - Lists for strengths/weaknesses/opportunities
+    - Forward-looking recommendations
+13. ✅ Freeform used SPARINGLY (only as filler)
 
 **Example Calculation:**
 ```
@@ -428,6 +446,15 @@ TOTAL: 8+1+1+6+4+3+2 = 25 ✓
 ---
 
 ## JSON OUTPUT FORMAT
+
+**🚨 BEFORE YOU OUTPUT TEMPORARY_TAB JSON, READ THIS 🚨**
+
+**IF YOU ARE CREATING A TEMPORARY_TAB:**
+- Your `message` field CANNOT be "Created temporary tab: [name]"
+- Your `message` field CANNOT be a short sentence
+- Your `message` field MUST be a comprehensive analytical report
+- Think: "Would this message be useful if the user couldn't see the modules?"
+- If answer is NO, you need to write more analysis!
 
 **CRITICAL:** Output raw JSON ONLY. No markdown fences. No conversational text outside JSON.
 
