@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import PixelBlast from '@/components/PixelBlast'
+import Grainient from '@/components/Grainient'
 import { useDashboard } from '@/hooks/useDashboard'
 import AppShell from '@/components/layout/AppShell'
 import ModuleGrid from '@/components/layout/ModuleGrid'
@@ -11,12 +12,47 @@ const EXAMPLE_PROMPTS = [
   'Food delivery startup in India with ₹50L budget',
   'India EV market outlook 2026',
   'Analyse Swiggy competitors and market position',
+  'Analyse Apple business strategy',
 ]
 
 export default function LandingPage() {
   const [prompt, setPrompt]   = useState('')
   const [focused, setFocused] = useState(false)
+  const [showApiKeyDropdown, setShowApiKeyDropdown] = useState(false)
+  const [selectedApiKey, setSelectedApiKey] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('selectedApiKey') || 'default'
+    }
+    return 'default'
+  })
   const { payload, loading, error, activeTab, submit, setActiveTab, chatHistory, isChatLoading, sendChat, clearDashboard, removeTemporaryTab } = useDashboard()
+
+  // API Keys configuration
+  const apiKeys = [
+    { id: 'default', name: 'Default', key: '', color: '#000000' },
+    { id: 'key1', name: 'Leo', key: process.env.NEXT_PUBLIC_GEMINI_KEY_1 || '', color: '#f97316' },
+    { id: 'key2', name: 'Max', key: process.env.NEXT_PUBLIC_GEMINI_KEY_2 || '', color: '#eab308' },
+    { id: 'key3', name: 'Sam', key: process.env.NEXT_PUBLIC_GEMINI_KEY_3 || '', color: '#3b82f6' },
+    { id: 'key4', name: 'Alex', key: process.env.NEXT_PUBLIC_GEMINI_KEY_4 || '', color: '#22c55e' },
+    { id: 'key5', name: 'Jordan', key: process.env.NEXT_PUBLIC_GEMINI_KEY_5 || '', color: '#a855f7' },
+  ]
+
+  const handleApiKeyChange = (keyId: string) => {
+    setSelectedApiKey(keyId)
+    localStorage.setItem('selectedApiKey', keyId)
+    
+    if (keyId === 'default') {
+      localStorage.removeItem('currentGeminiApiKey')
+      console.log('[KORE] API Key switched to: Default (using backend default)')
+    } else {
+      const selectedKey = apiKeys.find(k => k.id === keyId)
+      if (selectedKey && selectedKey.key) {
+        localStorage.setItem('currentGeminiApiKey', selectedKey.key)
+        console.log(`[KORE] API Key switched to: ${selectedKey.name}`)
+      }
+    }
+    setShowApiKeyDropdown(false)
+  }
 
   function handleSubmit() {
     if (!prompt.trim() || loading) return
@@ -83,9 +119,6 @@ export default function LandingPage() {
   return (
     <div style={{
       height: '100dvh', 
-      background: 'linear-gradient(-45deg, #87CEEB, #E0F6FF, #a1dcf2, #d1f0ff)',
-      backgroundSize: '400% 400%',
-      animation: 'gradientBG 10s ease infinite',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       padding: '0 24px',
@@ -93,13 +126,40 @@ export default function LandingPage() {
       position: 'relative',
       overflow: 'hidden'
     }}>
-      <style>{`
-        @keyframes gradientBG {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-      `}</style>
+      {/* Grainient Background */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 0
+      }}>
+        <Grainient
+          color1="#d4ebf7"
+          color2="#a8d5f2"
+          color3="#7ec0ed"
+          timeSpeed={0.25}
+          colorBalance={0}
+          warpStrength={1}
+          warpFrequency={5}
+          warpSpeed={2}
+          warpAmplitude={50}
+          blendAngle={0}
+          blendSoftness={0.05}
+          rotationAmount={500}
+          noiseScale={2}
+          grainAmount={0.1}
+          grainScale={2}
+          grainAnimated={false}
+          contrast={1.5}
+          gamma={1}
+          saturation={1}
+          centerX={0}
+          centerY={0}
+          zoom={0.9}
+        />
+      </div>
 
       {/* Transitional Pixel Blast Background */}
       <div style={{
@@ -112,7 +172,7 @@ export default function LandingPage() {
             style={{}}
             variant="square"
             pixelSize={4}
-            color="#38bdf8"
+            color="#9de3f0"
             patternScale={2}
             patternDensity={1}
             pixelSizeJitter={0}
@@ -173,7 +233,7 @@ export default function LandingPage() {
         }}>
           {/* Input */}
           <div style={{
-            width: '100%', maxWidth: 600,
+            width: '100%', maxWidth: 700,
             background: '#FFFFFF',
             border: `1px solid ${focused ? 'var(--border-hover)' : 'var(--border)'}`,
             borderRadius: 14,
@@ -183,10 +243,128 @@ export default function LandingPage() {
               ? '0 4px 24px rgba(0,0,0,0.08), 0 0 0 3px rgba(218,41,28,0.06)'
               : '0 2px 8px rgba(0,0,0,0.04)',
             transition: 'all 0.2s ease',
+            position: 'relative',
           }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t-hint)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}>
-              <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
-            </svg>
+            {/* API Key Selector Dropdown */}
+            <div style={{ position: 'relative' }}>
+              <button
+                onClick={() => setShowApiKeyDropdown(!showApiKeyDropdown)}
+                style={{
+                  padding: '0 12px',
+                  height: '100%',
+                  border: 'none',
+                  background: 'transparent',
+                  color: apiKeys.find(k => k.id === selectedApiKey)?.color || 'var(--t-secondary)',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  transition: 'all 0.15s ease',
+                  whiteSpace: 'nowrap',
+                  letterSpacing: '-0.1px',
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+                {apiKeys.find(k => k.id === selectedApiKey)?.name}
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {showApiKeyDropdown && (
+                <>
+                  {/* Backdrop */}
+                  <div 
+                    onClick={() => setShowApiKeyDropdown(false)}
+                    style={{
+                      position: 'fixed',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      zIndex: 999,
+                    }}
+                  />
+                  
+                  {/* Menu */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 'calc(100% + 8px)',
+                    left: 0,
+                    minWidth: 140,
+                    background: '#fff',
+                    border: '1px solid var(--border)',
+                    borderRadius: 10,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                    zIndex: 1000,
+                    overflow: 'hidden',
+                    animation: 'slideDown 0.2s ease-out',
+                  }}>
+                    <style>{`
+                      @keyframes slideDown {
+                        from {
+                          opacity: 0;
+                          transform: translateY(-8px);
+                        }
+                        to {
+                          opacity: 1;
+                          transform: translateY(0);
+                        }
+                      }
+                    `}</style>
+                    {apiKeys.map(apiKey => (
+                      <button
+                        key={apiKey.id}
+                        onClick={() => handleApiKeyChange(apiKey.id)}
+                        style={{
+                          width: '100%',
+                          padding: '10px 16px',
+                          border: 'none',
+                          background: 'transparent',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 10,
+                          cursor: 'pointer',
+                          fontSize: 12,
+                          color: selectedApiKey === apiKey.id ? apiKey.color : '#d1d5db',
+                          transition: 'all 0.15s ease',
+                          textAlign: 'left',
+                          position: 'relative',
+                          fontWeight: selectedApiKey === apiKey.id ? 600 : 400,
+                        }}
+                        onMouseEnter={e => {
+                          if (selectedApiKey !== apiKey.id) {
+                            e.currentTarget.style.color = apiKey.color
+                          }
+                        }}
+                        onMouseLeave={e => {
+                          if (selectedApiKey !== apiKey.id) {
+                            e.currentTarget.style.color = '#d1d5db'
+                          }
+                        }}
+                      >
+                        {apiKey.name}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Vertical Divider */}
+            <div style={{
+              width: 1,
+              height: 24,
+              background: 'var(--border)',
+              flexShrink: 0,
+            }} />
 
             <input
               value={prompt}
@@ -225,7 +403,7 @@ export default function LandingPage() {
           {/* Example prompts */}
           <div style={{
             marginTop: 18, display: 'flex', flexWrap: 'wrap',
-            gap: 8, justifyContent: 'center', maxWidth: 600,
+            gap: 8, justifyContent: 'center', maxWidth: 700,
           }}>
             {EXAMPLE_PROMPTS.map(p => (
               <button

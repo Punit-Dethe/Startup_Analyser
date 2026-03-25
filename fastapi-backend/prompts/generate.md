@@ -93,53 +93,74 @@ ONLY AFTER completing steps 1-7, proceed to create JSON.
 
 ---
 
-## RULE 2: CHAT INTRO LENGTH
+## RULE 2: CHAT INTRO LENGTH & CAPABILITIES
 
 MAXIMUM 400 WORDS.
+
+**YOU HAVE RICH FORMATTING CAPABILITIES:**
+- Markdown tables, lists, headings
+- Inline HTML for highlights: `<span style="color:#16A34A;font-weight:700">↗ +15%</span>`
+- Blockquotes for key insights
+- Bold, italic, code formatting
+
+**USE THESE CAPABILITIES TO MAKE YOUR INTRO ENGAGING!**
 
 Structure:
 ```
 # [Company]: Key Insights
 
-[2-3 sentences overview]
+[2-3 sentences overview with inline highlights for key numbers]
 
 ## Financial Snapshot
-- Revenue: $X.XB (↗ +X%)
-- Profit: $X.XB (↘ -X%)
-- [2-3 more metrics]
+| Metric | Value | Change |
+|--------|-------|--------|
+| Revenue | $X.XB | <span style="color:#16A34A">↗ +X%</span> |
+| Profit | $X.XB | <span style="color:#DC2626">↘ -X%</span> |
 
 ## Key Strengths
-- [One sentence]
-- [One sentence]
-- [One sentence]
+- [One sentence with data]
+- [One sentence with data]
 
 ## Key Challenges
-- [One sentence]
-- [One sentence]
+- [One sentence with context]
+- [One sentence with context]
 
 ## Outlook
-[2-3 sentences]
+[2-3 sentences with forward-looking insights]
 ```
 
-DO NOT exceed 400 words. DO NOT write long paragraphs. DO NOT include tables.
+DO NOT exceed 400 words. DO NOT write long paragraphs without formatting. USE tables and highlights to make data scannable.
 
 ---
 
-## RULE 3: COLOR CONTRAST
+## RULE 3: BRAND-APPROPRIATE COLOR SELECTION
 
-ONLY use these colors (choose 4):
-- `#2563EB` Blue
-- `#DC2626` Red
-- `#16A34A` Green
-- `#9333EA` Purple
-- `#EA580C` Orange
-- `#0891B2` Cyan
-- `#CA8A04` Yellow
-- `#E11D48` Pink
-- `#7C3AED` Violet
-- `#0D9488` Teal
+**STEP 1: IDENTIFY BRAND COLORS**
+- Google → Use Google's 4 colors: Blue (#4285F4), Red (#EA4335), Yellow (#FBBC04), Green (#34A853)
+- Apple → Use Apple grays and blues: Space Gray (#1D1D1F), Silver (#C7C7CC), Blue (#007AFF), Black (#000000)
+- Discord → Use Discord purples: Blurple (#5865F2), Dark Purple (#4752C4), Light Purple (#7289DA), Gray (#99AAB5)
+- Spotify → Use Spotify greens: Green (#1DB954), Dark Green (#1AA34A), Black (#191414), White (#FFFFFF)
+- Netflix → Use Netflix reds: Red (#E50914), Dark Red (#B20710), Black (#221F1F), White (#FFFFFF)
 
-DO NOT use light/pastel colors. DO NOT use colors lighter than these.
+**STEP 2: CREATE THEME VARIATIONS**
+If brand has 1-2 signature colors, create variations:
+- Primary: Brand color
+- Secondary: Darker shade of brand color
+- Tertiary: Lighter shade or complementary color
+- Quaternary: Neutral (gray/black) or accent color
+
+**STEP 3: ENSURE CONTRAST**
+Background is white. Make sure colors are not too light and are clearly visible.
+
+**FALLBACK COLORS (if brand unknown):**
+```json
+"colors": {
+  "primary": "#86868B",
+  "secondary": "#C7C7CC",
+  "tertiary": "#007AFF",
+  "quaternary": "#1D1D1F"
+}
+```
 
 ---
 
