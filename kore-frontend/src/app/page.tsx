@@ -208,7 +208,7 @@ export default function LandingPage() {
               style={{
                 padding: '9px 18px',
                 borderRadius: 9,
-                background: prompt.trim() ? '#38bdf8' : 'var(--border)',
+                background: prompt.trim() ? '#000000' : 'var(--border)',
                 border: 'none',
                 color: prompt.trim() ? '#fff' : 'var(--t-muted)',
                 fontSize: 12, fontWeight: 600,
