@@ -5,15 +5,23 @@ import { summarizeDashboard } from './summarize'
 // ─── Generate ─────────────────────────────────────────────────────────────────
 
 /**
- * Calls /api/generate (Next.js proxy → n8n /generate webhook).
+ * Calls /api/generate (Next.js proxy → backend).
  * Falls back to dummy data when the route returns an error or isn't configured.
  */
 export async function generateDashboard(query: string): Promise<GenerateResponse> {
   try {
+    // Get selected API key from localStorage
+    const apiKey = typeof window !== 'undefined' 
+      ? localStorage.getItem('currentGeminiApiKey') 
+      : null
+
     const res = await fetch('/api/generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query }),
+      headers: { 
+        'Content-Type': 'application/json',
+        ...(apiKey ? { 'X-Gemini-API-Key': apiKey } : {}),
+      },
+      body: JSON.stringify({ query, apiKey }),
     })
 
     if (!res.ok) throw new Error(`/api/generate returned ${res.status}`)
@@ -55,14 +63,22 @@ export interface ChatPayload {
 }
 
 /**
- * Calls /api/chat (Next.js proxy → n8n /chat webhook).
+ * Calls /api/chat (Next.js proxy → backend).
  * Returns a CHAT / REFRESH / RELOAD action object.
  */
 export async function sendChatMessage(payload: ChatPayload): Promise<ChatResponse> {
+  // Get selected API key from localStorage
+  const apiKey = typeof window !== 'undefined' 
+    ? localStorage.getItem('currentGeminiApiKey') 
+    : null
+
   const res = await fetch('/api/chat', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
+    headers: { 
+      'Content-Type': 'application/json',
+      ...(apiKey ? { 'X-Gemini-API-Key': apiKey } : {}),
+    },
+    body: JSON.stringify({ ...payload, apiKey }),
   })
 
   if (!res.ok) throw new Error(`/api/chat returned ${res.status}`)

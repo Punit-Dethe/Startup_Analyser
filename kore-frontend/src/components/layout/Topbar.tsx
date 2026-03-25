@@ -24,9 +24,34 @@ export default function Topbar({
   tabs, activeTab, onTabChange, onRemoveTab, brandColor, logoInitials, pageTitle, pageSubtitle, onClear,
 }: TopbarProps) {
   const [showProfileMenu, setShowProfileMenu] = useState(false)
+  const [showApiKeySettings, setShowApiKeySettings] = useState(false)
+  const [selectedApiKey, setSelectedApiKey] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('selectedApiKey') || 'key1'
+    }
+    return 'key1'
+  })
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
   const tabsContainerRef = useRef<HTMLDivElement>(null)
+
+  // API Keys configuration
+  const apiKeys = [
+    { id: 'key1', name: 'Leo', key: process.env.NEXT_PUBLIC_GEMINI_KEY_1 || '' },
+    { id: 'key2', name: 'Max', key: process.env.NEXT_PUBLIC_GEMINI_KEY_2 || '' },
+    { id: 'key3', name: 'Sam', key: process.env.NEXT_PUBLIC_GEMINI_KEY_3 || '' },
+    { id: 'key4', name: 'Alex', key: process.env.NEXT_PUBLIC_GEMINI_KEY_4 || '' },
+    { id: 'key5', name: 'Jordan', key: process.env.NEXT_PUBLIC_GEMINI_KEY_5 || '' },
+  ]
+
+  const handleApiKeyChange = (keyId: string) => {
+    setSelectedApiKey(keyId)
+    localStorage.setItem('selectedApiKey', keyId)
+    const selectedKey = apiKeys.find(k => k.id === keyId)
+    if (selectedKey) {
+      localStorage.setItem('currentGeminiApiKey', selectedKey.key)
+    }
+  }
 
   // Check scroll position
   const checkScroll = () => {
@@ -362,8 +387,90 @@ export default function Topbar({
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
                   </svg>}
                   label="Settings"
-                  onClick={() => setShowProfileMenu(false)}
+                  onClick={() => {
+                    setShowApiKeySettings(!showApiKeySettings)
+                  }}
+                  expandable
+                  expanded={showApiKeySettings}
                 />
+
+                {/* API Key Settings Submenu */}
+                {showApiKeySettings && (
+                  <div style={{ 
+                    background: '#F9F9F8', 
+                    padding: '8px 0',
+                    borderTop: '1px solid var(--border)',
+                    borderBottom: '1px solid var(--border)',
+                  }}>
+                    <div style={{ 
+                      padding: '8px 16px', 
+                      fontSize: 11, 
+                      fontWeight: 600, 
+                      color: 'var(--t-muted)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                    }}>
+                      API Key Selection
+                    </div>
+                    {apiKeys.map(apiKey => (
+                      <button
+                        key={apiKey.id}
+                        onClick={() => {
+                          handleApiKeyChange(apiKey.id)
+                        }}
+                        style={{
+                          width: '100%',
+                          padding: '8px 16px 8px 32px',
+                          border: 'none',
+                          background: selectedApiKey === apiKey.id ? 'rgba(0,0,0,0.03)' : 'transparent',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 10,
+                          cursor: 'pointer',
+                          fontSize: 12,
+                          color: selectedApiKey === apiKey.id ? 'var(--t-primary)' : 'var(--t-secondary)',
+                          transition: 'all 0.15s ease',
+                          textAlign: 'left',
+                          position: 'relative',
+                        }}
+                        onMouseEnter={e => {
+                          if (selectedApiKey !== apiKey.id) {
+                            e.currentTarget.style.background = 'rgba(0,0,0,0.02)'
+                          }
+                        }}
+                        onMouseLeave={e => {
+                          if (selectedApiKey !== apiKey.id) {
+                            e.currentTarget.style.background = 'transparent'
+                          }
+                        }}
+                      >
+                        {/* Check mark for selected */}
+                        {selectedApiKey === apiKey.id && (
+                          <span style={{
+                            position: 'absolute',
+                            left: 16,
+                            color: brandColor,
+                            fontSize: 12,
+                          }}>
+                            ✓
+                          </span>
+                        )}
+                        <span style={{ fontWeight: selectedApiKey === apiKey.id ? 600 : 400 }}>
+                          {apiKey.name}
+                        </span>
+                        {!apiKey.key && (
+                          <span style={{
+                            fontSize: 10,
+                            color: 'var(--t-muted)',
+                            fontStyle: 'italic',
+                          }}>
+                            (not configured)
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
 
                 <MenuItem 
                   icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -400,11 +507,13 @@ export default function Topbar({
   )
 }
 
-function MenuItem({ icon, label, badge, onClick }: { 
+function MenuItem({ icon, label, badge, onClick, expandable, expanded }: { 
   icon: React.ReactNode
   label: string
   badge?: string
-  onClick: () => void 
+  onClick: () => void
+  expandable?: boolean
+  expanded?: boolean
 }) {
   return (
     <button
@@ -413,7 +522,7 @@ function MenuItem({ icon, label, badge, onClick }: {
         width: '100%',
         padding: '10px 16px',
         border: 'none',
-        background: 'transparent',
+        background: expanded ? '#F9F9F8' : 'transparent',
         display: 'flex',
         alignItems: 'center',
         gap: 12,
@@ -424,12 +533,16 @@ function MenuItem({ icon, label, badge, onClick }: {
         textAlign: 'left',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.background = '#F9F9F8'
-        e.currentTarget.style.color = 'var(--t-primary)'
+        if (!expanded) {
+          e.currentTarget.style.background = '#F9F9F8'
+          e.currentTarget.style.color = 'var(--t-primary)'
+        }
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.background = 'transparent'
-        e.currentTarget.style.color = 'var(--t-secondary)'
+        if (!expanded) {
+          e.currentTarget.style.background = 'transparent'
+          e.currentTarget.style.color = 'var(--t-secondary)'
+        }
       }}
     >
       <span style={{ display: 'flex', alignItems: 'center', color: 'inherit' }}>
@@ -447,6 +560,23 @@ function MenuItem({ icon, label, badge, onClick }: {
         }}>
           {badge}
         </span>
+      )}
+      {expandable && (
+        <svg 
+          width="12" 
+          height="12" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round"
+          style={{
+            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 0.15s ease',
+          }}
+        >
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
       )}
     </button>
   )

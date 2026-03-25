@@ -27,12 +27,13 @@ class GenerateService:
         self.prompt_service = prompt_service
         self.validator = validator
     
-    async def generate(self, query: str) -> dict[str, Any]:
+    async def generate(self, query: str, api_key: str | None = None) -> dict[str, Any]:
         """
         Generate complete dashboard from user query.
         
         Args:
             query: User's natural language query
+            api_key: Optional custom Gemini API key (overrides default)
             
         Returns:
             GenerateResponse dict with dashboard and metadata
@@ -41,6 +42,10 @@ class GenerateService:
             ServiceError: Generation failed
         """
         try:
+            # Reconfigure client with custom API key if provided
+            if api_key:
+                self.gemini_client.reconfigure(api_key)
+            
             # Load system prompt
             system_prompt = self.prompt_service.get_generate_prompt()
             logger.info(f"Generating dashboard for query: {query[:100]}")

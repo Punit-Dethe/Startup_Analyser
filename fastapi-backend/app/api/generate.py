@@ -2,7 +2,8 @@
 
 import logging
 import asyncio
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Header
+from typing import Optional
 
 from app.models.requests import GenerateRequest
 from app.dependencies import get_generate_service
@@ -14,12 +15,16 @@ router = APIRouter()
 
 
 @router.post("/generate")
-async def generate_dashboard(request: GenerateRequest):
+async def generate_dashboard(
+    request: GenerateRequest,
+    x_gemini_api_key: Optional[str] = Header(None)
+):
     """
     Generate a complete dashboard from a user query.
     
     Args:
         request: Generate request with query field
+        x_gemini_api_key: Optional custom Gemini API key from header
         
     Returns:
         GenerateResponse with dashboard, dashboard_state, and generated_at
@@ -33,7 +38,7 @@ async def generate_dashboard(request: GenerateRequest):
         
         # Generate dashboard with timeout (3 minutes for complex queries)
         result = await asyncio.wait_for(
-            service.generate(request.query),
+            service.generate(request.query, api_key=x_gemini_api_key),
             timeout=180.0
         )
         

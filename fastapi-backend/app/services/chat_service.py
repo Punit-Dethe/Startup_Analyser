@@ -30,7 +30,8 @@ class ChatService:
         self,
         message: str,
         history: list[ChatMessage],
-        context: DashboardContext
+        context: DashboardContext,
+        api_key: str | None = None
     ) -> dict[str, Any]:
         """
         Process chat message and generate response.
@@ -39,6 +40,7 @@ class ChatService:
             message: User's message
             history: Conversation history
             context: Current dashboard context
+            api_key: Optional custom Gemini API key (overrides default)
             
         Returns:
             ChatResponse dict with action and data
@@ -47,6 +49,10 @@ class ChatService:
             ServiceError: Chat processing failed
         """
         try:
+            # Reconfigure client with custom API key if provided
+            if api_key:
+                self.gemini_client.reconfigure(api_key)
+            
             # Load system prompt
             system_prompt = self.prompt_service.get_chat_prompt()
             logger.info(f"Processing chat message: {message[:100]}")

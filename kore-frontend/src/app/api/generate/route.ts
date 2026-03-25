@@ -6,6 +6,9 @@ const N8N_WEBHOOK = process.env.N8N_GENERATE_WEBHOOK
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
+  
+  // Extract API key from request if provided
+  const apiKey = body.apiKey || req.headers.get('x-gemini-api-key')
 
   // Determine which backend to use
   const backendUrl = BACKEND_TYPE === 'fastapi' 
@@ -21,9 +24,18 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const headers: Record<string, string> = { 
+      'Content-Type': 'application/json',
+    }
+    
+    // Add API key to headers if provided
+    if (apiKey) {
+      headers['X-Gemini-API-Key'] = apiKey
+    }
+
     const upstream = await fetch(backendUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(body),
     })
 

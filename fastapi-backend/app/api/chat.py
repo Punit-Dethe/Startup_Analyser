@@ -2,7 +2,8 @@
 
 import logging
 import asyncio
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Header
+from typing import Optional
 
 from app.models.requests import ChatRequest
 from app.dependencies import get_chat_service
@@ -14,12 +15,16 @@ router = APIRouter()
 
 
 @router.post("/chat")
-async def chat(request: ChatRequest):
+async def chat(
+    request: ChatRequest,
+    x_gemini_api_key: Optional[str] = Header(None)
+):
     """
     Handle conversational interactions with the dashboard.
     
     Args:
         request: Chat request with message, history, and context
+        x_gemini_api_key: Optional custom Gemini API key from header
         
     Returns:
         ChatResponse with action (CHAT, NEW_DASHBOARD, or TEMPORARY_TAB) and data
@@ -33,7 +38,7 @@ async def chat(request: ChatRequest):
         
         # Process chat with timeout (3 minutes for complex responses)
         result = await asyncio.wait_for(
-            service.chat(request.message, request.history, request.context),
+            service.chat(request.message, request.history, request.context, api_key=x_gemini_api_key),
             timeout=180.0
         )
         
