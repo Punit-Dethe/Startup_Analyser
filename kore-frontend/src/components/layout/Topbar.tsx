@@ -27,9 +27,9 @@ export default function Topbar({
   const [showApiKeySettings, setShowApiKeySettings] = useState(false)
   const [selectedApiKey, setSelectedApiKey] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('selectedApiKey') || 'key1'
+      return localStorage.getItem('selectedApiKey') || 'default'
     }
-    return 'key1'
+    return 'default'
   })
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -37,6 +37,7 @@ export default function Topbar({
 
   // API Keys configuration
   const apiKeys = [
+    { id: 'default', name: 'Default (Backend)', key: '' },
     { id: 'key1', name: 'Leo', key: process.env.NEXT_PUBLIC_GEMINI_KEY_1 || '' },
     { id: 'key2', name: 'Max', key: process.env.NEXT_PUBLIC_GEMINI_KEY_2 || '' },
     { id: 'key3', name: 'Sam', key: process.env.NEXT_PUBLIC_GEMINI_KEY_3 || '' },
@@ -47,10 +48,17 @@ export default function Topbar({
   const handleApiKeyChange = (keyId: string) => {
     setSelectedApiKey(keyId)
     localStorage.setItem('selectedApiKey', keyId)
-    const selectedKey = apiKeys.find(k => k.id === keyId)
-    if (selectedKey) {
-      localStorage.setItem('currentGeminiApiKey', selectedKey.key)
-      console.log(`[KORE] API Key switched to: ${selectedKey.name} (${selectedKey.key.substring(0, 20)}...)`)
+    
+    if (keyId === 'default') {
+      // Remove custom API key to use backend default
+      localStorage.removeItem('currentGeminiApiKey')
+      console.log('[KORE] API Key switched to: Default (using backend default)')
+    } else {
+      const selectedKey = apiKeys.find(k => k.id === keyId)
+      if (selectedKey && selectedKey.key) {
+        localStorage.setItem('currentGeminiApiKey', selectedKey.key)
+        console.log(`[KORE] API Key switched to: ${selectedKey.name} (${selectedKey.key.substring(0, 20)}...)`)
+      }
     }
   }
 
@@ -459,7 +467,7 @@ export default function Topbar({
                         <span style={{ fontWeight: selectedApiKey === apiKey.id ? 600 : 400 }}>
                           {apiKey.name}
                         </span>
-                        {!apiKey.key && (
+                        {apiKey.id !== 'default' && !apiKey.key && (
                           <span style={{
                             fontSize: 10,
                             color: 'var(--t-muted)',
