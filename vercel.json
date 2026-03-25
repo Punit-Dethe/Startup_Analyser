@@ -1,5 +1,15 @@
 {
-  "buildCommand": "cd kore-frontend && npm run build",
-  "outputDirectory": "kore-frontend/.next",
-  "installCommand": "cd kore-frontend && npm install"
+  "version": 2,
+  "builds": [
+    {
+      "src": "kore-frontend/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "kore-frontend/$1"
+    }
+  ]
 }
