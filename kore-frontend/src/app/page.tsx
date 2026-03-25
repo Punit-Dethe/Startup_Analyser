@@ -83,9 +83,15 @@ export default function LandingPage() {
   return (
     <div style={{
       height: '100dvh', 
-      background: 'linear-gradient(-45deg, #87CEEB, #E0F6FF, #a1dcf2, #d1f0ff)',
-      backgroundSize: '400% 400%',
-      animation: 'gradientBG 10s ease infinite',
+      background: `
+        repeating-conic-gradient(from 0deg at 50% 50%, 
+          #87CEEB 0deg 90deg, 
+          #a1dcf2 90deg 180deg, 
+          #b8e5f7 180deg 270deg, 
+          #d1f0ff 270deg 360deg
+        )
+      `,
+      backgroundSize: '40px 40px',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       padding: '0 24px',
@@ -175,14 +181,14 @@ export default function LandingPage() {
           <div style={{
             width: '100%', maxWidth: 600,
             background: '#FFFFFF',
-            border: `1px solid ${focused ? 'var(--border-hover)' : 'var(--border)'}`,
-            borderRadius: 14,
-            padding: '14px 16px',
+            border: `2px solid ${focused ? '#0891B2' : 'var(--border)'}`,
+            borderRadius: 20,
+            padding: '16px 18px',
             display: 'flex', alignItems: 'center', gap: 12,
             boxShadow: focused
-              ? '0 4px 24px rgba(0,0,0,0.08), 0 0 0 3px rgba(218,41,28,0.06)'
-              : '0 2px 8px rgba(0,0,0,0.04)',
-            transition: 'all 0.2s ease',
+              ? '0 8px 32px rgba(8, 145, 178, 0.15), 0 0 0 4px rgba(8, 145, 178, 0.08)'
+              : '0 2px 12px rgba(0,0,0,0.06)',
+            transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
           }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t-hint)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}>
               <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
@@ -206,16 +212,35 @@ export default function LandingPage() {
               onClick={handleSubmit}
               disabled={!prompt.trim() || loading}
               style={{
-                padding: '9px 18px',
-                borderRadius: 9,
-                background: prompt.trim() ? 'var(--accent-brand)' : 'var(--border)',
+                padding: '10px 20px',
+                borderRadius: 14,
+                background: prompt.trim() 
+                  ? 'linear-gradient(135deg, #0EA5E9 0%, #0891B2 100%)' 
+                  : 'var(--border)',
                 border: 'none',
                 color: prompt.trim() ? '#fff' : 'var(--t-muted)',
-                fontSize: 12, fontWeight: 600,
+                fontSize: 13, fontWeight: 600,
                 cursor: prompt.trim() && !loading ? 'pointer' : 'not-allowed',
                 flexShrink: 0,
-                letterSpacing: '-0.1px',
-                transition: 'all 0.15s ease',
+                letterSpacing: '-0.2px',
+                transition: 'all 0.2s ease',
+                boxShadow: prompt.trim() 
+                  ? '0 4px 12px rgba(14, 165, 233, 0.25)' 
+                  : 'none',
+              }}
+              onMouseEnter={e => {
+                if (prompt.trim()) {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #0284C7 0%, #0E7490 100%)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                  e.currentTarget.style.boxShadow = '0 6px 16px rgba(14, 165, 233, 0.3)'
+                }
+              }}
+              onMouseLeave={e => {
+                if (prompt.trim()) {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #0EA5E9 0%, #0891B2 100%)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.25)'
+                }
               }}
             >
               Analyse →
@@ -232,24 +257,26 @@ export default function LandingPage() {
                 key={p}
                 onClick={() => { setPrompt(p); }}
                 style={{
-                  padding: '5px 12px',
-                  borderRadius: 20,
+                  padding: '6px 14px',
+                  borderRadius: 24,
                   border: '1px solid var(--border)',
                   background: '#FFFFFF',
                   color: 'var(--t-muted)',
                   fontSize: 11, cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'all 0.15s ease',
+                  transition: 'all 0.2s ease',
                 }}
                 onMouseEnter={e => {
                   const t = e.currentTarget
-                  t.style.borderColor = 'var(--border-hover)'
-                  t.style.color = 'var(--t-secondary)'
+                  t.style.borderColor = '#0891B2'
+                  t.style.color = '#0891B2'
+                  t.style.background = 'rgba(8, 145, 178, 0.05)'
                 }}
                 onMouseLeave={e => {
                   const t = e.currentTarget
                   t.style.borderColor = 'var(--border)'
                   t.style.color = 'var(--t-muted)'
+                  t.style.background = '#FFFFFF'
                 }}
               >
                 {p}
