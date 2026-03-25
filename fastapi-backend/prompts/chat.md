@@ -77,7 +77,7 @@ Blockquotes for insights:
 
 ## TEMPORARY TAB CREATION PROCESS
 
-### STEP 1: RATIONALIZE (MANDATORY!)
+### STEP 0: RATIONALIZE FIRST (MANDATORY!)
 
 Before creating modules, complete this thinking:
 
@@ -116,9 +116,19 @@ Before creating modules, complete this thinking:
 
 ---
 
-### STEP 2: UNDERSTAND MODULE TYPES
+### STEP 1: UNDERSTAND MODULE TYPES
 
-**✅ VALID MODULE TYPES (13 ONLY):**
+## 🚨🚨🚨 CRITICAL: THESE MODULE TYPES DO NOT EXIST 🚨🚨🚨
+
+### ❌❌❌ FORBIDDEN - WILL CAUSE ERRORS ❌❌❌
+- `text` ← DOES NOT EXIST
+- `list.text` ← DOES NOT EXIST  
+- `table.data` ← DOES NOT EXIST
+- `kpi.number` ← DOES NOT EXIST
+- `kpi.dual` ← DOES NOT EXIST
+- `feed.news` ← DOES NOT EXIST
+
+## ✅ ONLY THESE 13 MODULE TYPES EXIST:
 
 1. `metric.kpi` (1x1) - Single KPI
 2. `metric.dual` (2x1) - EXACTLY 2 KPIs
@@ -134,9 +144,6 @@ Before creating modules, complete this thinking:
 12. `deco.stats` (3x1, 4x1, 5x1) - Stat row
 13. `freeform` (1x1, 2x1, 3x1, 2x2) - HTML content (USE SPARINGLY!)
 
-**❌ FORBIDDEN (WILL BREAK):**
-- `text`, `list.text`, `table.data`, `kpi.number`, `kpi.dual`, `feed.news`
-
 **Module Size Reference:**
 - `metric.kpi`: 1x1 only
 - `metric.dual`: 2x1 only
@@ -150,7 +157,9 @@ Before creating modules, complete this thinking:
 
 ---
 
-### STEP 3: DATA STRUCTURE RULES
+### STEP 2: DATA STRUCTURE RULES
+
+## 🚨 CRITICAL DATA STRUCTURE RULES 🚨
 
 **Single-Series Charts** (`chart.bar`, `chart.line`, `chart.area`, `chart.hbar`):
 ```json
@@ -159,12 +168,14 @@ Before creating modules, complete this thinking:
   "size": "3x2",
   "data": {
     "title": "Revenue Growth",
-    "labels": ["2021", "2022", "2023"],
-    "series": [100, 120, 150]
+    "subtitle": "Last 5 years",
+    "labels": ["2019", "2020", "2021", "2022", "2023"],
+    "series": [100, 120, 150, 180, 200]
   }
 }
 ```
 **CRITICAL:** Use `series` (flat array), NOT `series_list`!
+**CRITICAL:** `labels` and `series` arrays MUST have same length and MUST NOT be empty!
 
 **Multi-Series Charts** (`chart.grouped` ONLY):
 ```json
@@ -173,35 +184,16 @@ Before creating modules, complete this thinking:
   "size": "4x2",
   "data": {
     "title": "Product Comparison",
-    "labels": ["Q1", "Q2", "Q3"],
+    "subtitle": "Quarterly performance",
+    "labels": ["Q1", "Q2", "Q3", "Q4"],
     "series_list": [
-      {"name": "Product A", "values": [100, 120, 140]},
-      {"name": "Product B", "values": [80, 90, 110]}
+      {"name": "Product A", "values": [100, 120, 140, 160]},
+      {"name": "Product B", "values": [80, 90, 110, 130]}
     ]
   }
 }
 ```
 **CRITICAL:** Use `series_list` (array of objects), NOT `series`!
-
-**Tables & Feeds**:
-```json
-{
-  "type": "table",
-  "size": "5x2",
-  "data": {
-    "title": "Top Products",
-    "columns": [
-      {"key": "product", "label": "Product"},
-      {"key": "revenue", "label": "Revenue"}
-    ],
-    "rows": [
-      {"product": "Product A", "revenue": "$500M"},
-      {"product": "Product B", "revenue": "$300M"}
-    ]
-  }
-}
-```
-**CRITICAL:** `labels` and `series` arrays MUST have same length and MUST NOT be empty!
 
 **Pie/Donut Charts** (MUST be 2x2):
 ```json
@@ -210,13 +202,85 @@ Before creating modules, complete this thinking:
   "size": "2x2",
   "data": {
     "title": "Market Share",
+    "subtitle": "By segment",
     "segments": [
       {"label": "Segment A", "value": 45, "color_key": "primary"},
-      {"label": "Segment B", "value": 30, "color_key": "secondary"}
+      {"label": "Segment B", "value": 30, "color_key": "secondary"},
+      {"label": "Segment C", "value": 25, "color_key": "tertiary"}
     ]
   }
 }
 ```
+
+**Tables**:
+```json
+{
+  "type": "table",
+  "size": "5x2",
+  "data": {
+    "title": "Top Products",
+    "subtitle": "By revenue",
+    "columns": [
+      {"key": "product", "label": "Product"},
+      {"key": "revenue", "label": "Revenue"},
+      {"key": "growth", "label": "Growth"}
+    ],
+    "rows": [
+      {"product": "Product A", "revenue": "$500M", "growth": "+15%"},
+      {"product": "Product B", "revenue": "$300M", "growth": "+8%"}
+    ]
+  }
+}
+```
+**CRITICAL:** Use `columns: [{key, label}]` and `rows: [{key: value}]` structure!
+
+**Feed (Lists)**:
+```json
+{
+  "type": "feed",
+  "size": "3x2",
+  "data": {
+    "title": "Recent Updates",
+    "subtitle": "Last 7 days",
+    "columns": [{"key": "item", "label": "Item"}],
+    "rows": [
+      {"item": "Update 1"},
+      {"item": "Update 2"}
+    ]
+  }
+}
+```
+**CRITICAL:** Use same structure as table (columns + rows)!
+
+**KPIs**:
+```json
+{
+  "type": "metric.kpi",
+  "size": "1x1",
+  "data": {
+    "title": "Revenue",
+    "value": "$1.2B",
+    "delta": "+15%",
+    "direction": "up",
+    "sparkline": [10, 12, 11, 15, 18]
+  }
+}
+```
+
+```json
+{
+  "type": "metric.dual",
+  "size": "2x1",
+  "data": {
+    "title": "Performance",
+    "kpis": [
+      {"title": "Revenue", "value": "$1.2B", "delta": "+15%", "direction": "up", "sparkline": [10,12,15]},
+      {"title": "Profit", "value": "$200M", "delta": "-5%", "direction": "down", "sparkline": [20,18,15]}
+    ]
+  }
+}
+```
+**CRITICAL:** `metric.dual` MUST have EXACTLY 2 items in kpis array!
 
 **Freeform** (USE SPARINGLY - only as filler):
 ```json
@@ -232,7 +296,7 @@ Before creating modules, complete this thinking:
 
 ---
 
-### STEP 4: THE 5x5 GRID = 25 CELLS
+### STEP 3: THE 5x5 GRID = 25 CELLS
 
 **CRITICAL: Grid flows LEFT-TO-RIGHT, ROW-BY-ROW (like reading a book)**
 
@@ -312,7 +376,7 @@ Total: 25 ✓
 
 ---
 
-### STEP 5: VALIDATION CHECKLIST
+### STEP 4: VALIDATION CHECKLIST
 
 **Before outputting JSON, verify:**
 
@@ -386,8 +450,8 @@ TOTAL: 8+1+1+6+4+3+2 = 25 ✓
       "data": {
         "title": "Chart Title",
         "subtitle": "Subtitle",
-        "labels": ["A", "B", "C"],
-        "series": [100, 120, 140]
+        "labels": ["A", "B", "C", "D"],
+        "series": [100, 120, 140, 160]
       }
     }
     // ... continue until 25 cells total
@@ -407,7 +471,7 @@ TOTAL: 8+1+1+6+4+3+2 = 25 ✓
 - NOT just "Created temporary tab: [name]"
 - MUST explain findings, insights, patterns, recommendations
 - Use markdown tables, formatting, highlights
-- Be concise but complete
+- Be concise but complete - not too short, not too long
 
 **Grid Integrity:**
 - Think in COMPLETE ROWS
@@ -420,3 +484,11 @@ TOTAL: 8+1+1+6+4+3+2 = 25 ✓
 - Multi-series charts: `series_list` (array of objects)
 - Pie/donut: size `2x2`, use `segments`
 - Tables/feeds: `columns` + `rows`
+- metric.dual: EXACTLY 2 items
+
+**Module Types:**
+- Use `metric.kpi` NOT `kpi.number`
+- Use `metric.dual` NOT `kpi.dual`
+- Use `table` NOT `table.data`
+- Use `feed` NOT `list.text`
+- Use `freeform` NOT `text` (and sparingly!)
