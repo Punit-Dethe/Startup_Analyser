@@ -81,8 +81,8 @@ TEMPORARY_TAB provides BOTH:
 
 **MESSAGE FIELD RULES:**
 - ❌ WRONG: "Created temporary tab: Competitor Analysis"
-- ✅ CORRECT: 500-1500 words comprehensive analysis like `chat_intro` in main dashboard
-- MUST include: Executive summary, markdown tables, inline HTML highlights, blockquotes, headers, insights, recommendations
+- ✅ CORRECT:  not too short not too long, just enought to express the information, comprehensive analysis
+- ADVICED to include: Executive summary, markdown tables, inline HTML highlights, blockquotes, headers, insights, recommendations
 - Use ALL rich formatting: tables, `<span>` highlights, lists, blockquotes
 - Explain what the data means, why it matters, what to do about it
 
