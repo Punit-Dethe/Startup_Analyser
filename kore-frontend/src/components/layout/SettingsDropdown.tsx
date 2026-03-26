@@ -50,24 +50,14 @@ export default function SettingsDropdown() {
       const rect = button.getBoundingClientRect()
       const viewportHeight = window.innerHeight
       const spaceBelow = viewportHeight - rect.bottom
-      const spaceAbove = rect.top
 
       // Calculate optimal max height (leave 20px padding from viewport edges)
-      const maxHeightBelow = spaceBelow - 28
-      const maxHeightAbove = spaceAbove - 28
+      const maxHeightBelow = spaceBelow - 20
 
-      // Prefer opening below, but open above if more space
-      if (spaceBelow > 300 || spaceBelow > spaceAbove) {
-        setDropdownStyle({
-          maxHeight: `${Math.min(maxHeightBelow, 450)}px`,
-          top: 'calc(100% + 4px)',
-        })
-      } else {
-        setDropdownStyle({
-          maxHeight: `${Math.min(maxHeightAbove, 450)}px`,
-          bottom: 'calc(100% + 4px)',
-        })
-      }
+      setDropdownStyle({
+        maxHeight: `${Math.min(maxHeightBelow, 400)}px`,
+        top: 'calc(100% + 8px)',
+      })
     }
 
     updatePosition()
@@ -189,16 +179,17 @@ export default function SettingsDropdown() {
         <div style={{
           position: 'absolute',
           ...dropdownStyle,
-          left: -8,
+          right: 'calc(100% + 8px)',
+          top: 0,
           background: '#FFFFFF',
           border: '1px solid #E5E5E5',
-          borderRadius: 12,
-          boxShadow: '0 12px 32px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08)',
-          minWidth: 240,
+          borderRadius: 10,
+          boxShadow: '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.04)',
+          width: 200,
           overflowY: 'auto',
           overflowX: 'hidden',
           zIndex: 1000,
-          animation: 'dropdownSlideIn 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+          animation: 'slideInFromRight 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
         }}>
           {/* API Keys Section */}
           <div style={{ borderBottom: '1px solid #E5E5E5' }}>
@@ -206,7 +197,7 @@ export default function SettingsDropdown() {
               onClick={() => toggleSection('apikey')}
               style={{
                 width: '100%',
-                padding: '10px 14px',
+                padding: '8px 12px',
                 border: 'none',
                 background: 'transparent',
                 display: 'flex',
@@ -216,17 +207,17 @@ export default function SettingsDropdown() {
                 textAlign: 'left',
               }}
             >
-              <div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 3 }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 2 }}>
                   API Key
                 </div>
-                <div style={{ fontSize: 12, color: currentApiKey.color, fontWeight: 600, letterSpacing: '-0.2px' }}>
+                <div style={{ fontSize: 11, color: currentApiKey.color, fontWeight: 600, letterSpacing: '-0.2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {currentApiKey.label}
                 </div>
               </div>
               <svg
-                width="14"
-                height="14"
+                width="12"
+                height="12"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="#999"
@@ -234,8 +225,10 @@ export default function SettingsDropdown() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 style={{
+                  flexShrink: 0,
+                  marginLeft: 6,
                   transform: expandedSection === 'apikey' ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -244,7 +237,7 @@ export default function SettingsDropdown() {
 
             {expandedSection === 'apikey' && (
               <div style={{ 
-                paddingBottom: 6,
+                paddingBottom: 4,
                 animation: 'sectionExpand 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
               }}>
                 {API_KEYS.map((key) => (
@@ -256,15 +249,15 @@ export default function SettingsDropdown() {
                     }}
                     style={{
                       width: '100%',
-                      padding: '8px 14px',
+                      padding: '6px 12px',
                       border: 'none',
                       background: selectedApiKey === key.id ? '#F9FAFB' : 'transparent',
                       textAlign: 'left',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 8,
-                      transition: 'background 0.12s',
+                      gap: 6,
+                      transition: 'background 0.1s',
                     }}
                     onMouseEnter={e => {
                       if (selectedApiKey !== key.id) {
@@ -278,22 +271,26 @@ export default function SettingsDropdown() {
                     }}
                   >
                     <div style={{
-                      width: 6,
-                      height: 6,
+                      width: 5,
+                      height: 5,
                       borderRadius: '50%',
                       background: key.color,
                       flexShrink: 0,
                     }} />
                     <span style={{
-                      fontSize: 12,
+                      fontSize: 11,
                       color: selectedApiKey === key.id ? key.color : '#666',
                       fontWeight: selectedApiKey === key.id ? 600 : 400,
                       letterSpacing: '-0.2px',
+                      flex: 1,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
                     }}>
                       {key.label}
                     </span>
                     {selectedApiKey === key.id && (
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={key.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={key.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     )}
@@ -309,7 +306,7 @@ export default function SettingsDropdown() {
               onClick={() => toggleSection('model')}
               style={{
                 width: '100%',
-                padding: '10px 14px',
+                padding: '8px 12px',
                 border: 'none',
                 background: 'transparent',
                 display: 'flex',
@@ -319,17 +316,17 @@ export default function SettingsDropdown() {
                 textAlign: 'left',
               }}
             >
-              <div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 3 }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 2 }}>
                   Model
                 </div>
-                <div style={{ fontSize: 12, color: '#000', fontWeight: 600, letterSpacing: '-0.2px' }}>
+                <div style={{ fontSize: 11, color: '#000', fontWeight: 600, letterSpacing: '-0.2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {currentModel.label}
                 </div>
               </div>
               <svg
-                width="14"
-                height="14"
+                width="12"
+                height="12"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="#999"
@@ -337,8 +334,10 @@ export default function SettingsDropdown() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 style={{
+                  flexShrink: 0,
+                  marginLeft: 6,
                   transform: expandedSection === 'model' ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -347,7 +346,7 @@ export default function SettingsDropdown() {
 
             {expandedSection === 'model' && (
               <div style={{ 
-                paddingBottom: 6,
+                paddingBottom: 4,
                 animation: 'sectionExpand 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
               }}>
                 {MODELS.map((model) => (
@@ -359,12 +358,12 @@ export default function SettingsDropdown() {
                     }}
                     style={{
                       width: '100%',
-                      padding: '8px 14px',
+                      padding: '6px 12px',
                       border: 'none',
                       background: selectedModel === model.id ? '#F9FAFB' : 'transparent',
                       textAlign: 'left',
                       cursor: 'pointer',
-                      transition: 'background 0.12s',
+                      transition: 'background 0.1s',
                     }}
                     onMouseEnter={e => {
                       if (selectedModel !== model.id) {
@@ -377,22 +376,23 @@ export default function SettingsDropdown() {
                       }
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <span style={{
-                        fontSize: 12,
+                        fontSize: 11,
                         color: selectedModel === model.id ? '#000' : '#666',
                         fontWeight: selectedModel === model.id ? 600 : 400,
                         letterSpacing: '-0.2px',
+                        flex: 1,
                       }}>
                         {model.label}
                       </span>
                       {selectedModel === model.id && (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
                       )}
                     </div>
-                    <div style={{ fontSize: 10, color: '#999', marginTop: 1, letterSpacing: '-0.1px' }}>
+                    <div style={{ fontSize: 9, color: '#999', marginTop: 1, letterSpacing: '-0.1px' }}>
                       {model.description}
                     </div>
                   </button>
@@ -407,7 +407,7 @@ export default function SettingsDropdown() {
               onClick={() => toggleSection('temperature')}
               style={{
                 width: '100%',
-                padding: '10px 14px',
+                padding: '8px 12px',
                 border: 'none',
                 background: 'transparent',
                 display: 'flex',
@@ -417,17 +417,17 @@ export default function SettingsDropdown() {
                 textAlign: 'left',
               }}
             >
-              <div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 3 }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 2 }}>
                   Temperature
                 </div>
-                <div style={{ fontSize: 12, color: '#000', fontWeight: 600, letterSpacing: '-0.2px' }}>
+                <div style={{ fontSize: 11, color: '#000', fontWeight: 600, letterSpacing: '-0.2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {currentTemp.label} ({currentTemp.value})
                 </div>
               </div>
               <svg
-                width="14"
-                height="14"
+                width="12"
+                height="12"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="#999"
@@ -435,8 +435,10 @@ export default function SettingsDropdown() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 style={{
+                  flexShrink: 0,
+                  marginLeft: 6,
                   transform: expandedSection === 'temperature' ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -445,7 +447,7 @@ export default function SettingsDropdown() {
 
             {expandedSection === 'temperature' && (
               <div style={{ 
-                paddingBottom: 6,
+                paddingBottom: 4,
                 animation: 'sectionExpand 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
               }}>
                 {TEMPERATURES.map((temp) => (
@@ -457,12 +459,12 @@ export default function SettingsDropdown() {
                     }}
                     style={{
                       width: '100%',
-                      padding: '8px 14px',
+                      padding: '6px 12px',
                       border: 'none',
                       background: selectedTemp === temp.value ? '#F9FAFB' : 'transparent',
                       textAlign: 'left',
                       cursor: 'pointer',
-                      transition: 'background 0.12s',
+                      transition: 'background 0.1s',
                     }}
                     onMouseEnter={e => {
                       if (selectedTemp !== temp.value) {
@@ -475,25 +477,26 @@ export default function SettingsDropdown() {
                       }
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <span style={{
-                        fontSize: 12,
+                        fontSize: 11,
                         color: selectedTemp === temp.value ? '#000' : '#666',
                         fontWeight: selectedTemp === temp.value ? 600 : 400,
                         letterSpacing: '-0.2px',
+                        flex: 1,
                       }}>
                         {temp.label}
                       </span>
-                      <span style={{ fontSize: 10, color: '#999' }}>
+                      <span style={{ fontSize: 9, color: '#999', flexShrink: 0 }}>
                         ({temp.value})
                       </span>
                       {selectedTemp === temp.value && (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
                       )}
                     </div>
-                    <div style={{ fontSize: 10, color: '#999', marginTop: 1, letterSpacing: '-0.1px' }}>
+                    <div style={{ fontSize: 9, color: '#999', marginTop: 1, letterSpacing: '-0.1px' }}>
                       {temp.description}
                     </div>
                   </button>
@@ -506,14 +509,14 @@ export default function SettingsDropdown() {
 
       {/* Animations */}
       <style jsx>{`
-        @keyframes dropdownSlideIn {
+        @keyframes slideInFromRight {
           from {
             opacity: 0;
-            transform: translateY(-4px) scale(0.98);
+            transform: translateX(12px);
           }
           to {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateX(0);
           }
         }
 
@@ -524,13 +527,13 @@ export default function SettingsDropdown() {
           }
           to {
             opacity: 1;
-            max-height: 400px;
+            max-height: 300px;
           }
         }
 
         /* Custom scrollbar - Light theme */
         div::-webkit-scrollbar {
-          width: 5px;
+          width: 4px;
         }
 
         div::-webkit-scrollbar-track {
@@ -539,7 +542,7 @@ export default function SettingsDropdown() {
 
         div::-webkit-scrollbar-thumb {
           background: #E5E5E5;
-          border-radius: 3px;
+          border-radius: 2px;
         }
 
         div::-webkit-scrollbar-thumb:hover {
