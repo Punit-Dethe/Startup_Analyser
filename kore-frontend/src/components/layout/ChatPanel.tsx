@@ -24,10 +24,7 @@ export default function ChatPanel({
   const [input, setInput]       = useState('')
   const messagesEndRef           = useRef<HTMLDivElement>(null)
 
-  // Scroll to show the latest message (bottom of chat)
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [chatHistory, isChatLoading])
+  // No auto-scroll - let users scroll manually to read messages from top
 
   function send() {
     const text = input.trim()
