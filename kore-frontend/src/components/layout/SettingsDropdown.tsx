@@ -2,12 +2,12 @@
 
 import { useState, useEffect, useRef } from 'react'
 
-// Model options - UPDATE THIS LIST WITH YOUR NEW MODELS
+// Model options
 const MODELS = [
-  { id: 'gemini-2.0-flash-exp', label: 'Gemini 2.0 Flash (Experimental)', description: 'Fastest responses' },
-  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash', description: 'Balanced & stable', isDefault: true },
-  { id: 'gemini-exp-1206', label: 'Gemini Experimental 1206', description: 'Latest features' },
-  { id: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro', description: 'High quality' },
+  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash', description: 'Fast & Balanced', isDefault: true },
+  { id: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro', description: 'High Quality' },
+  { id: 'gemini-3-flash-preview', label: 'Gemini 3 Flash Preview', description: 'Latest Flash' },
+  { id: 'gemini-3.1-pro-preview', label: 'Gemini 3.1 Pro Preview', description: 'Most Advanced' },
 ]
 
 // Temperature options
