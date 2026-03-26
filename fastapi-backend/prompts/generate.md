@@ -295,7 +295,7 @@ Background is white. Make sure all colors are dark/saturated enough to be clearl
     "brand_color": "#HEX",
     "colors": {"primary":"#HEX", "secondary":"#HEX", "tertiary":"#HEX", "quaternary":"#HEX"},
     "logo_initials": "XX",
-    "page_title": "Title",
+    "page_title": "Title (3 words max)",
     "page_subtitle": "Subtitle"
   },
   "tabs": [
