@@ -441,15 +441,113 @@ INVALID: 6x2, 5x6, 7x1, etc. (will BREAK!)
   `{title, subtitle, metrics: [{label, value}]}`
 - `deco.timeline` (4x2, 5x2 ONLY):
   `{title, subtitle, points: [{year, event, status: "done"|"active"}]}`
+- `paragraph` (2x1, 3x1, 4x1, 5x1, 2x2, 3x2, 4x2, 5x2 - NEVER 1x1!):
+  `{snippet, topic, content}`
+  
+  **PARAGRAPH BLOCK RULES (PREMIUM STRUCTURE!):**
+  
+  **Size Requirements:**
+  - **NEVER 1x1** - Paragraph blocks MUST have width ≥ 2
+  - Minimum size: 2x1
+  - Common sizes: 2x1, 3x1, 4x1, 5x1, 2x2, 3x2, 4x2, 5x2
+  
+  **Content Structure (Top to Bottom):**
+  1. **Snippet** (top-left corner): Very small text (9-10px), uppercase, muted color
+     - Examples: "KEY INSIGHT", "STRATEGIC FOCUS", "MARKET TREND", "COMPETITIVE EDGE"
+  2. **Topic** (below snippet): Large, bold heading (18-24px)
+     - Examples: "Ad-Supported Growth", "Market Expansion Strategy", "Competitive Moat"
+  3. **Content** (below topic): Paragraph text (13-14px), regular weight
+     - 2-4 sentences explaining the topic in detail
+     - Use clear, executive language
+  
+  **CORRECT EXAMPLE:**
+  ```json
+  {
+    "type": "paragraph",
+    "size": "3x2",
+    "accent": "primary",
+    "data": {
+      "snippet": "STRATEGIC INITIATIVE",
+      "topic": "Ad-Supported Tier Launch",
+      "content": "Netflix's introduction of an ad-supported tier at $6.99/month represents a fundamental shift in their business model. This move addresses affordability concerns while opening a projected $10B+ advertising revenue opportunity by 2025. Early adoption has exceeded expectations with 15M subscribers in the first six months."
+    }
+  }
+  ```
+  
+  **WRONG EXAMPLES (DO NOT DO THIS!):**
+  
+  ❌ Size 1x1: `"size": "1x1"` - TOO SMALL, must be at least 2x1
+  ❌ Missing snippet: Only topic and content
+  ❌ Too short content: Single sentence
+  ❌ Too long content: Multiple paragraphs (keep to 2-4 sentences)
+  
+  **Remember:**
+  - Paragraph blocks are for KEY INSIGHTS and STRATEGIC NARRATIVES
+  - Always include all three elements: snippet, topic, content
+  - Width must be at least 2 (never 1x1)
+  - Keep content focused and executive-level
 
 **Special:**
 - `canvas.bmc` (5x4 or 5x5 ONLY):
   `{title, cells: [{section, points: [strings]}]}`
-- `freeform` (1x1, 2x1, 1x2, 2x2, 3x1 - use ONLY for gaps!):
+- `freeform` (1x1, 2x1, 1x2, 2x2, 3x1 - use ONLY for visual branding!):
   `{html: "<div>HTML here</div>"}`
-  - **LAST RESORT ONLY**: Use when 1-4 cells remain after all data modules
-  - **NEVER for data**: Use KPIs, charts, tables for data
-  - **Only for visual elements**: Brand logos, founding year, HQ location
+  
+  **FREEFORM HTML BLOCK RULES (CRITICAL!):**
+  
+  **When to Use:**
+  - ONLY for visual branding elements (founding year, HQ location, brand tagline)
+  - LAST RESORT for filling 1-4 remaining cells after all data modules
+  - NEVER for data that should be in KPIs, charts, or tables
+  
+  **Content Guidelines:**
+  - **1x1 blocks**: 1-2 words maximum (e.g., "Est. 1976", "Cupertino")
+  - **2x1 blocks**: 5-6 words maximum (e.g., "Think Different Since 1997")
+  - **Larger blocks**: Scale proportionally
+  
+  **Styling Requirements (MANDATORY!):**
+  - **Background**: MUST use primary brand color
+  - **Text**: White or high-contrast color
+  - **Font size**: Large and bold (24px-48px depending on block size)
+  - **Alignment**: PERFECTLY CENTERED both horizontally and vertically
+  - **Padding**: Generous padding for breathing room
+  
+  **CORRECT EXAMPLES:**
+  
+  ```json
+  {
+    "type": "freeform",
+    "size": "1x1",
+    "data": {
+      "html": "<div style='background:#000000;height:100%;display:flex;align-items:center;justify-content:center;padding:16px;border-radius:8px'><span style='color:#FFFFFF;font-size:32px;font-weight:700;text-align:center'>1976</span></div>"
+    }
+  }
+  ```
+  
+  ```json
+  {
+    "type": "freeform",
+    "size": "2x1",
+    "data": {
+      "html": "<div style='background:#1DB954;height:100%;display:flex;align-items:center;justify-content:center;padding:20px;border-radius:8px'><span style='color:#FFFFFF;font-size:28px;font-weight:700;text-align:center;line-height:1.3'>Music for Everyone</span></div>"
+    }
+  }
+  ```
+  
+  **WRONG EXAMPLES (DO NOT DO THIS!):**
+  
+  ❌ Random filler text: "Lorem ipsum dolor sit amet..."
+  ❌ Data that belongs in KPI: "Revenue: $31.6B"
+  ❌ Uncentered text: `<div style='padding:10px'>Text</div>`
+  ❌ Small font: `font-size:12px`
+  ❌ No background color: `background:transparent`
+  ❌ Too many words in 1x1: "Founded in Cupertino California"
+  
+  **Remember:**
+  - Freeform is for VISUAL BRANDING, not lazy data placement
+  - Text must be LARGE, BOLD, and PERFECTLY CENTERED
+  - Background must use PRIMARY BRAND COLOR
+  - Keep text minimal based on block size
 
 ---
 
@@ -464,17 +562,21 @@ Create 2-7 tabs based on the request:
 
 ---
 
-## Chat Intro (CRITICAL - FULL EXECUTIVE REPORT!)
+## Chat Intro (COMPREHENSIVE EXECUTIVE REPORT)
 
-The `chat_intro` field is NOT just a summary - it's a COMPREHENSIVE EXECUTIVE REPORT that appears alongside the dashboard. This is where you present your complete analysis, insights, and rationalization.
+The `chat_intro` field is a comprehensive executive report that appears alongside the dashboard. This is where you present your complete analysis, insights, and rationalization.
+
+**GUIDELINES:**
+- Make it comprehensive enough to explain your analysis clearly
+- Don't make it too long - keep it focused and understandable
+- Use rich formatting to make it scannable and visually engaging
+- Balance depth with readability
 
 **THINK OF IT AS A PREMIUM BUSINESS REPORT:**
-- 1000-3000 words (be thorough!)
 - Use ALL your research and rationalization
 - Present insights that complement the dashboard data
-- Use rich formatting to make it visually engaging
-- NOT too short (avoid single sentences), NOT too long (avoid excessive essays)
-- Provide enough detail for understanding without overwhelming
+- Include specific numbers, percentages, and data points
+- Provide actionable insights and forward-looking analysis
 
 **REQUIRED STRUCTURE:**
 
@@ -586,12 +688,10 @@ Despite competition, Netflix maintains <span style="color:#2563EB;font-weight:70
 ```
 
 **REMEMBER:**
-- Be comprehensive - this is your chance to show deep analysis
+- Be comprehensive enough to explain your analysis clearly
+- Don't make it too long - keep it focused and understandable
 - Use formatting to make it scannable and visually engaging
-- Include specific numbers, percentages, and data points
-- Provide actionable insights and forward-looking analysis
 - Make it feel like a premium consulting report
-- Balance detail with readability - not too short, not too long
 
 ---
 
