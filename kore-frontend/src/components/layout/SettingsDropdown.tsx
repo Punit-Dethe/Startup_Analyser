@@ -2,12 +2,12 @@
 
 import { useState, useEffect, useRef } from 'react'
 
-// Model options
+// Model options - UPDATE THIS LIST WITH YOUR NEW MODELS
 const MODELS = [
-  { id: 'gemini-2.0-flash-exp', label: 'Fast & Efficient (2.0)', description: 'Fastest responses' },
-  { id: 'gemini-2.5-flash', label: 'Balanced & Stable (2.5)', description: 'Recommended', isDefault: true },
-  { id: 'gemini-exp-1206', label: 'Most Advanced (Exp)', description: 'Latest features' },
-  { id: 'gemini-1.5-pro', label: 'High Quality (1.5 Pro)', description: 'Best quality' },
+  { id: 'gemini-2.0-flash-exp', label: 'Gemini 2.0 Flash (Experimental)', description: 'Fastest responses' },
+  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash', description: 'Balanced & stable', isDefault: true },
+  { id: 'gemini-exp-1206', label: 'Gemini Experimental 1206', description: 'Latest features' },
+  { id: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro', description: 'High quality' },
 ]
 
 // Temperature options
@@ -31,6 +31,7 @@ const API_KEYS = [
 
 export default function SettingsDropdown() {
   const [isOpen, setIsOpen] = useState(false)
+  const [expandedSection, setExpandedSection] = useState<string | null>(null)
   const [selectedApiKey, setSelectedApiKey] = useState<string | null>(null)
   const [selectedModel, setSelectedModel] = useState<string>('gemini-2.5-flash')
   const [selectedTemp, setSelectedTemp] = useState<string>('0.7')
@@ -52,6 +53,7 @@ export default function SettingsDropdown() {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false)
+        setExpandedSection(null)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -79,6 +81,10 @@ export default function SettingsDropdown() {
     setSelectedTemp(temp)
     localStorage.setItem('selectedTemperature', temp)
     console.log('[KORE] Temperature switched to:', temp)
+  }
+
+  const toggleSection = (section: string) => {
+    setExpandedSection(expandedSection === section ? null : section)
   }
 
   // Get current selections for display
@@ -130,195 +136,299 @@ export default function SettingsDropdown() {
           border: '1px solid #E5E5E5',
           borderRadius: 8,
           boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-          minWidth: 280,
-          maxHeight: '80vh',
+          width: 320,
+          maxHeight: '70vh',
           overflowY: 'auto',
           zIndex: 1000,
         }}>
           {/* API Keys Section */}
-          <div style={{ padding: '12px 0' }}>
-            <div style={{ padding: '0 16px 8px', fontSize: 11, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              API Key
-            </div>
-            {API_KEYS.map((key) => (
-              <button
-                key={key.label}
-                onClick={() => handleApiKeyChange(key.id)}
+          <div style={{ borderBottom: '1px solid #E5E5E5' }}>
+            <button
+              onClick={() => toggleSection('apikey')}
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                border: 'none',
+                background: 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                textAlign: 'left',
+              }}
+            >
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>
+                  API Key
+                </div>
+                <div style={{ fontSize: 13, color: currentApiKey.color, fontWeight: 600 }}>
+                  {currentApiKey.label}
+                </div>
+              </div>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#666"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 style={{
-                  width: '100%',
-                  padding: '10px 16px',
-                  border: 'none',
-                  background: selectedApiKey === key.id ? '#F9FAFB' : 'transparent',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  transition: 'background 0.15s',
-                }}
-                onMouseEnter={e => {
-                  if (selectedApiKey !== key.id) {
-                    e.currentTarget.style.background = '#F9FAFB'
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (selectedApiKey !== key.id) {
-                    e.currentTarget.style.background = 'transparent'
-                  }
+                  transform: expandedSection === 'apikey' ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s',
                 }}
               >
-                <div style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: key.color,
-                  flexShrink: 0,
-                }} />
-                <span style={{
-                  fontSize: 13,
-                  color: selectedApiKey === key.id ? key.color : '#666',
-                  fontWeight: selectedApiKey === key.id ? 600 : 400,
-                }}>
-                  {key.label}
-                </span>
-                {selectedApiKey === key.id && (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={key.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                )}
-              </button>
-            ))}
-          </div>
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
 
-          <div style={{ height: 1, background: '#E5E5E5', margin: '8px 0' }} />
+            {expandedSection === 'apikey' && (
+              <div style={{ paddingBottom: 8 }}>
+                {API_KEYS.map((key) => (
+                  <button
+                    key={key.label}
+                    onClick={() => {
+                      handleApiKeyChange(key.id)
+                      setExpandedSection(null)
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '10px 16px',
+                      border: 'none',
+                      background: selectedApiKey === key.id ? '#F9FAFB' : 'transparent',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 10,
+                      transition: 'background 0.15s',
+                    }}
+                    onMouseEnter={e => {
+                      if (selectedApiKey !== key.id) {
+                        e.currentTarget.style.background = '#F9FAFB'
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (selectedApiKey !== key.id) {
+                        e.currentTarget.style.background = 'transparent'
+                      }
+                    }}
+                  >
+                    <div style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      background: key.color,
+                      flexShrink: 0,
+                    }} />
+                    <span style={{
+                      fontSize: 13,
+                      color: selectedApiKey === key.id ? key.color : '#666',
+                      fontWeight: selectedApiKey === key.id ? 600 : 400,
+                    }}>
+                      {key.label}
+                    </span>
+                    {selectedApiKey === key.id && (
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={key.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Model Section */}
-          <div style={{ padding: '12px 0' }}>
-            <div style={{ padding: '0 16px 8px', fontSize: 11, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Model
-            </div>
-            {MODELS.map((model) => (
-              <button
-                key={model.id}
-                onClick={() => handleModelChange(model.id)}
+          <div style={{ borderBottom: '1px solid #E5E5E5' }}>
+            <button
+              onClick={() => toggleSection('model')}
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                border: 'none',
+                background: 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                textAlign: 'left',
+              }}
+            >
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>
+                  Model
+                </div>
+                <div style={{ fontSize: 13, color: '#000', fontWeight: 600 }}>
+                  {currentModel.label}
+                </div>
+              </div>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#666"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 style={{
-                  width: '100%',
-                  padding: '10px 16px',
-                  border: 'none',
-                  background: selectedModel === model.id ? '#F9FAFB' : 'transparent',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  transition: 'background 0.15s',
-                }}
-                onMouseEnter={e => {
-                  if (selectedModel !== model.id) {
-                    e.currentTarget.style.background = '#F9FAFB'
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (selectedModel !== model.id) {
-                    e.currentTarget.style.background = 'transparent'
-                  }
+                  transform: expandedSection === 'model' ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{
-                    fontSize: 13,
-                    color: selectedModel === model.id ? '#000' : '#666',
-                    fontWeight: selectedModel === model.id ? 600 : 400,
-                  }}>
-                    {model.label}
-                  </span>
-                  {model.isDefault && (
-                    <span style={{
-                      fontSize: 10,
-                      padding: '2px 6px',
-                      background: '#22C55E',
-                      color: 'white',
-                      borderRadius: 3,
-                      fontWeight: 600,
-                    }}>
-                      ⭐
-                    </span>
-                  )}
-                  {selectedModel === model.id && (
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                </div>
-                <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>
-                  {model.description}
-                </div>
-              </button>
-            ))}
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+
+            {expandedSection === 'model' && (
+              <div style={{ paddingBottom: 8 }}>
+                {MODELS.map((model) => (
+                  <button
+                    key={model.id}
+                    onClick={() => {
+                      handleModelChange(model.id)
+                      setExpandedSection(null)
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '10px 16px',
+                      border: 'none',
+                      background: selectedModel === model.id ? '#F9FAFB' : 'transparent',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      transition: 'background 0.15s',
+                    }}
+                    onMouseEnter={e => {
+                      if (selectedModel !== model.id) {
+                        e.currentTarget.style.background = '#F9FAFB'
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (selectedModel !== model.id) {
+                        e.currentTarget.style.background = 'transparent'
+                      }
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <span style={{
+                        fontSize: 13,
+                        color: selectedModel === model.id ? '#000' : '#666',
+                        fontWeight: selectedModel === model.id ? 600 : 400,
+                      }}>
+                        {model.label}
+                      </span>
+                      {selectedModel === model.id && (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      )}
+                    </div>
+                    <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>
+                      {model.description}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          <div style={{ height: 1, background: '#E5E5E5', margin: '8px 0' }} />
-
           {/* Temperature Section */}
-          <div style={{ padding: '12px 0' }}>
-            <div style={{ padding: '0 16px 8px', fontSize: 11, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Temperature
-            </div>
-            {TEMPERATURES.map((temp) => (
-              <button
-                key={temp.value}
-                onClick={() => handleTempChange(temp.value)}
+          <div>
+            <button
+              onClick={() => toggleSection('temperature')}
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                border: 'none',
+                background: 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                textAlign: 'left',
+              }}
+            >
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>
+                  Temperature
+                </div>
+                <div style={{ fontSize: 13, color: '#000', fontWeight: 600 }}>
+                  {currentTemp.label} ({currentTemp.value})
+                </div>
+              </div>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#666"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 style={{
-                  width: '100%',
-                  padding: '10px 16px',
-                  border: 'none',
-                  background: selectedTemp === temp.value ? '#F9FAFB' : 'transparent',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  transition: 'background 0.15s',
-                }}
-                onMouseEnter={e => {
-                  if (selectedTemp !== temp.value) {
-                    e.currentTarget.style.background = '#F9FAFB'
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (selectedTemp !== temp.value) {
-                    e.currentTarget.style.background = 'transparent'
-                  }
+                  transform: expandedSection === 'temperature' ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{
-                    fontSize: 13,
-                    color: selectedTemp === temp.value ? '#000' : '#666',
-                    fontWeight: selectedTemp === temp.value ? 600 : 400,
-                  }}>
-                    {temp.label}
-                  </span>
-                  <span style={{ fontSize: 11, color: '#999' }}>
-                    ({temp.value})
-                  </span>
-                  {temp.isDefault && (
-                    <span style={{
-                      fontSize: 10,
-                      padding: '2px 6px',
-                      background: '#22C55E',
-                      color: 'white',
-                      borderRadius: 3,
-                      fontWeight: 600,
-                    }}>
-                      ⭐
-                    </span>
-                  )}
-                  {selectedTemp === temp.value && (
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                </div>
-                <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>
-                  {temp.description}
-                </div>
-              </button>
-            ))}
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+
+            {expandedSection === 'temperature' && (
+              <div style={{ paddingBottom: 8 }}>
+                {TEMPERATURES.map((temp) => (
+                  <button
+                    key={temp.value}
+                    onClick={() => {
+                      handleTempChange(temp.value)
+                      setExpandedSection(null)
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '10px 16px',
+                      border: 'none',
+                      background: selectedTemp === temp.value ? '#F9FAFB' : 'transparent',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      transition: 'background 0.15s',
+                    }}
+                    onMouseEnter={e => {
+                      if (selectedTemp !== temp.value) {
+                        e.currentTarget.style.background = '#F9FAFB'
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (selectedTemp !== temp.value) {
+                        e.currentTarget.style.background = 'transparent'
+                      }
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <span style={{
+                        fontSize: 13,
+                        color: selectedTemp === temp.value ? '#000' : '#666',
+                        fontWeight: selectedTemp === temp.value ? 600 : 400,
+                      }}>
+                        {temp.label}
+                      </span>
+                      <span style={{ fontSize: 11, color: '#999' }}>
+                        ({temp.value})
+                      </span>
+                      {selectedTemp === temp.value && (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      )}
+                    </div>
+                    <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>
+                      {temp.description}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
