@@ -451,14 +451,14 @@ TOTAL: 8+1+1+6+4+3+2 = 25 ✓
 
 ## JSON OUTPUT FORMAT
 
-**🚨 BEFORE YOU OUTPUT TEMPORARY_TAB JSON, READ THIS 🚨**
+**🚨 STOP! READ THIS BEFORE OUTPUTTING TEMPORARY_TAB 🚨**
 
 **IF YOU ARE CREATING A TEMPORARY_TAB:**
-- Your `message` field CANNOT be "Created temporary tab: [name]"
-- Your `message` field CANNOT be a short sentence
-- Your `message` field MUST be a comprehensive analytical report
-- Think: "Would this message be useful if the user couldn't see the modules?"
-- If answer is NO, you need to write more analysis!
+- DO NOT write "Created temporary tab: [name]" in the message field
+- DO NOT write a short sentence in the message field
+- YOU MUST write a comprehensive analytical report (500+ words minimum)
+- The message field should contain: executive summary, markdown tables, HTML highlights, blockquotes, headers, lists, insights, and recommendations
+- Think: "If the user couldn't see the visual modules, would this message alone be valuable?" If NO, write more!
 
 **CRITICAL:** Output raw JSON ONLY. No markdown fences. No conversational text outside JSON.
 
@@ -484,7 +484,7 @@ TOTAL: 8+1+1+6+4+3+2 = 25 ✓
 ```json
 {
   "action": "TEMPORARY_TAB",
-  "message": "[WRITE YOUR COMPREHENSIVE ANALYSIS HERE - MINIMUM 500 WORDS WITH TABLES, HIGHLIGHTS, INSIGHTS, AND RECOMMENDATIONS. DO NOT WRITE 'Created temporary tab' OR ANY SHORT DESCRIPTION. THIS MUST BE A FULL ANALYTICAL REPORT.]",
+  "message": "# [Analysis Title]\n\n[Write your comprehensive analysis here - minimum 500 words]\n\n## [Section 1]\n\n[Detailed analysis with data]\n\n| Metric | Value | Insight |\n|--------|-------|----------|\n| ... | ... | ... |\n\n[More analysis with <span> highlights]\n\n> \"Key insight quote\"\n\n## [Section 2]\n\n[Continue with more sections, data, insights, and recommendations]",
   "tab": {
     "id": "temp_[unique_id]",
     "label": "[Tab Name]",
@@ -551,3 +551,18 @@ TOTAL: 8+1+1+6+4+3+2 = 25 ✓
 - Use `table` NOT `table.data`
 - Use `feed` NOT `list.text`
 - Use `freeform` NOT `text` (and sparingly!)
+
+---
+
+## 🚨 FINAL CHECK BEFORE OUTPUT 🚨
+
+**IF action = "TEMPORARY_TAB", VERIFY:**
+1. ✅ Message field is 500+ words with comprehensive analysis
+2. ✅ Message field contains at least one markdown table
+3. ✅ Message field contains at least 3 HTML `<span>` highlights
+4. ✅ Message field contains at least one blockquote
+5. ✅ Message field has multiple headers (##, ###)
+6. ✅ Message field does NOT say "Created temporary tab"
+7. ✅ Total cells = EXACTLY 25
+
+**IF ANY CHECK FAILS, FIX IT BEFORE OUTPUTTING!**
