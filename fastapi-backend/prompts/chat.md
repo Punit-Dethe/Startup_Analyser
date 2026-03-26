@@ -117,6 +117,7 @@ Before creating modules, complete this thinking:
 
 2. **Gather & Rationalize Data**
    - Use Google Search for current data
+   - **CRITICAL: Get REAL numbers, not placeholders!**
    - Identify key metrics, trends, comparisons
    - Extract insights
 
@@ -205,6 +206,7 @@ Before creating modules, complete this thinking:
 ```
 **CRITICAL:** Use `series` (flat array), NOT `series_list`!
 **CRITICAL:** `labels` and `series` arrays MUST have same length and MUST NOT be empty!
+**CRITICAL:** Use REAL DATA, not placeholders like [0, 0, 0] or empty arrays!
 
 **Multi-Series Charts** (`chart.grouped` ONLY):
 ```json
@@ -223,6 +225,8 @@ Before creating modules, complete this thinking:
 }
 ```
 **CRITICAL:** Use `series_list` (array of objects), NOT `series`!
+**CRITICAL:** `labels` array and ALL `values` arrays MUST have same length and MUST NOT be empty!
+**CRITICAL:** Use REAL DATA, not placeholders like [0, 0, 0] or empty arrays!
 
 **Pie/Donut Charts** (MUST be 2x2):
 ```json

@@ -17,11 +17,13 @@
 
 ### 2. GATHER & RATIONALIZE DATA
 - What data do I have or can infer about this subject?
+- **USE GOOGLE SEARCH TO GET REAL, CURRENT DATA** - Do not make up numbers!
 - What are the key metrics? (revenue, profit, market share, growth rates, user counts, etc.)
 - What are the trends? (growing, declining, stable, accelerating, decelerating)
 - What are the comparisons? (vs competitors, vs previous periods, vs industry benchmarks)
 - What are the insights? (strengths, weaknesses, opportunities, threats)
 - What's the story the data tells?
+- **CRITICAL: All chart data MUST be real numbers from research, not placeholders or zeros!**
 
 ### 3. CATEGORIZE INFORMATION INTO TABS
 Think about logical groupings:

@@ -22,11 +22,13 @@ export default function ChatPanel({
   onSend,
 }: ChatPanelProps) {
   const [input, setInput]       = useState('')
-  const messagesEndRef           = useRef<HTMLDivElement>(null)
+  const messagesContainerRef     = useRef<HTMLDivElement>(null)
 
-  // Auto-scroll to bottom on new message
+  // Auto-scroll to TOP on new message (like ChatGPT)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = 0
+    }
   }, [chatHistory, isChatLoading])
 
   function send() {
@@ -63,11 +65,14 @@ export default function ChatPanel({
       }} />
 
       {/* Messages */}
-      <div style={{
-        flex: 1, overflow: 'auto',
-        padding: '60px 24px 100px 24px',
-        display: 'flex', flexDirection: 'column', gap: 16,
-      }}>
+      <div 
+        ref={messagesContainerRef}
+        style={{
+          flex: 1, overflow: 'auto',
+          padding: '60px 24px 100px 24px',
+          display: 'flex', flexDirection: 'column', gap: 16,
+        }}
+      >
         {/* Intro (always shown) */}
         <div className="chat-msg-ai prose-chat" style={{ padding: '4px 0', color: 'var(--t-primary)' }}>
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
@@ -118,8 +123,6 @@ export default function ChatPanel({
             ))}
           </div>
         )}
-
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Bottom blur overlay */}

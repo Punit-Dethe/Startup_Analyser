@@ -126,13 +126,14 @@ export default function Topbar({
         </div>
       </div>
 
-      {/* ── Tabs (Centered with Scroll) ── */}
+      {/* ── Tabs (Centered with offset for chat panel) ── */}
       <div style={{ 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center', 
         flex: 2,
         maxWidth: '60%',
+        marginLeft: '200px', // Offset to account for chat panel width
       }}>
         {/* Tabs container with fade edges */}
         <div style={{ 
