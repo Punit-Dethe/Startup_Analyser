@@ -20,7 +20,6 @@ class PromptService:
             prompts_dir: Path to directory containing prompt markdown files
         """
         self.prompts_dir = Path(prompts_dir)
-        self._cache: Dict[str, str] = {}
     
     def load_prompt(self, name: str) -> str:
         """
@@ -35,12 +34,7 @@ class PromptService:
         Raises:
             PromptNotFoundError: Prompt file doesn't exist
         """
-        # Check cache first
-        if name in self._cache:
-            logger.debug(f"Loading prompt '{name}' from cache")
-            return self._cache[name]
-        
-        # Load from file
+        # Load from file (no caching - always read fresh)
         prompt_path = self.prompts_dir / f"{name}.md"
         
         if not prompt_path.exists():
@@ -53,20 +47,12 @@ class PromptService:
             with open(prompt_path, "r", encoding="utf-8") as f:
                 content = f.read()
             
-            # Cache the prompt
-            self._cache[name] = content
-            
-            logger.info(f"Loaded prompt '{name}' from {prompt_path}")
+            logger.debug(f"Loaded prompt '{name}' from {prompt_path}")
             return content
             
         except Exception as e:
             logger.error(f"Failed to read prompt file {prompt_path}: {e}")
             raise PromptNotFoundError(f"Failed to read prompt file: {e}")
-    
-    def reload_prompts(self) -> None:
-        """Reload all prompts from disk (clears cache)."""
-        self._cache.clear()
-        logger.info("Prompt cache cleared")
     
     def get_generate_prompt(self) -> str:
         """Load the generation system prompt."""
