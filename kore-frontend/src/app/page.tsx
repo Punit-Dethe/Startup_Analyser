@@ -238,14 +238,14 @@ export default function LandingPage() {
           {/* Input */}
           <div style={{
             width: '100%', maxWidth: 700,
-            background: '#1a1a1a',
-            border: `1px solid ${focused ? '#333' : '#2a2a2a'}`,
+            background: '#FFFFFF',
+            border: `1px solid ${focused ? 'var(--border-hover)' : 'var(--border)'}`,
             borderRadius: 14,
             padding: '14px 16px',
             display: 'flex', alignItems: 'center', gap: 12,
             boxShadow: focused
-              ? '0 4px 24px rgba(0,0,0,0.3), 0 0 0 3px rgba(255,255,255,0.08)'
-              : '0 2px 8px rgba(0,0,0,0.2)',
+              ? '0 4px 24px rgba(0,0,0,0.08), 0 0 0 3px rgba(218,41,28,0.06)'
+              : '0 2px 8px rgba(0,0,0,0.04)',
             transition: 'all 0.2s ease',
             position: 'relative',
           }}>
@@ -256,7 +256,7 @@ export default function LandingPage() {
             <div style={{
               width: 1,
               height: 24,
-              background: '#333',
+              background: 'var(--border)',
               flexShrink: 0,
             }} />
 
@@ -269,7 +269,7 @@ export default function LandingPage() {
               placeholder="Analyse Discord's business model..."
               style={{
                 flex: 1, background: 'transparent', border: 'none',
-                outline: 'none', fontSize: 14, color: '#e5e5e5',
+                outline: 'none', fontSize: 14, color: 'var(--t-primary)',
                 fontFamily: 'inherit', letterSpacing: '-0.1px',
               }}
             />
@@ -280,9 +280,9 @@ export default function LandingPage() {
               style={{
                 padding: '9px 18px',
                 borderRadius: 9,
-                background: prompt.trim() ? '#404040' : '#2a2a2a',
+                background: prompt.trim() ? '#000000' : 'var(--border)',
                 border: 'none',
-                color: prompt.trim() ? '#fff' : '#666',
+                color: prompt.trim() ? '#fff' : 'var(--t-muted)',
                 fontSize: 12, fontWeight: 600,
                 cursor: prompt.trim() && !loading ? 'pointer' : 'not-allowed',
                 flexShrink: 0,
@@ -306,22 +306,22 @@ export default function LandingPage() {
                 style={{
                   padding: '5px 12px',
                   borderRadius: 20,
-                  border: '1px solid #2a2a2a',
-                  background: '#1a1a1a',
-                  color: '#999',
+                  border: '1px solid var(--border)',
+                  background: '#FFFFFF',
+                  color: 'var(--t-muted)',
                   fontSize: 11, cursor: 'pointer',
                   fontFamily: 'inherit',
                   transition: 'all 0.15s ease',
                 }}
                 onMouseEnter={e => {
                   const t = e.currentTarget
-                  t.style.borderColor = '#333'
-                  t.style.color = '#e5e5e5'
+                  t.style.borderColor = 'var(--border-hover)'
+                  t.style.color = 'var(--t-secondary)'
                 }}
                 onMouseLeave={e => {
                   const t = e.currentTarget
-                  t.style.borderColor = '#2a2a2a'
-                  t.style.color = '#999'
+                  t.style.borderColor = 'var(--border)'
+                  t.style.color = 'var(--t-muted)'
                 }}
               >
                 {p}

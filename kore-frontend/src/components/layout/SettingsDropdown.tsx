@@ -21,7 +21,7 @@ const TEMPERATURES = [
 
 // API Key options
 const API_KEYS = [
-  { id: null as string | null, label: 'Default', color: '#FFFFFF' },
+  { id: null as string | null, label: 'Default', color: '#000000' },
   { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_1 || null) as string | null, label: 'Leo', color: '#FF6B35' },
   { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_2 || null) as string | null, label: 'Max', color: '#F7B801' },
   { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_3 || null) as string | null, label: 'Sam', color: '#0496FF' },
@@ -184,16 +184,16 @@ export default function SettingsDropdown() {
         </svg>
       </button>
 
-      {/* Dropdown Menu - Black Theme */}
+      {/* Dropdown Menu - White Theme */}
       {isOpen && (
         <div style={{
           position: 'absolute',
           ...dropdownStyle,
           left: -8,
-          background: '#1a1a1a',
-          border: '1px solid #2a2a2a',
+          background: '#FFFFFF',
+          border: '1px solid #E5E5E5',
           borderRadius: 12,
-          boxShadow: '0 12px 32px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.3)',
+          boxShadow: '0 12px 32px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08)',
           minWidth: 240,
           overflowY: 'auto',
           overflowX: 'hidden',
@@ -201,7 +201,7 @@ export default function SettingsDropdown() {
           animation: 'dropdownSlideIn 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
         }}>
           {/* API Keys Section */}
-          <div style={{ borderBottom: '1px solid #2a2a2a' }}>
+          <div style={{ borderBottom: '1px solid #E5E5E5' }}>
             <button
               onClick={() => toggleSection('apikey')}
               style={{
@@ -217,7 +217,7 @@ export default function SettingsDropdown() {
               }}
             >
               <div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: '#666', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 3 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 3 }}>
                   API Key
                 </div>
                 <div style={{ fontSize: 12, color: currentApiKey.color, fontWeight: 600, letterSpacing: '-0.2px' }}>
@@ -229,7 +229,7 @@ export default function SettingsDropdown() {
                 height="14"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#666"
+                stroke="#999"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -258,7 +258,7 @@ export default function SettingsDropdown() {
                       width: '100%',
                       padding: '8px 14px',
                       border: 'none',
-                      background: selectedApiKey === key.id ? '#252525' : 'transparent',
+                      background: selectedApiKey === key.id ? '#F9FAFB' : 'transparent',
                       textAlign: 'left',
                       cursor: 'pointer',
                       display: 'flex',
@@ -268,7 +268,7 @@ export default function SettingsDropdown() {
                     }}
                     onMouseEnter={e => {
                       if (selectedApiKey !== key.id) {
-                        e.currentTarget.style.background = '#222'
+                        e.currentTarget.style.background = '#F9FAFB'
                       }
                     }}
                     onMouseLeave={e => {
@@ -286,7 +286,7 @@ export default function SettingsDropdown() {
                     }} />
                     <span style={{
                       fontSize: 12,
-                      color: selectedApiKey === key.id ? key.color : '#999',
+                      color: selectedApiKey === key.id ? key.color : '#666',
                       fontWeight: selectedApiKey === key.id ? 600 : 400,
                       letterSpacing: '-0.2px',
                     }}>
@@ -304,7 +304,7 @@ export default function SettingsDropdown() {
           </div>
 
           {/* Model Section */}
-          <div style={{ borderBottom: '1px solid #2a2a2a' }}>
+          <div style={{ borderBottom: '1px solid #E5E5E5' }}>
             <button
               onClick={() => toggleSection('model')}
               style={{
@@ -320,10 +320,10 @@ export default function SettingsDropdown() {
               }}
             >
               <div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: '#666', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 3 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 3 }}>
                   Model
                 </div>
-                <div style={{ fontSize: 12, color: '#e5e5e5', fontWeight: 600, letterSpacing: '-0.2px' }}>
+                <div style={{ fontSize: 12, color: '#000', fontWeight: 600, letterSpacing: '-0.2px' }}>
                   {currentModel.label}
                 </div>
               </div>
@@ -332,7 +332,7 @@ export default function SettingsDropdown() {
                 height="14"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#666"
+                stroke="#999"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -361,14 +361,14 @@ export default function SettingsDropdown() {
                       width: '100%',
                       padding: '8px 14px',
                       border: 'none',
-                      background: selectedModel === model.id ? '#252525' : 'transparent',
+                      background: selectedModel === model.id ? '#F9FAFB' : 'transparent',
                       textAlign: 'left',
                       cursor: 'pointer',
                       transition: 'background 0.12s',
                     }}
                     onMouseEnter={e => {
                       if (selectedModel !== model.id) {
-                        e.currentTarget.style.background = '#222'
+                        e.currentTarget.style.background = '#F9FAFB'
                       }
                     }}
                     onMouseLeave={e => {
@@ -380,19 +380,19 @@ export default function SettingsDropdown() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span style={{
                         fontSize: 12,
-                        color: selectedModel === model.id ? '#e5e5e5' : '#999',
+                        color: selectedModel === model.id ? '#000' : '#666',
                         fontWeight: selectedModel === model.id ? 600 : 400,
                         letterSpacing: '-0.2px',
                       }}>
                         {model.label}
                       </span>
                       {selectedModel === model.id && (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e5e5e5" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
                       )}
                     </div>
-                    <div style={{ fontSize: 10, color: '#555', marginTop: 1, letterSpacing: '-0.1px' }}>
+                    <div style={{ fontSize: 10, color: '#999', marginTop: 1, letterSpacing: '-0.1px' }}>
                       {model.description}
                     </div>
                   </button>
@@ -418,10 +418,10 @@ export default function SettingsDropdown() {
               }}
             >
               <div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: '#666', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 3 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 3 }}>
                   Temperature
                 </div>
-                <div style={{ fontSize: 12, color: '#e5e5e5', fontWeight: 600, letterSpacing: '-0.2px' }}>
+                <div style={{ fontSize: 12, color: '#000', fontWeight: 600, letterSpacing: '-0.2px' }}>
                   {currentTemp.label} ({currentTemp.value})
                 </div>
               </div>
@@ -430,7 +430,7 @@ export default function SettingsDropdown() {
                 height="14"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#666"
+                stroke="#999"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -459,14 +459,14 @@ export default function SettingsDropdown() {
                       width: '100%',
                       padding: '8px 14px',
                       border: 'none',
-                      background: selectedTemp === temp.value ? '#252525' : 'transparent',
+                      background: selectedTemp === temp.value ? '#F9FAFB' : 'transparent',
                       textAlign: 'left',
                       cursor: 'pointer',
                       transition: 'background 0.12s',
                     }}
                     onMouseEnter={e => {
                       if (selectedTemp !== temp.value) {
-                        e.currentTarget.style.background = '#222'
+                        e.currentTarget.style.background = '#F9FAFB'
                       }
                     }}
                     onMouseLeave={e => {
@@ -478,22 +478,22 @@ export default function SettingsDropdown() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span style={{
                         fontSize: 12,
-                        color: selectedTemp === temp.value ? '#e5e5e5' : '#999',
+                        color: selectedTemp === temp.value ? '#000' : '#666',
                         fontWeight: selectedTemp === temp.value ? 600 : 400,
                         letterSpacing: '-0.2px',
                       }}>
                         {temp.label}
                       </span>
-                      <span style={{ fontSize: 10, color: '#555' }}>
+                      <span style={{ fontSize: 10, color: '#999' }}>
                         ({temp.value})
                       </span>
                       {selectedTemp === temp.value && (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e5e5e5" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
                       )}
                     </div>
-                    <div style={{ fontSize: 10, color: '#555', marginTop: 1, letterSpacing: '-0.1px' }}>
+                    <div style={{ fontSize: 10, color: '#999', marginTop: 1, letterSpacing: '-0.1px' }}>
                       {temp.description}
                     </div>
                   </button>
@@ -528,7 +528,7 @@ export default function SettingsDropdown() {
           }
         }
 
-        /* Custom scrollbar - Dark theme */
+        /* Custom scrollbar - Light theme */
         div::-webkit-scrollbar {
           width: 5px;
         }
@@ -538,12 +538,12 @@ export default function SettingsDropdown() {
         }
 
         div::-webkit-scrollbar-thumb {
-          background: #333;
+          background: #E5E5E5;
           border-radius: 3px;
         }
 
         div::-webkit-scrollbar-thumb:hover {
-          background: #444;
+          background: #D1D5DB;
         }
       `}</style>
     </div>
