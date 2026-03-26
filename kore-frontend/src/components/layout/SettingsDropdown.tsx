@@ -21,12 +21,12 @@ const TEMPERATURES = [
 
 // API Key options
 const API_KEYS = [
-  { id: null, label: 'Default (Backend)', color: '#000000' },
-  { id: process.env.NEXT_PUBLIC_GEMINI_KEY_1, label: 'Leo', color: '#FF6B35' },
-  { id: process.env.NEXT_PUBLIC_GEMINI_KEY_2, label: 'Max', color: '#F7B801' },
-  { id: process.env.NEXT_PUBLIC_GEMINI_KEY_3, label: 'Sam', color: '#0496FF' },
-  { id: process.env.NEXT_PUBLIC_GEMINI_KEY_4, label: 'Alex', color: '#22C55E' },
-  { id: process.env.NEXT_PUBLIC_GEMINI_KEY_5, label: 'Jordan', color: '#A855F7' },
+  { id: null as string | null, label: 'Default (Backend)', color: '#000000' },
+  { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_1 || null) as string | null, label: 'Leo', color: '#FF6B35' },
+  { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_2 || null) as string | null, label: 'Max', color: '#F7B801' },
+  { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_3 || null) as string | null, label: 'Sam', color: '#0496FF' },
+  { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_4 || null) as string | null, label: 'Alex', color: '#22C55E' },
+  { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_5 || null) as string | null, label: 'Jordan', color: '#A855F7' },
 ]
 
 export default function SettingsDropdown() {
