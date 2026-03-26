@@ -490,64 +490,6 @@ INVALID: 6x2, 5x6, 7x1, etc. (will BREAK!)
 **Special:**
 - `canvas.bmc` (5x4 or 5x5 ONLY):
   `{title, cells: [{section, points: [strings]}]}`
-- `freeform` (1x1, 2x1, 1x2, 2x2, 3x1 - use ONLY for visual branding!):
-  `{html: "<div>HTML here</div>"}`
-  
-  **FREEFORM HTML BLOCK RULES (CRITICAL!):**
-  
-  **When to Use:**
-  - ONLY for visual branding elements (founding year, HQ location, brand tagline)
-  - LAST RESORT for filling 1-4 remaining cells after all data modules
-  - NEVER for data that should be in KPIs, charts, or tables
-  
-  **Content Guidelines:**
-  - **1x1 blocks**: 1-2 words maximum (e.g., "Est. 1976", "Cupertino")
-  - **2x1 blocks**: 5-6 words maximum (e.g., "Think Different Since 1997")
-  - **Larger blocks**: Scale proportionally
-  
-  **Styling Requirements (MANDATORY!):**
-  - **Background**: MUST use primary brand color
-  - **Text**: White or high-contrast color
-  - **Font size**: Large and bold (24px-48px depending on block size)
-  - **Alignment**: PERFECTLY CENTERED both horizontally and vertically
-  - **Padding**: Generous padding for breathing room
-  
-  **CORRECT EXAMPLES:**
-  
-  ```json
-  {
-    "type": "freeform",
-    "size": "1x1",
-    "data": {
-      "html": "<div style='background:#000000;height:100%;display:flex;align-items:center;justify-content:center;padding:16px;border-radius:8px'><span style='color:#FFFFFF;font-size:32px;font-weight:700;text-align:center'>1976</span></div>"
-    }
-  }
-  ```
-  
-  ```json
-  {
-    "type": "freeform",
-    "size": "2x1",
-    "data": {
-      "html": "<div style='background:#1DB954;height:100%;display:flex;align-items:center;justify-content:center;padding:20px;border-radius:8px'><span style='color:#FFFFFF;font-size:28px;font-weight:700;text-align:center;line-height:1.3'>Music for Everyone</span></div>"
-    }
-  }
-  ```
-  
-  **WRONG EXAMPLES (DO NOT DO THIS!):**
-  
-  ❌ Random filler text: "Lorem ipsum dolor sit amet..."
-  ❌ Data that belongs in KPI: "Revenue: $31.6B"
-  ❌ Uncentered text: `<div style='padding:10px'>Text</div>`
-  ❌ Small font: `font-size:12px`
-  ❌ No background color: `background:transparent`
-  ❌ Too many words in 1x1: "Founded in Cupertino California"
-  
-  **Remember:**
-  - Freeform is for VISUAL BRANDING, not lazy data placement
-  - Text must be LARGE, BOLD, and PERFECTLY CENTERED
-  - Background must use PRIMARY BRAND COLOR
-  - Keep text minimal based on block size
 
 ---
 
@@ -603,17 +545,6 @@ Use markdown headers (`##`, `###`) to organize your analysis into clear sections
 | ARPU | $11.72 | -2.1% | ↘ |
 ```
 
-**USE INLINE HTML FOR VISUAL HIGHLIGHTS:**
-- Positive metrics: `<span style="color:#16A34A;font-weight:700">↗ +15.2%</span>`
-- Negative metrics: `<span style="color:#DC2626;font-weight:700">↘ -8.3%</span>`
-- Warning/neutral: `<span style="color:#D97706;font-weight:700">● Stable</span>`
-- Key numbers: `<span style="color:#2563EB;font-weight:700">$31.6B</span>`
-
-**USE BLOCKQUOTES FOR KEY INSIGHTS:**
-```markdown
-> "Netflix's shift to ad-supported tiers represents a fundamental change in their business model, opening new revenue streams while maintaining premium positioning."
-```
-
 **USE LISTS FOR CLARITY:**
 - Bullet points for features, strengths, weaknesses
 - Numbered lists for sequential steps or rankings
@@ -628,16 +559,16 @@ Use markdown headers (`##`, `###`) to organize your analysis into clear sections
 ```markdown
 # Netflix: Comprehensive Analysis
 
-Netflix continues to dominate the streaming landscape with 247 million global subscribers, though facing intensifying competition from Disney+, Amazon Prime Video, and emerging platforms. The company's recent strategic pivot to ad-supported tiers and crackdown on password sharing has yielded <span style="color:#16A34A;font-weight:700">↗ +8.9M net subscriber additions</span> in Q4 2023, exceeding analyst expectations.
+Netflix continues to dominate the streaming landscape with 247 million global subscribers, though facing intensifying competition from Disney+, Amazon Prime Video, and emerging platforms. The company's recent strategic pivot to ad-supported tiers and crackdown on password sharing has yielded +8.9M net subscriber additions in Q4 2023, exceeding analyst expectations.
 
 ## Financial Performance Overview
 
 | Metric | Q4 2023 | YoY Change | Status |
 |--------|---------|------------|--------|
-| Revenue | $8.83B | <span style="color:#16A34A;font-weight:700">↗ +12.5%</span> | Strong |
-| Operating Margin | 16.9% | <span style="color:#16A34A;font-weight:700">↗ +2.1pp</span> | Improving |
-| Free Cash Flow | $6.9B | <span style="color:#16A34A;font-weight:700">↗ +35%</span> | Excellent |
-| Net Income | $938M | <span style="color:#DC2626;font-weight:700">↘ -19%</span> | Declining |
+| Revenue | $8.83B | +12.5% | Strong |
+| Operating Margin | 16.9% | +2.1pp | Improving |
+| Free Cash Flow | $6.9B | +35% | Excellent |
+| Net Income | $938M | -19% | Declining |
 
 The company's financial health remains robust, with revenue growth accelerating and operating margins expanding. However, net income declined due to one-time restructuring charges and increased content amortization.
 
@@ -655,8 +586,6 @@ The company's financial health remains robust, with revenue growth accelerating 
 - **Market Saturation**: Limited growth in mature markets (US, Europe)
 - **Password Sharing**: Estimated 100M+ households sharing accounts
 
-> "The introduction of ad-supported tiers at $6.99/month addresses both affordability concerns and opens a new $10B+ advertising revenue opportunity by 2025."
-
 ## Competitive Landscape
 
 Netflix faces a multi-front competitive battle:
@@ -666,7 +595,7 @@ Netflix faces a multi-front competitive battle:
 3. **HBO Max (97M subs)**: Premium content, Warner Bros. library
 4. **Apple TV+ (25M subs)**: Growing original content investment
 
-Despite competition, Netflix maintains <span style="color:#2563EB;font-weight:700">35% market share</span> of global streaming hours watched.
+Despite competition, Netflix maintains 35% market share of global streaming hours watched.
 
 ---
 
@@ -684,7 +613,7 @@ Despite competition, Netflix maintains <span style="color:#2563EB;font-weight:70
 - Content production delays or quality issues
 - Subscriber churn from price increases
 
-**Analyst Consensus:** <span style="color:#16A34A;font-weight:700">BUY rating</span> with 12-month price target of $485 (+18% upside)
+**Analyst Consensus:** BUY rating with 12-month price target of $485 (+18% upside)
 ```
 
 **REMEMBER:**
@@ -692,6 +621,8 @@ Despite competition, Netflix maintains <span style="color:#2563EB;font-weight:70
 - Don't make it too long - keep it focused and understandable
 - Use formatting to make it scannable and visually engaging
 - Make it feel like a premium consulting report
+- Use markdown tables for data presentation
+- Use clear section headers and lists
 
 ---
 
