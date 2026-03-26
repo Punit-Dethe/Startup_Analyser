@@ -170,7 +170,7 @@ export default function SettingsDropdown() {
             transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
           }}
         >
-          <polyline points="15 18 9 12 15 6" />
+          <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
 
@@ -179,9 +179,7 @@ export default function SettingsDropdown() {
         <div style={{
           position: 'absolute',
           ...dropdownStyle,
-          right: 'calc(100% + 12px)',
-          top: '50%',
-          transform: 'translateY(-50%)',
+          left: 0,
           background: '#FFFFFF',
           border: '1px solid #E5E5E5',
           borderRadius: 10,
@@ -190,7 +188,7 @@ export default function SettingsDropdown() {
           overflowY: 'auto',
           overflowX: 'hidden',
           zIndex: 1000,
-          animation: 'slideInFromRight 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+          animation: 'slideInFromTop 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
         }}>
           {/* API Keys Section */}
           <div style={{ borderBottom: '1px solid #E5E5E5' }}>
@@ -510,14 +508,14 @@ export default function SettingsDropdown() {
 
       {/* Animations */}
       <style jsx>{`
-        @keyframes slideInFromRight {
+        @keyframes slideInFromTop {
           from {
             opacity: 0;
-            transform: translateX(12px);
+            transform: translateY(-8px);
           }
           to {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0);
           }
         }
 
