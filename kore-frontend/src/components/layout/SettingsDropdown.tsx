@@ -21,7 +21,7 @@ const TEMPERATURES = [
 
 // API Key options
 const API_KEYS = [
-  { id: null as string | null, label: 'Default', color: '#888888' },
+  { id: null as string | null, label: 'Default', color: '#FFFFFF' },
   { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_1 || null) as string | null, label: 'Leo', color: '#FF6B35' },
   { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_2 || null) as string | null, label: 'Max', color: '#F7B801' },
   { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_3 || null) as string | null, label: 'Sam', color: '#0496FF' },
