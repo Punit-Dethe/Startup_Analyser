@@ -42,7 +42,16 @@ async def chat(
             timeout=180.0
         )
         
-        return result
+        # Return with cache control headers
+        from fastapi.responses import JSONResponse
+        return JSONResponse(
+            content=result,
+            headers={
+                "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+                "Pragma": "no-cache",
+                "Expires": "0"
+            }
+        )
         
     except asyncio.TimeoutError:
         logger.error("Chat processing timed out")

@@ -228,7 +228,8 @@ export function useDashboard() {
 
       // Handle TEMPORARY_TAB action
       if (result.action === 'TEMPORARY_TAB' && result.tab && result.modules) {
-        const msg = `Created temporary tab: "${result.tab.label}"`
+        // Use the comprehensive analysis message from Gemini, not a hardcoded notification
+        const msg = result.message ?? `Created temporary tab: "${result.tab.label}"`
         setState(s => {
           const history = addMsg(s.chatHistory, 'assistant', msg)
           persist(s.dashboard!, s.dashboardState!, history)

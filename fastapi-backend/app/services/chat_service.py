@@ -76,7 +76,7 @@ User Message: {message}
             response = await self.gemini_client.generate_with_retry(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                temperature=0.7,
+                temperature=0.2,  # LOW temperature for strict instruction following
                 max_tokens=8192,
                 json_mode=True
             )
