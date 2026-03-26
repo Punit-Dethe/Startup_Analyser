@@ -38,6 +38,12 @@ Inline HTML highlights:
 - Warning: `<span style="color:#D97706;font-weight:700">● Stable</span>`
 - Key numbers: `<span style="color:#2563EB;font-weight:700">$31.6B</span>`
 
+HTML/CSS for visuals (when there's a valid reason):
+- You can create bar graphs, pie charts, progress bars, or other visuals using HTML/CSS
+- Only use when it makes the analysis clearer than text or tables alone
+- Keep it simple, clean, and professional
+- Example use cases: showing comparisons, visualizing proportions, illustrating trends
+
 Blockquotes for insights:
 ```markdown
 > "This trend indicates a fundamental shift in market dynamics..."
