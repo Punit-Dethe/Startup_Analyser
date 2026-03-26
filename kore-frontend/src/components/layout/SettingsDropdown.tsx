@@ -35,7 +35,50 @@ export default function SettingsDropdown() {
   const [selectedApiKey, setSelectedApiKey] = useState<string | null>(null)
   const [selectedModel, setSelectedModel] = useState<string>('gemini-2.5-flash')
   const [selectedTemp, setSelectedTemp] = useState<string>('0.7')
+  const [dropdownStyle, setDropdownStyle] = useState<{ maxHeight: string; top?: string; bottom?: string }>({ maxHeight: '400px' })
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  // Calculate optimal dropdown position and height based on viewport
+  useEffect(() => {
+    if (!isOpen || !buttonRef.current) return
+
+    const updatePosition = () => {
+      const button = buttonRef.current
+      if (!button) return
+
+      const rect = button.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      const spaceBelow = viewportHeight - rect.bottom
+      const spaceAbove = rect.top
+
+      // Calculate optimal max height (leave 20px padding from viewport edges)
+      const maxHeightBelow = spaceBelow - 28 // 20px padding + 8px gap
+      const maxHeightAbove = spaceAbove - 28
+
+      // Prefer opening below, but open above if more space
+      if (spaceBelow > 300 || spaceBelow > spaceAbove) {
+        setDropdownStyle({
+          maxHeight: `${Math.min(maxHeightBelow, 500)}px`,
+          top: 'calc(100% + 8px)',
+        })
+      } else {
+        setDropdownStyle({
+          maxHeight: `${Math.min(maxHeightAbove, 500)}px`,
+          bottom: 'calc(100% + 8px)',
+        })
+      }
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition)
+
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition)
+    }
+  }, [isOpen])
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -96,6 +139,7 @@ export default function SettingsDropdown() {
     <div ref={dropdownRef} style={{ position: 'relative' }}>
       {/* Main Button */}
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         style={{
           padding: '0 12px',
@@ -121,7 +165,21 @@ export default function SettingsDropdown() {
           <path d="M2 12l10 5 10-5" />
         </svg>
         <span>{currentApiKey.label}</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+        <svg 
+          width="12" 
+          height="12" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          style={{ 
+            opacity: 0.5,
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
+        >
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
@@ -130,16 +188,17 @@ export default function SettingsDropdown() {
       {isOpen && (
         <div style={{
           position: 'absolute',
-          top: 'calc(100% + 8px)',
+          ...dropdownStyle,
           right: 0,
           background: 'white',
           border: '1px solid #E5E5E5',
-          borderRadius: 8,
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-          width: 320,
-          maxHeight: '70vh',
+          borderRadius: 10,
+          boxShadow: '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.04)',
+          width: 280,
           overflowY: 'auto',
+          overflowX: 'hidden',
           zIndex: 1000,
+          animation: 'dropdownSlideIn 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
         }}>
           {/* API Keys Section */}
           <div style={{ borderBottom: '1px solid #E5E5E5' }}>
@@ -176,7 +235,7 @@ export default function SettingsDropdown() {
                 strokeLinejoin="round"
                 style={{
                   transform: expandedSection === 'apikey' ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.2s',
+                  transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -184,7 +243,10 @@ export default function SettingsDropdown() {
             </button>
 
             {expandedSection === 'apikey' && (
-              <div style={{ paddingBottom: 8 }}>
+              <div style={{ 
+                paddingBottom: 8,
+                animation: 'sectionExpand 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}>
                 {API_KEYS.map((key) => (
                   <button
                     key={key.label}
@@ -275,7 +337,7 @@ export default function SettingsDropdown() {
                 strokeLinejoin="round"
                 style={{
                   transform: expandedSection === 'model' ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.2s',
+                  transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -283,7 +345,10 @@ export default function SettingsDropdown() {
             </button>
 
             {expandedSection === 'model' && (
-              <div style={{ paddingBottom: 8 }}>
+              <div style={{ 
+                paddingBottom: 8,
+                animation: 'sectionExpand 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}>
                 {MODELS.map((model) => (
                   <button
                     key={model.id}
@@ -369,7 +434,7 @@ export default function SettingsDropdown() {
                 strokeLinejoin="round"
                 style={{
                   transform: expandedSection === 'temperature' ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.2s',
+                  transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -377,7 +442,10 @@ export default function SettingsDropdown() {
             </button>
 
             {expandedSection === 'temperature' && (
-              <div style={{ paddingBottom: 8 }}>
+              <div style={{ 
+                paddingBottom: 8,
+                animation: 'sectionExpand 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}>
                 {TEMPERATURES.map((temp) => (
                   <button
                     key={temp.value}
@@ -432,6 +500,49 @@ export default function SettingsDropdown() {
           </div>
         </div>
       )}
+
+      {/* Animations */}
+      <style jsx>{`
+        @keyframes dropdownSlideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes sectionExpand {
+          from {
+            opacity: 0;
+            max-height: 0;
+          }
+          to {
+            opacity: 1;
+            max-height: 500px;
+          }
+        }
+
+        /* Custom scrollbar */
+        div::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        div::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        div::-webkit-scrollbar-thumb {
+          background: #E5E5E5;
+          border-radius: 3px;
+        }
+
+        div::-webkit-scrollbar-thumb:hover {
+          background: #D1D5DB;
+        }
+      `}</style>
     </div>
   )
 }
