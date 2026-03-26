@@ -6,6 +6,7 @@ import Grainient from '@/components/Grainient'
 import { useDashboard } from '@/hooks/useDashboard'
 import AppShell from '@/components/layout/AppShell'
 import ModuleGrid from '@/components/layout/ModuleGrid'
+import SettingsDropdown from '@/components/layout/SettingsDropdown'
 
 const EXAMPLE_PROMPTS = [
   "Analyse Discord's business model",
@@ -248,118 +249,8 @@ export default function LandingPage() {
             transition: 'all 0.2s ease',
             position: 'relative',
           }}>
-            {/* API Key Selector Dropdown */}
-            <div style={{ position: 'relative' }}>
-              <button
-                onClick={() => setShowApiKeyDropdown(!showApiKeyDropdown)}
-                style={{
-                  padding: '0 12px',
-                  height: '100%',
-                  border: 'none',
-                  background: 'transparent',
-                  color: apiKeys.find(k => k.id === selectedApiKey)?.color || 'var(--t-secondary)',
-                  fontSize: 12,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  transition: 'all 0.15s ease',
-                  whiteSpace: 'nowrap',
-                  letterSpacing: '-0.1px',
-                }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                  <line x1="12" y1="22.08" x2="12" y2="12"/>
-                </svg>
-                {apiKeys.find(k => k.id === selectedApiKey)?.name}
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <path d="M6 9l6 6 6-6"/>
-                </svg>
-              </button>
-
-              {/* Dropdown Menu */}
-              {showApiKeyDropdown && (
-                <>
-                  {/* Backdrop */}
-                  <div 
-                    onClick={() => setShowApiKeyDropdown(false)}
-                    style={{
-                      position: 'fixed',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      zIndex: 999,
-                    }}
-                  />
-                  
-                  {/* Menu */}
-                  <div style={{
-                    position: 'absolute',
-                    top: 'calc(100% + 8px)',
-                    left: 0,
-                    minWidth: 140,
-                    background: '#fff',
-                    border: '1px solid var(--border)',
-                    borderRadius: 10,
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                    zIndex: 1000,
-                    overflow: 'hidden',
-                    animation: 'slideDown 0.2s ease-out',
-                  }}>
-                    <style>{`
-                      @keyframes slideDown {
-                        from {
-                          opacity: 0;
-                          transform: translateY(-8px);
-                        }
-                        to {
-                          opacity: 1;
-                          transform: translateY(0);
-                        }
-                      }
-                    `}</style>
-                    {apiKeys.map(apiKey => (
-                      <button
-                        key={apiKey.id}
-                        onClick={() => handleApiKeyChange(apiKey.id)}
-                        style={{
-                          width: '100%',
-                          padding: '10px 16px',
-                          border: 'none',
-                          background: 'transparent',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 10,
-                          cursor: 'pointer',
-                          fontSize: 12,
-                          color: selectedApiKey === apiKey.id ? apiKey.color : '#d1d5db',
-                          transition: 'all 0.15s ease',
-                          textAlign: 'left',
-                          position: 'relative',
-                          fontWeight: selectedApiKey === apiKey.id ? 600 : 400,
-                        }}
-                        onMouseEnter={e => {
-                          if (selectedApiKey !== apiKey.id) {
-                            e.currentTarget.style.color = apiKey.color
-                          }
-                        }}
-                        onMouseLeave={e => {
-                          if (selectedApiKey !== apiKey.id) {
-                            e.currentTarget.style.color = '#d1d5db'
-                          }
-                        }}
-                      >
-                        {apiKey.name}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
+            {/* Settings Dropdown (API Key, Model, Temperature) */}
+            <SettingsDropdown />
 
             {/* Vertical Divider */}
             <div style={{

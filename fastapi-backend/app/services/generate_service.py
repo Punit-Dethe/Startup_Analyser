@@ -27,13 +27,21 @@ class GenerateService:
         self.prompt_service = prompt_service
         self.validator = validator
     
-    async def generate(self, query: str, api_key: str | None = None) -> dict[str, Any]:
+    async def generate(
+        self,
+        query: str,
+        api_key: str | None = None,
+        model: str | None = None,
+        temperature: float | None = None
+    ) -> dict[str, Any]:
         """
         Generate complete dashboard from user query.
         
         Args:
             query: User's natural language query
             api_key: Optional custom Gemini API key (overrides default)
+            model: Optional model selection (overrides default)
+            temperature: Optional temperature setting (overrides default)
             
         Returns:
             GenerateResponse dict with dashboard and metadata
@@ -46,6 +54,10 @@ class GenerateService:
             if api_key:
                 self.gemini_client.reconfigure(api_key)
             
+            # Reconfigure model if provided
+            if model:
+                self.gemini_client.reconfigure_model(model)
+            
             # Load system prompt
             system_prompt = self.prompt_service.get_generate_prompt()
             logger.info(f"Generating dashboard for query: {query[:100]}")
@@ -53,11 +65,14 @@ class GenerateService:
             # Format user prompt
             user_prompt = f"User Query: {query}"
             
+            # Use provided temperature or default to 0.7
+            temp = temperature if temperature is not None else 0.7
+            
             # Call Gemini API with retry
             response = await self.gemini_client.generate_with_retry(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                temperature=0.7,  # Standard balanced temperature
+                temperature=temp,
                 max_tokens=16384,  # Increased for large dashboards
                 json_mode=True
             )

@@ -10,9 +10,15 @@ import { summarizeDashboard } from './summarize'
  */
 export async function generateDashboard(query: string): Promise<GenerateResponse> {
   try {
-    // Get selected API key from localStorage
+    // Get settings from localStorage
     const apiKey = typeof window !== 'undefined' 
       ? localStorage.getItem('currentGeminiApiKey') 
+      : null
+    const model = typeof window !== 'undefined'
+      ? localStorage.getItem('selectedGeminiModel')
+      : null
+    const temperature = typeof window !== 'undefined'
+      ? localStorage.getItem('selectedTemperature')
       : null
 
     // Debug logging
@@ -21,14 +27,22 @@ export async function generateDashboard(query: string): Promise<GenerateResponse
     } else {
       console.log('[KORE] No custom API key selected, using backend default')
     }
+    if (model) {
+      console.log('[KORE] Using model:', model)
+    }
+    if (temperature) {
+      console.log('[KORE] Using temperature:', temperature)
+    }
 
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
         ...(apiKey ? { 'X-Gemini-API-Key': apiKey } : {}),
+        ...(model ? { 'X-Gemini-Model': model } : {}),
+        ...(temperature ? { 'X-Gemini-Temperature': temperature } : {}),
       },
-      body: JSON.stringify({ query, apiKey }),
+      body: JSON.stringify({ query }),
     })
 
     if (!res.ok) throw new Error(`/api/generate returned ${res.status}`)
@@ -74,9 +88,15 @@ export interface ChatPayload {
  * Returns a CHAT / REFRESH / RELOAD action object.
  */
 export async function sendChatMessage(payload: ChatPayload): Promise<ChatResponse> {
-  // Get selected API key from localStorage
+  // Get settings from localStorage
   const apiKey = typeof window !== 'undefined' 
     ? localStorage.getItem('currentGeminiApiKey') 
+    : null
+  const model = typeof window !== 'undefined'
+    ? localStorage.getItem('selectedGeminiModel')
+    : null
+  const temperature = typeof window !== 'undefined'
+    ? localStorage.getItem('selectedTemperature')
     : null
 
   // Debug logging
@@ -85,14 +105,22 @@ export async function sendChatMessage(payload: ChatPayload): Promise<ChatRespons
   } else {
     console.log('[KORE] No custom API key selected, using backend default')
   }
+  if (model) {
+    console.log('[KORE] Using model:', model)
+  }
+  if (temperature) {
+    console.log('[KORE] Using temperature:', temperature)
+  }
 
   const res = await fetch('/api/chat', {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
       ...(apiKey ? { 'X-Gemini-API-Key': apiKey } : {}),
+      ...(model ? { 'X-Gemini-Model': model } : {}),
+      ...(temperature ? { 'X-Gemini-Temperature': temperature } : {}),
     },
-    body: JSON.stringify({ ...payload, apiKey }),
+    body: JSON.stringify(payload),
   })
 
   if (!res.ok) throw new Error(`/api/chat returned ${res.status}`)

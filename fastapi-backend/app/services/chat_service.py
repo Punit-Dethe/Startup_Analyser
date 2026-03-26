@@ -31,7 +31,9 @@ class ChatService:
         message: str,
         history: list[ChatMessage],
         context: DashboardContext,
-        api_key: str | None = None
+        api_key: str | None = None,
+        model: str | None = None,
+        temperature: float | None = None
     ) -> dict[str, Any]:
         """
         Process chat message and generate response.
@@ -41,6 +43,8 @@ class ChatService:
             history: Conversation history
             context: Current dashboard context
             api_key: Optional custom Gemini API key (overrides default)
+            model: Optional model selection (overrides default)
+            temperature: Optional temperature setting (overrides default)
             
         Returns:
             ChatResponse dict with action and data
@@ -52,6 +56,10 @@ class ChatService:
             # Reconfigure client with custom API key if provided
             if api_key:
                 self.gemini_client.reconfigure(api_key)
+            
+            # Reconfigure model if provided
+            if model:
+                self.gemini_client.reconfigure_model(model)
             
             # Load system prompt
             system_prompt = self.prompt_service.get_chat_prompt()
@@ -72,11 +80,14 @@ class ChatService:
 User Message: {message}
 """
             
+            # Use provided temperature or default to 0.7
+            temp = temperature if temperature is not None else 0.7
+            
             # Call Gemini API with retry
             response = await self.gemini_client.generate_with_retry(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                temperature=0.7,  # Standard balanced temperature
+                temperature=temp,
                 max_tokens=8192,
                 json_mode=True
             )

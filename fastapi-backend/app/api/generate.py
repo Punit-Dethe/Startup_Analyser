@@ -17,7 +17,9 @@ router = APIRouter()
 @router.post("/generate")
 async def generate_dashboard(
     request: GenerateRequest,
-    x_gemini_api_key: Optional[str] = Header(None)
+    x_gemini_api_key: Optional[str] = Header(None),
+    x_gemini_model: Optional[str] = Header(None),
+    x_gemini_temperature: Optional[str] = Header(None)
 ):
     """
     Generate a complete dashboard from a user query.
@@ -25,6 +27,8 @@ async def generate_dashboard(
     Args:
         request: Generate request with query field
         x_gemini_api_key: Optional custom Gemini API key from header
+        x_gemini_model: Optional model selection from header
+        x_gemini_temperature: Optional temperature setting from header
         
     Returns:
         GenerateResponse with dashboard, dashboard_state, and generated_at
@@ -36,9 +40,22 @@ async def generate_dashboard(
         # Get service
         service = get_generate_service()
         
+        # Parse temperature if provided
+        temperature = None
+        if x_gemini_temperature:
+            try:
+                temperature = float(x_gemini_temperature)
+            except ValueError:
+                logger.warning(f"Invalid temperature value: {x_gemini_temperature}, using default")
+        
         # Generate dashboard with timeout (3 minutes for complex queries)
         result = await asyncio.wait_for(
-            service.generate(request.query, api_key=x_gemini_api_key),
+            service.generate(
+                request.query,
+                api_key=x_gemini_api_key,
+                model=x_gemini_model,
+                temperature=temperature
+            ),
             timeout=180.0
         )
         

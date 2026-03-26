@@ -17,7 +17,9 @@ router = APIRouter()
 @router.post("/chat")
 async def chat(
     request: ChatRequest,
-    x_gemini_api_key: Optional[str] = Header(None)
+    x_gemini_api_key: Optional[str] = Header(None),
+    x_gemini_model: Optional[str] = Header(None),
+    x_gemini_temperature: Optional[str] = Header(None)
 ):
     """
     Handle conversational interactions with the dashboard.
@@ -25,6 +27,8 @@ async def chat(
     Args:
         request: Chat request with message, history, and context
         x_gemini_api_key: Optional custom Gemini API key from header
+        x_gemini_model: Optional model selection from header
+        x_gemini_temperature: Optional temperature setting from header
         
     Returns:
         ChatResponse with action (CHAT, NEW_DASHBOARD, or TEMPORARY_TAB) and data
@@ -36,9 +40,24 @@ async def chat(
         # Get service
         service = get_chat_service()
         
+        # Parse temperature if provided
+        temperature = None
+        if x_gemini_temperature:
+            try:
+                temperature = float(x_gemini_temperature)
+            except ValueError:
+                logger.warning(f"Invalid temperature value: {x_gemini_temperature}, using default")
+        
         # Process chat with timeout (3 minutes for complex responses)
         result = await asyncio.wait_for(
-            service.chat(request.message, request.history, request.context, api_key=x_gemini_api_key),
+            service.chat(
+                request.message,
+                request.history,
+                request.context,
+                api_key=x_gemini_api_key,
+                model=x_gemini_model,
+                temperature=temperature
+            ),
             timeout=180.0
         )
         

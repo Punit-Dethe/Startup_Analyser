@@ -42,6 +42,17 @@ class GeminiClient:
         self.model = genai.GenerativeModel(self.model_name)
         logger.info(f"Gemini client reconfigured with new API key: {api_key[:20]}...")
     
+    def reconfigure_model(self, model: str) -> None:
+        """
+        Reconfigure client with a different model.
+        
+        Args:
+            model: New model name
+        """
+        self.model_name = model
+        self.model = genai.GenerativeModel(model)
+        logger.info(f"Gemini client reconfigured with model: {model}")
+    
     async def generate(
         self,
         prompt: str,
