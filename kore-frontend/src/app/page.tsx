@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PixelBlast from '@/components/PixelBlast'
 import Grainient from '@/components/Grainient'
 import { useDashboard } from '@/hooks/useDashboard'
@@ -19,13 +19,16 @@ export default function LandingPage() {
   const [prompt, setPrompt]   = useState('')
   const [focused, setFocused] = useState(false)
   const [showApiKeyDropdown, setShowApiKeyDropdown] = useState(false)
-  const [selectedApiKey, setSelectedApiKey] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('selectedApiKey') || 'default'
-    }
-    return 'default'
-  })
+  const [selectedApiKey, setSelectedApiKey] = useState('default')
   const { payload, loading, error, activeTab, submit, setActiveTab, chatHistory, isChatLoading, sendChat, clearDashboard, removeTemporaryTab } = useDashboard()
+
+  // Load selected API key from localStorage on mount (client-side only)
+  useEffect(() => {
+    const savedKey = localStorage.getItem('selectedApiKey')
+    if (savedKey) {
+      setSelectedApiKey(savedKey)
+    }
+  }, [])
 
   // API Keys configuration
   const apiKeys = [
