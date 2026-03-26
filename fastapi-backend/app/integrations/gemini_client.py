@@ -17,13 +17,13 @@ logger = logging.getLogger("kore")
 class GeminiClient:
     """Wrapper for Google Gemini API with retry logic and error handling."""
     
-    def __init__(self, api_key: str, model: str = "gemini-3-flash-preview"):
+    def __init__(self, api_key: str, model: str = "gemini-2.5-flash"):
         """
         Initialize Gemini client with API key and model selection.
         
         Args:
             api_key: Google Gemini API key
-            model: Model name (default: gemini-3-flash-preview - latest and most capable)
+            model: Model name (default: gemini-2.5-flash - stable and reliable)
         """
         self.api_key = api_key
         self.model_name = model
