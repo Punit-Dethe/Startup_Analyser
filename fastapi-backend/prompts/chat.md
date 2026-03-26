@@ -213,6 +213,41 @@ Before creating modules, complete this thinking:
 **CRITICAL:** Use `series` (flat array), NOT `series_list`!
 **CRITICAL:** `labels` and `series` arrays MUST have same length and MUST NOT be empty!
 **CRITICAL:** Use REAL DATA, not placeholders like [0, 0, 0] or empty arrays!
+**CRITICAL:** Use appropriate scales - for revenue in billions, use actual numbers (e.g., 383.3 for $383.3B); for percentages use 0-100; for ratings use the actual scale (1-5, 1-10, etc.)
+
+**DATA SCALE RULES:**
+- Revenue in billions: use actual numbers (e.g., 383.3 for $383.3B, NOT 383000000000)
+- Percentages: use 0-100 scale (e.g., 25.5 for 25.5%, NOT 0.255)
+- Ratings: use actual scale (1-5: use 4.2; 1-10: use 8.5)
+- User counts in millions: use actual numbers (e.g., 247 for 247M users)
+- Small metrics: use appropriate decimals (e.g., 0.15 for 15 basis points)
+
+**CORRECT SCALE EXAMPLES:**
+```json
+// Revenue in billions
+{"series": [365.8, 383.3, 394.3, 383.3, 391.0]}
+
+// Percentages (0-100)
+{"series": [15.2, 18.5, 22.1, 25.8, 28.3]}
+
+// Ratings (1-5 scale)
+{"series": [3.2, 3.8, 4.1, 4.5, 4.7]}
+
+// User counts in millions
+{"series": [150, 180, 220, 270, 330]}
+```
+
+**WRONG - DO NOT USE THESE SCALES:**
+```json
+// ❌ Too generic for billion-dollar revenue
+{"series": [1, 2, 3, 4, 5]}
+
+// ❌ Too large! Use 383.3, 394.3 instead
+{"series": [383000000000, 394000000000]}
+
+// ❌ Wrong scale for percentages (use 15, 22, 31)
+{"series": [0.15, 0.22, 0.31]}
+```
 
 **Multi-Series Charts** (`chart.grouped` ONLY):
 ```json
@@ -233,6 +268,26 @@ Before creating modules, complete this thinking:
 **CRITICAL:** Use `series_list` (array of objects), NOT `series`!
 **CRITICAL:** `labels` array and ALL `values` arrays MUST have same length and MUST NOT be empty!
 **CRITICAL:** Use REAL DATA, not placeholders like [0, 0, 0] or empty arrays!
+**CRITICAL:** Use appropriate scales - same rules as single-series charts apply to ALL values arrays
+
+**SCALE EXAMPLES FOR GROUPED CHARTS:**
+```json
+// Comparing revenue in billions
+{
+  "series_list": [
+    {"name": "Apple", "values": [365.8, 383.3, 394.3, 383.3]},
+    {"name": "Samsung", "values": [197.7, 200.6, 234.1, 244.2]}
+  ]
+}
+
+// Comparing market share percentages
+{
+  "series_list": [
+    {"name": "iOS", "values": [25.5, 27.2, 28.8, 30.1]},
+    {"name": "Android", "values": [72.8, 71.1, 69.5, 68.2]}
+  ]
+}
+```
 
 **Pie/Donut Charts** (MUST be 2x2):
 ```json

@@ -93,6 +93,16 @@ function buildOption(
     grid: { top: 8, right: 10, bottom: 22, left: 10, containLabel: true },
   }
 
+  // Auto-detect data scale for better visualization
+  const allValues = [...series, ...series2].filter(v => typeof v === 'number' && !isNaN(v))
+  const dataMax = allValues.length > 0 ? Math.max(...allValues) : 100
+  const dataMin = allValues.length > 0 ? Math.min(...allValues) : 0
+  
+  // Determine if we need to adjust the scale
+  // If max value is very small (< 10), ensure chart shows proper scale
+  const needsScaleAdjustment = dataMax > 0 && dataMax < 10
+  const yAxisMax = needsScaleAdjustment ? Math.ceil(dataMax * 1.2) : undefined
+
   const axisStyles = {
     xAxis: {
       type: 'category' as const,
@@ -103,6 +113,7 @@ function buildOption(
     },
     yAxis: {
       type: 'value' as const,
+      max: yAxisMax,
       axisLabel: {
         fontSize: 10, color: '#9B9B97', fontFamily: 'Inter, system-ui',
         formatter: `{value}${unit}`,
@@ -160,11 +171,15 @@ function buildOption(
 
   // ── Horizontal bar chart ──────────────────────────────────────────
   if (variant === 'hbar') {
+    // Auto-detect scale for horizontal bars
+    const hbarMax = dataMax > 0 && dataMax < 10 ? Math.ceil(dataMax * 1.2) : undefined
+    
     return {
       ...base,
       grid: { top: 8, right: 40, bottom: 8, left: 10, containLabel: true },
       xAxis: {
         type: 'value' as const,
+        max: hbarMax,
         axisLabel: { fontSize: 10, color: '#9B9B97', fontFamily: 'Inter', formatter: `{value}${unit}` },
         splitLine: { lineStyle: { color: '#F4F4F2', type: 'dashed' as const } },
         axisLine: { show: false },

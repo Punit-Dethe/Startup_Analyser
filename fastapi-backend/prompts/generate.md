@@ -24,6 +24,7 @@
 - What are the insights? (strengths, weaknesses, opportunities, threats)
 - What's the story the data tells?
 - **CRITICAL: All chart data MUST be real numbers from research, not placeholders or zeros!**
+- **CRITICAL: Use realistic scales - if showing billions, use actual billions (e.g., 383.3, not 383); if showing percentages, use 0-100 scale; if showing ratings, use appropriate scale (1-5, 1-10, etc.)**
 
 ### 3. CATEGORIZE INFORMATION INTO TABS
 Think about logical groupings:
@@ -348,15 +349,23 @@ INVALID: 6x2, 5x6, 7x1, etc. (will BREAK!)
 **SINGLE-SERIES CHARTS** (use `series` as flat array):
 - `chart.line`, `chart.area`, `chart.bar`, `chart.hbar` (sizes: 2x2, 3x2, 4x2, 3x3, 4x3, 5x3, 5x4)
   
+  **DATA SCALE RULES:**
+  - Use realistic scales that match your data type
+  - Revenue in billions: use actual numbers (e.g., 383.3 for $383.3B, NOT 383000000000)
+  - Percentages: use 0-100 scale (e.g., 25.5 for 25.5%, NOT 0.255)
+  - Ratings: use actual scale (1-5: use 4.2; 1-10: use 8.5)
+  - User counts in millions: use actual numbers (e.g., 247 for 247M users)
+  - Small metrics: use appropriate decimals (e.g., 0.15 for 15 basis points)
+  
   **CORRECT EXAMPLE:**
   ```json
   {
     "type": "chart.bar",
     "data": {
       "title": "Revenue Growth",
-      "subtitle": "Last 5 years",
+      "subtitle": "Last 5 years (in billions USD)",
       "labels": ["2019", "2020", "2021", "2022", "2023"],
-      "series": [100, 120, 150, 180, 200]
+      "series": [365.8, 383.3, 394.3, 383.3, 391.0]
     }
   }
   ```
@@ -368,6 +377,18 @@ INVALID: 6x2, 5x6, 7x1, etc. (will BREAK!)
     "data": {
       "series_list": [{"name": "Revenue", "values": [100, 120, 150]}]
     }
+  }
+  ```
+  
+  **ALSO WRONG - BAD SCALES:**
+  ```json
+  {
+    "series": [1, 2, 3, 4, 5]  // ❌ Too generic for billion-dollar revenue!
+  }
+  ```
+  ```json
+  {
+    "series": [383000000000, 394000000000]  // ❌ Too large! Use 383.3, 394.3
   }
   ```
 
