@@ -45,7 +45,7 @@ For EACH piece of data, decide the best visualization:
 - **Two related numbers?** → `metric.dual` (revenue + profit, users + engagement)
 - **List of items with details?** → `table` (top products, key metrics, competitors)
 - **Progress toward goal?** → `gauge` (market share target, completion percentage)
-- **News or events?** → `feed.news` (recent announcements, press coverage)
+- **News or events?** → `feed` (recent announcements, press coverage)
 
 ### 5. PLAN EACH TAB'S GRID LAYOUT (CRITICAL!)
 **FOR EACH TAB, DO THIS:**
@@ -441,11 +441,43 @@ INVALID: 6x2, 5x6, 7x1, etc. (will BREAK!)
 
 **OTHER CHARTS:**
 - `chart.radar` (2x2, 3x3): `{title, subtitle, labels: [strings], series: [numbers]}`
+  
+  **RADAR CHART EXAMPLE:**
+  ```json
+  {
+    "type": "chart.radar",
+    "size": "2x2",
+    "data": {
+      "title": "Competitive Strength Profile",
+      "subtitle": "Key dimensions (1-5 scale)",
+      "labels": ["Innovation", "Brand", "Price", "Performance", "Design"],
+      "series": [4.2, 4.8, 3.5, 4.5, 4.7]
+    }
+  }
+  ```
+  **CRITICAL:** Radar charts auto-detect scale (1-5, 1-10, or 1-100). Use appropriate scale for your data!
+  
 - `chart.waterfall` (sizes: 3x3, 4x3, 5x3): `{title, subtitle, labels: [strings], invisible: [numbers], series: [numbers]}`
+  
+  **WATERFALL CHART EXAMPLE:**
+  ```json
+  {
+    "type": "chart.waterfall",
+    "size": "4x3",
+    "data": {
+      "title": "Revenue Breakdown",
+      "subtitle": "FY2023 (in billions)",
+      "labels": ["Starting Revenue", "Product Sales", "Services", "Other", "Ending Revenue"],
+      "series": [100, 50, 30, 20, 200],
+      "invisible": [0, 100, 150, 180, 0]
+    }
+  }
+  ```
+  **CRITICAL:** Waterfall requires BOTH `series` and `invisible` arrays. `invisible` sets starting positions for each bar.
 
 **Tables & Lists (HEIGHT RULES - CRITICAL!):**
 - `table` (sizes: 3x1, 4x1, 5x1, 3x2, 4x2, 5x2, 3x3, 4x3, 5x3, 3x4, 4x4, 5x4, 3x5, 4x5, 5x5):
-  `{title, subtitle, columns: [{key, label}], rows: [{key: value}]}`
+  `{title, subtitle, columns: [{key, label, sortable?, type?}], rows: [{key: value}]}`
   
   **HEIGHT BASED ON ROW COUNT:**
   - ≤3 rows → height 1 (sizes: 3x1, 4x1, 5x1)
@@ -453,19 +485,128 @@ INVALID: 6x2, 5x6, 7x1, etc. (will BREAK!)
   - 7-10 rows → height 3 (sizes: 3x3, 4x3, 5x3)
   - 11-15 rows → height 4 (sizes: 3x4, 4x4, 5x4)
   - 16+ rows → height 5 (sizes: 3x5, 4x5, 5x5)
+  
+  **TABLE EXAMPLE:**
+  ```json
+  {
+    "type": "table",
+    "size": "5x2",
+    "data": {
+      "title": "Top Products",
+      "subtitle": "By revenue",
+      "columns": [
+        {"key": "product", "label": "Product", "sortable": true},
+        {"key": "revenue", "label": "Revenue", "type": "currency"},
+        {"key": "growth", "label": "Growth", "type": "delta_badge"}
+      ],
+      "rows": [
+        {"product": "iPhone", "revenue": 200000000000, "growth": 15},
+        {"product": "Mac", "revenue": 40000000000, "growth": 8},
+        {"product": "iPad", "revenue": 30000000000, "growth": -3}
+      ]
+    }
+  }
+  ```
+  **Column types:** `delta_badge` (colored +/- badge), `currency` (formatted number), `percent` (adds %)
 
-- `feed.news` (same sizes and height rules as table):
-  `{title, subtitle, items: [{headline, source, date, sentiment: "positive"|"negative"}]}`
+- `feed` (same sizes and height rules as table):
+  `{title, subtitle, items: [{headline, source, date, sentiment: "positive"|"negative"|"neutral"}]}`
+  
+  **FEED EXAMPLE:**
+  ```json
+  {
+    "type": "feed",
+    "size": "3x2",
+    "data": {
+      "title": "Recent News",
+      "subtitle": "Last 7 days",
+      "items": [
+        {
+          "headline": "Company announces record quarterly earnings",
+          "source": "Bloomberg",
+          "date": "2 days ago",
+          "sentiment": "positive"
+        },
+        {
+          "headline": "New product line receives mixed reviews",
+          "source": "TechCrunch",
+          "date": "5 days ago",
+          "sentiment": "neutral"
+        }
+      ]
+    }
+  }
+  ```
 
 **Decorative:**
 - `deco.stats` (3x1, 4x1, 5x1 ONLY):
-  `{title, subtitle, metrics: [{label, value}]}`
+  `{title, subtitle, metrics: [{label, value, delta?, sub?}]}`
+  - delta: optional change indicator (e.g., "+12%", "-5%")
+  - sub: optional additional text
+  
 - `deco.timeline` (4x2, 5x2 ONLY):
   `{title, subtitle, points: [{year, event, status: "done"|"active"}]}`
+
+**Freeform:**
+- `freeform` (1x1, 2x1, 3x1, 2x2):
+  `{html: string}`
+  - Use SPARINGLY - only for custom HTML/CSS content
+  - Keep HTML simple and clean
+  - Use for labels, callouts, or special formatting
+  - DO NOT use for data that should be in proper modules
 
 **Special:**
 - `canvas.bmc` (5x4 or 5x5 ONLY):
   `{title, cells: [{section, points: [strings]}]}`
+  
+  **BMC EXAMPLE:**
+  ```json
+  {
+    "type": "canvas.bmc",
+    "size": "5x5",
+    "data": {
+      "title": "Business Model Canvas",
+      "cells": [
+        {
+          "section": "Value Proposition",
+          "points": [
+            "Premium quality products",
+            "Exceptional customer service",
+            "Innovative design",
+            "Seamless ecosystem"
+          ]
+        },
+        {
+          "section": "Customer Segments",
+          "points": [
+            "Tech-savvy professionals",
+            "Creative professionals",
+            "Enterprise clients"
+          ]
+        },
+        {
+          "section": "Revenue Streams",
+          "points": [
+            "Product sales",
+            "Services revenue",
+            "Subscription fees"
+          ]
+        }
+      ]
+    }
+  }
+  ```
+  
+  **Valid BMC Sections:**
+  - Key Partners
+  - Key Activities
+  - Key Resources
+  - Value Proposition (or Value Propositions)
+  - Customer Relationships
+  - Customer Segments
+  - Channels
+  - Cost Structure
+  - Revenue Streams
 
 ---
 
