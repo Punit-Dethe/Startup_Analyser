@@ -313,316 +313,44 @@ Background is white. Make sure all colors are dark/saturated enough to be clearl
 
 ## Module Types & Sizes
 
-**⚠️ CRITICAL: CHART DATA STRUCTURE RULES ⚠️**
+**⚠️ CRITICAL DATA STRUCTURE RULES:**
+- Single-series charts (`bar`, `line`, `area`, `hbar`): use `"series": [numbers]`
+- Multi-series (`grouped`): use `"series_list": [{"name": "X", "values": [numbers]}]`
+- Pie/donut: use `"segments": [{"label": "X", "value": N, "color_key": "primary"}]` (2x2 ONLY)
 
-**FOR SINGLE-SERIES CHARTS** (`chart.line`, `chart.area`, `chart.bar`, `chart.hbar`):
-- Use `"series": [10, 20, 30]` (FLAT array of numbers)
-- DO NOT use `series_list`!
-
-**FOR MULTI-SERIES CHARTS** (`chart.grouped` ONLY):
-- Use `"series_list": [{"name": "A", "values": [10, 20]}, {"name": "B", "values": [15, 25]}]`
-- DO NOT use `series`!
-
-**WRONG EXAMPLES (DO NOT DO THIS!):**
-❌ `chart.bar` with `series_list` → Will break!
-❌ `chart.line` with `series_list` → Will break!
-❌ `chart.donut` with size `1x1` → Must be `2x2`!
-
----
-
-**VALID MODULE SIZES (5x5 GRID ONLY):**
-
-Width options: 1, 2, 3, 4, 5
-Height options: 1, 2, 3, 4, 5
-Examples: 1x1, 2x1, 3x2, 4x3, 5x5, etc.
-INVALID: 6x2, 5x6, 7x1, etc. (will BREAK!)
+**DATA SCALE RULES:**
+- Revenue in billions: 383.3 (not 383000000000)
+- Percentages: 25.5 (not 0.255)
+- Ratings: use actual scale (4.2 for 1-5, 8.5 for 1-10)
 
 ---
 
 **KPIs & Gauges:**
-- `metric.kpi` (1x1 ONLY): `{title, value, delta, direction: "up"|"down"|"neutral", sparkline: [numbers]}`
-- `metric.dual` (2x1 ONLY): `{title, kpis: [{title, value, delta, direction, sparkline}]}`
-- `gauge` (1x1, 2x1, 2x2): `{title, value, max, unit, label, description}`
+- `metric.kpi` (1x1): `{title, value, delta, direction, sparkline?}`
+- `metric.dual` (2x1): `{title?, kpis: [{title, value, delta?, direction?, sparkline?}]}` (EXACTLY 2 items)
+- `gauge` (1x1, 2x1, 2x2): `{title, value, max, unit?, label?, description?}`
 
 **Charts:**
+- `chart.bar/line/area/hbar` (2x2, 3x2, 4x2, 3x3, 4x3, 5x3, 5x4): `{title, subtitle?, labels: [], series: [], unit?}`
+- `chart.grouped` (2x2, 3x2, 3x3, 4x3, 5x3): `{title, subtitle?, labels: [], series_list: [{name, values}]}`
+- `chart.pie/donut` (2x2 ONLY): `{title, subtitle?, segments: [{label, value, color_key}]}` - Labels 1-3 words max!
+- `chart.radar` (2x2, 3x3): `{title, subtitle?, labels: [], series: []}` - Auto-scales 1-5, 1-10, or 1-100
+- `chart.waterfall` (3x3, 4x3, 5x3): `{title, subtitle?, labels: [], series: [], invisible: []}`
 
-**SINGLE-SERIES CHARTS** (use `series` as flat array):
-- `chart.line`, `chart.area`, `chart.bar`, `chart.hbar` (sizes: 2x2, 3x2, 4x2, 3x3, 4x3, 5x3, 5x4)
-  
-  **DATA SCALE RULES:**
-  - Use realistic scales that match your data type
-  - Revenue in billions: use actual numbers (e.g., 383.3 for $383.3B, NOT 383000000000)
-  - Percentages: use 0-100 scale (e.g., 25.5 for 25.5%, NOT 0.255)
-  - Ratings: use actual scale (1-5: use 4.2; 1-10: use 8.5)
-  - User counts in millions: use actual numbers (e.g., 247 for 247M users)
-  - Small metrics: use appropriate decimals (e.g., 0.15 for 15 basis points)
-  
-  **CORRECT EXAMPLE:**
-  ```json
-  {
-    "type": "chart.bar",
-    "data": {
-      "title": "Revenue Growth",
-      "subtitle": "Last 5 years (in billions USD)",
-      "labels": ["2019", "2020", "2021", "2022", "2023"],
-      "series": [365.8, 383.3, 394.3, 383.3, 391.0]
-    }
-  }
-  ```
-  
-  **WRONG - DO NOT DO THIS:**
-  ```json
-  {
-    "type": "chart.bar",
-    "data": {
-      "series_list": [{"name": "Revenue", "values": [100, 120, 150]}]
-    }
-  }
-  ```
-  
-  **ALSO WRONG - BAD SCALES:**
-  ```json
-  {
-    "series": [1, 2, 3, 4, 5]  // ❌ Too generic for billion-dollar revenue!
-  }
-  ```
-  ```json
-  {
-    "series": [383000000000, 394000000000]  // ❌ Too large! Use 383.3, 394.3
-  }
-  ```
-
-**MULTI-SERIES CHARTS** (use `series_list` with objects):
-- `chart.grouped` (sizes: 2x2, 3x2, 3x3, 4x3, 5x3)
-  
-  **CORRECT EXAMPLE:**
-  ```json
-  {
-    "type": "chart.grouped",
-    "data": {
-      "title": "Revenue Comparison",
-      "subtitle": "Product A vs Product B",
-      "labels": ["Q1", "Q2", "Q3", "Q4"],
-      "series_list": [
-        {"name": "Product A", "values": [100, 120, 140, 160]},
-        {"name": "Product B", "values": [80, 90, 110, 130]}
-      ]
-    }
-  }
-  ```
-
-**PIE/DONUT CHARTS** (MUST be 2x2 size):
-- `chart.pie`, `chart.donut` (2x2 ONLY - NO 1x1, 3x3, or other sizes!)
-  
-  **CORRECT EXAMPLE:**
-  ```json
-  {
-    "type": "chart.donut",
-    "size": "2x2",
-    "data": {
-      "title": "Market Share",
-      "subtitle": "By segment",
-      "segments": [
-        {"label": "Segment A", "value": 45, "color_key": "primary"},
-        {"label": "Segment B", "value": 30, "color_key": "secondary"},
-        {"label": "Segment C", "value": 25, "color_key": "tertiary"}
-      ]
-    }
-  }
-  ```
-  
-  **CRITICAL LABEL LENGTH RULES:**
-  - Each segment label MUST be 1-3 words maximum
-  - Prefer 1-2 words when possible
-  - Examples of GOOD labels: "iPhone", "Services", "Mac", "iPad", "Wearables & Home"
-  - Examples of BAD labels: "Wearable, Home, and Accessories" (too long!)
-  - If category name is long, abbreviate: "Wearables, Home & Acc." → "Wearables"
-  
-  **WRONG - DO NOT DO THIS:**
-  ```json
-  {
-    "type": "chart.donut",
-    "size": "1x1"
-  }
-  ```
-  
-  **ALSO WRONG - LABELS TOO LONG:**
-  ```json
-  {
-    "segments": [
-      {"label": "Wearable, Home, and Accessories", "value": 10}  // ❌ Too long!
-    ]
-  }
-  ```
-
-**OTHER CHARTS:**
-- `chart.radar` (2x2, 3x3): `{title, subtitle, labels: [strings], series: [numbers]}`
-  
-  **RADAR CHART EXAMPLE:**
-  ```json
-  {
-    "type": "chart.radar",
-    "size": "2x2",
-    "data": {
-      "title": "Competitive Strength Profile",
-      "subtitle": "Key dimensions (1-5 scale)",
-      "labels": ["Innovation", "Brand", "Price", "Performance", "Design"],
-      "series": [4.2, 4.8, 3.5, 4.5, 4.7]
-    }
-  }
-  ```
-  **CRITICAL:** Radar charts auto-detect scale (1-5, 1-10, or 1-100). Use appropriate scale for your data!
-  
-- `chart.waterfall` (sizes: 3x3, 4x3, 5x3): `{title, subtitle, labels: [strings], invisible: [numbers], series: [numbers]}`
-  
-  **WATERFALL CHART EXAMPLE:**
-  ```json
-  {
-    "type": "chart.waterfall",
-    "size": "4x3",
-    "data": {
-      "title": "Revenue Breakdown",
-      "subtitle": "FY2023 (in billions)",
-      "labels": ["Starting Revenue", "Product Sales", "Services", "Other", "Ending Revenue"],
-      "series": [100, 50, 30, 20, 200],
-      "invisible": [0, 100, 150, 180, 0]
-    }
-  }
-  ```
-  **CRITICAL:** Waterfall requires BOTH `series` and `invisible` arrays. `invisible` sets starting positions for each bar.
-
-**Tables & Lists (HEIGHT RULES - CRITICAL!):**
-- `table` (sizes: 3x1, 4x1, 5x1, 3x2, 4x2, 5x2, 3x3, 4x3, 5x3, 3x4, 4x4, 5x4, 3x5, 4x5, 5x5):
-  `{title, subtitle, columns: [{key, label, sortable?, type?}], rows: [{key: value}]}`
-  
-  **HEIGHT BASED ON ROW COUNT:**
-  - ≤3 rows → height 1 (sizes: 3x1, 4x1, 5x1)
-  - 4-6 rows → height 2 (sizes: 3x2, 4x2, 5x2)
-  - 7-10 rows → height 3 (sizes: 3x3, 4x3, 5x3)
-  - 11-15 rows → height 4 (sizes: 3x4, 4x4, 5x4)
-  - 16+ rows → height 5 (sizes: 3x5, 4x5, 5x5)
-  
-  **TABLE EXAMPLE:**
-  ```json
-  {
-    "type": "table",
-    "size": "5x2",
-    "data": {
-      "title": "Top Products",
-      "subtitle": "By revenue",
-      "columns": [
-        {"key": "product", "label": "Product", "sortable": true},
-        {"key": "revenue", "label": "Revenue", "type": "currency"},
-        {"key": "growth", "label": "Growth", "type": "delta_badge"}
-      ],
-      "rows": [
-        {"product": "iPhone", "revenue": 200000000000, "growth": 15},
-        {"product": "Mac", "revenue": 40000000000, "growth": 8},
-        {"product": "iPad", "revenue": 30000000000, "growth": -3}
-      ]
-    }
-  }
-  ```
-  **Column types:** `delta_badge` (colored +/- badge), `currency` (formatted number), `percent` (adds %)
-
-- `feed` (same sizes and height rules as table):
-  `{title, subtitle, items: [{headline, source, date, sentiment: "positive"|"negative"|"neutral"}]}`
-  
-  **FEED EXAMPLE:**
-  ```json
-  {
-    "type": "feed",
-    "size": "3x2",
-    "data": {
-      "title": "Recent News",
-      "subtitle": "Last 7 days",
-      "items": [
-        {
-          "headline": "Company announces record quarterly earnings",
-          "source": "Bloomberg",
-          "date": "2 days ago",
-          "sentiment": "positive"
-        },
-        {
-          "headline": "New product line receives mixed reviews",
-          "source": "TechCrunch",
-          "date": "5 days ago",
-          "sentiment": "neutral"
-        }
-      ]
-    }
-  }
-  ```
+**Tables & Lists:**
+- `table` (3x1-5x5): `{title, subtitle?, columns: [{key, label, sortable?, type?}], rows: [{key: value}]}`
+  - Height by rows: ≤3→h1, 4-6→h2, 7-10→h3, 11-15→h4, 16+→h5
+  - Column types: `delta_badge`, `currency`, `percent`
+- `feed` (same sizes as table): `{title, subtitle?, items: [{headline, source, date?, sentiment?}]}`
 
 **Decorative:**
-- `deco.stats` (3x1, 4x1, 5x1 ONLY):
-  `{title, subtitle, metrics: [{label, value, delta?, sub?}]}`
-  - delta: optional change indicator (e.g., "+12%", "-5%")
-  - sub: optional additional text
-  
-- `deco.timeline` (4x2, 5x2 ONLY):
-  `{title, subtitle, points: [{year, event, status: "done"|"active"}]}`
-
-**Freeform:**
-- `freeform` (1x1, 2x1, 3x1, 2x2):
-  `{html: string}`
-  - Use SPARINGLY - only for custom HTML/CSS content
-  - Keep HTML simple and clean
-  - Use for labels, callouts, or special formatting
-  - DO NOT use for data that should be in proper modules
+- `deco.stats` (3x1, 4x1, 5x1): `{title?, metrics: [{label, value, delta?, sub?}]}`
+- `deco.timeline` (4x2, 5x2): `{title?, points: [{year, event}]}`
+- `freeform` (1x1, 2x1, 3x1, 2x2): `{html: string}` - Use sparingly!
 
 **Special:**
-- `canvas.bmc` (5x4 or 5x5 ONLY):
-  `{title, cells: [{section, points: [strings]}]}`
-  
-  **BMC EXAMPLE:**
-  ```json
-  {
-    "type": "canvas.bmc",
-    "size": "5x5",
-    "data": {
-      "title": "Business Model Canvas",
-      "cells": [
-        {
-          "section": "Value Proposition",
-          "points": [
-            "Premium quality products",
-            "Exceptional customer service",
-            "Innovative design",
-            "Seamless ecosystem"
-          ]
-        },
-        {
-          "section": "Customer Segments",
-          "points": [
-            "Tech-savvy professionals",
-            "Creative professionals",
-            "Enterprise clients"
-          ]
-        },
-        {
-          "section": "Revenue Streams",
-          "points": [
-            "Product sales",
-            "Services revenue",
-            "Subscription fees"
-          ]
-        }
-      ]
-    }
-  }
-  ```
-  
-  **Valid BMC Sections:**
-  - Key Partners
-  - Key Activities
-  - Key Resources
-  - Value Proposition (or Value Propositions)
-  - Customer Relationships
-  - Customer Segments
-  - Channels
-  - Cost Structure
-  - Revenue Streams
+- `canvas.bmc` (5x4, 5x5): `{title?, cells: [{section, points: []}]}`
+  - Valid sections: Key Partners, Key Activities, Key Resources, Value Proposition, Customer Relationships, Customer Segments, Channels, Cost Structure, Revenue Streams
 
 ---
 
