@@ -189,6 +189,8 @@ Result: Modules overflow outside the grid ❌
 3. **Maximum height: 5** (never 6, 7, 8... - will break!)
 4. **Modules CANNOT go outside the grid** - they must stay inside the 5x5 boundary
 5. **Calculate as you go**: Keep a running total until you hit exactly 25
+6. **CRITICAL: NEVER create a chart with empty data!** If you don't have data for a chart, DON'T create it. Use a different module type or skip it.
+7. **CRITICAL: ALL charts MUST have non-empty `series` or `series_list` AND non-empty `labels` arrays!**
 
 **HOW MODULES FILL THE GRID (LIKE TETRIS):**
 - A `3x2` module = 3 columns wide × 2 rows tall = 6 cells
@@ -629,21 +631,23 @@ Despite competition, Netflix maintains <span style="color:#2563EB;font-weight:70
 1. ✅ All `chart.bar`, `chart.line`, `chart.area`, `chart.hbar` use `"series": [numbers]` (NOT `series_list`)
 2. ✅ All `chart.grouped` use `"series_list": [{"name": "...", "values": [numbers]}]` (NOT `series`)
 3. ✅ All `chart.pie`, `chart.donut` have size `"2x2"` (NOT `1x1` or other sizes)
+4. ✅ **CRITICAL: NO CHART HAS EMPTY DATA!** Every chart MUST have non-empty `series`/`series_list` AND non-empty `labels`
+5. ✅ **CRITICAL: If you don't have real data for a chart, DON'T create it!** Use a table, KPI, or deco.stats module instead
 
 **GRID FILLING (MOST IMPORTANT!):**
-4. ✅ Count total cells for EACH tab: Sum of (width × height) = EXACTLY 25
-5. ✅ No module exceeds 5 width or 5 height
-6. ✅ NO GAPS - every cell is filled
-7. ✅ Modules stay INSIDE the 5x5 grid boundaries
+6. ✅ Count total cells for EACH tab: Sum of (width × height) = EXACTLY 25
+7. ✅ No module exceeds 5 width or 5 height
+8. ✅ NO GAPS - every cell is filled
+9. ✅ Modules stay INSIDE the 5x5 grid boundaries
 
 **MODULE VALIDATION:**
-8. ✅ All module sizes are from the valid lists
-9. ✅ Tables/feeds use correct height for row count (4-6 rows = height 2, etc.)
-10. ✅ Every module has an accent color (primary, secondary, tertiary, quaternary)
+10. ✅ All module sizes are from the valid lists
+11. ✅ Tables/feeds use correct height for row count (4-6 rows = height 2, etc.)
+12. ✅ Every module has an accent color (primary, secondary, tertiary, quaternary)
 
 **JSON VALIDATION:**
-11. ✅ Valid JSON syntax (no trailing commas, proper quotes)
-12. ✅ All required fields present for each module type
+13. ✅ Valid JSON syntax (no trailing commas, proper quotes)
+14. ✅ All required fields present for each module type
 
 **EXAMPLE CALCULATION FOR ONE TAB:**
 ```
