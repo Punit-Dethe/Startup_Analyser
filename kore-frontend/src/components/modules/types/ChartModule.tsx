@@ -16,6 +16,29 @@ export default function ChartModule({ module, variant }: ChartModuleProps) {
   const color = getAccentColor(module.accent)
   const { data } = module
 
+  // Debug logging for blank charts
+  useEffect(() => {
+    const series = (data.series as number[]) || []
+    const labels = (data.labels as string[]) || []
+    const seriesList = (data.series_list as Array<{ name: string; values: number[] }>) || []
+    
+    if (series.length === 0 && seriesList.length === 0) {
+      console.warn(`[ChartModule] Empty data for "${data.title}"`, {
+        variant,
+        data,
+        module
+      })
+    }
+    
+    if (labels.length === 0) {
+      console.warn(`[ChartModule] Empty labels for "${data.title}"`, {
+        variant,
+        data,
+        module
+      })
+    }
+  }, [data, variant, module])
+
   useEffect(() => {
     if (!ref.current) return
 
