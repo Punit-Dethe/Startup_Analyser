@@ -467,8 +467,6 @@ Total: 25 ✓
 2. Maximum width: 5 (never 6, 7, 8...)
 3. Maximum height: 5 (never 6, 7, 8...)
 4. Calculate as you go until = 25
-5. **CRITICAL: NEVER create a chart with empty data!** If you don't have data, use a table or text module instead
-6. **CRITICAL: ALL charts MUST have non-empty `series`/`series_list` AND non-empty `labels` arrays!**
 
 ---
 
@@ -482,14 +480,12 @@ Total: 25 ✓
 4. ✅ `chart.grouped` uses `series_list` (NOT `series`)
 5. ✅ `chart.pie/donut` are size `2x2`
 6. ✅ All `labels` and `series` arrays are non-empty and same length
-7. ✅ **CRITICAL: NO CHART HAS EMPTY DATA!** Every chart must have real numbers in series/series_list and real labels
-8. ✅ **CRITICAL: If you don't have data for a chart, DON'T create it!** Use a different module type
-9. ✅ Tables/feeds use `columns` + `rows` structure
-10. ✅ `metric.dual` has EXACTLY 2 items
-11. ✅ All modules have `tab` field set to new tab id
-12. ✅ All modules have valid `accent` color
-13. ✅ **CRITICAL:** Message field DOES NOT say "Created temporary tab" or similar short text
-14. ✅ **CRITICAL:** Message field contains comprehensive analysis with:
+7. ✅ Tables/feeds use `columns` + `rows` structure
+8. ✅ `metric.dual` has EXACTLY 2 items
+9. ✅ All modules have `tab` field set to new tab id
+10. ✅ All modules have valid `accent` color
+11. ✅ **CRITICAL:** Message field DOES NOT say "Created temporary tab" or similar short text
+12. ✅ **CRITICAL:** Message field contains comprehensive analysis with:
     - Multiple paragraphs (not just 1-2 sentences)
     - At least one markdown table with data
     - At least 3 inline HTML highlights for numbers
@@ -497,7 +493,7 @@ Total: 25 ✓
     - Multiple headers (##, ###) organizing sections
     - Lists for strengths/weaknesses/opportunities
     - Forward-looking recommendations
-15. ✅ Freeform used SPARINGLY (only as filler)
+13. ✅ Freeform used SPARINGLY (only as filler)
 
 **Example Calculation:**
 ```
