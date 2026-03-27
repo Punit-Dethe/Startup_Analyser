@@ -40,6 +40,34 @@ I performed a comprehensive deep-dive analysis of ALL module types, comparing:
 - `feed` - with sentiment options
 - `canvas.bmc` - with valid section names
 
+## Pie/Donut Chart Label Length Rules
+
+**Added to both generate.md and chat.md:**
+
+Pie and donut chart segment labels must be concise to fit in the legend:
+- **Maximum:** 3 words
+- **Preferred:** 1-2 words
+- **Examples of GOOD labels:**
+  - "iPhone"
+  - "Services"
+  - "Mac"
+  - "iPad"
+  - "Wearables"
+  - "Other Products"
+- **Examples of BAD labels:**
+  - "Wearable, Home, and Accessories" ❌ (too long!)
+  - "iPhone and Related Products" ❌ (too long!)
+  - "Services and Subscriptions Revenue" ❌ (too long!)
+
+**Abbreviation Guidelines:**
+- "Wearable, Home, and Accessories" → "Wearables"
+- "Other Products and Services" → "Other Products"
+- "International Markets" → "International"
+
+This prevents text overflow in the pie/donut chart legend.
+
+---
+
 ## All Module Types Verified
 
 ### ✅ Correctly Documented (No Changes Needed)

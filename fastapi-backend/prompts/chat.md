@@ -310,6 +310,13 @@ Before creating modules, complete this thinking:
 }
 ```
 
+**CRITICAL LABEL LENGTH RULES:**
+- Each segment label MUST be 1-3 words maximum
+- Prefer 1-2 words when possible
+- Examples of GOOD labels: "iPhone", "Services", "Mac", "iPad", "Wearables"
+- Examples of BAD labels: "Wearable, Home, and Accessories" (too long!)
+- If category name is long, abbreviate or shorten it
+
 **Radar Charts** (2x2, 3x3):
 ```json
 {
@@ -514,9 +521,10 @@ Total: 25 ✓
 3. ✅ Single-series charts use `series` (NOT `series_list`)
 4. ✅ `chart.grouped` uses `series_list` (NOT `series`)
 5. ✅ `chart.pie/donut` are size `2x2`
-6. ✅ All `labels` and `series` arrays are non-empty and same length
-7. ✅ Tables/feeds use `columns` + `rows` structure
-8. ✅ `metric.dual` has EXACTLY 2 items
+6. ✅ `chart.pie/donut` segment labels are 1-3 words maximum (prefer 1-2 words)
+7. ✅ All `labels` and `series` arrays are non-empty and same length
+8. ✅ Tables/feeds use `columns` + `rows` structure
+9. ✅ `metric.dual` has EXACTLY 2 items
 9. ✅ All modules have `tab` field set to new tab id
 10. ✅ All modules have valid `accent` color
 11. ✅ **CRITICAL:** Message field DOES NOT say "Created temporary tab" or similar short text

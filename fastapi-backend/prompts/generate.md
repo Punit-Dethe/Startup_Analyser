@@ -431,11 +431,27 @@ INVALID: 6x2, 5x6, 7x1, etc. (will BREAK!)
   }
   ```
   
+  **CRITICAL LABEL LENGTH RULES:**
+  - Each segment label MUST be 1-3 words maximum
+  - Prefer 1-2 words when possible
+  - Examples of GOOD labels: "iPhone", "Services", "Mac", "iPad", "Wearables & Home"
+  - Examples of BAD labels: "Wearable, Home, and Accessories" (too long!)
+  - If category name is long, abbreviate: "Wearables, Home & Acc." → "Wearables"
+  
   **WRONG - DO NOT DO THIS:**
   ```json
   {
     "type": "chart.donut",
     "size": "1x1"
+  }
+  ```
+  
+  **ALSO WRONG - LABELS TOO LONG:**
+  ```json
+  {
+    "segments": [
+      {"label": "Wearable, Home, and Accessories", "value": 10}  // ❌ Too long!
+    ]
   }
   ```
 
@@ -770,6 +786,7 @@ Despite competition, Netflix maintains <span style="color:#2563EB;font-weight:70
 1. ✅ All `chart.bar`, `chart.line`, `chart.area`, `chart.hbar` use `"series": [numbers]` (NOT `series_list`)
 2. ✅ All `chart.grouped` use `"series_list": [{"name": "...", "values": [numbers]}]` (NOT `series`)
 3. ✅ All `chart.pie`, `chart.donut` have size `"2x2"` (NOT `1x1` or other sizes)
+4. ✅ All `chart.pie`, `chart.donut` segment labels are 1-3 words maximum (prefer 1-2 words)
 
 **GRID FILLING (MOST IMPORTANT!):**
 4. ✅ Count total cells for EACH tab: Sum of (width × height) = EXACTLY 25
