@@ -164,7 +164,7 @@ Before creating modules, complete this thinking:
 - `kpi.dual` ← DOES NOT EXIST
 - `feed.news` ← DOES NOT EXIST
 
-## ✅ ONLY THESE 13 MODULE TYPES EXIST:
+## ✅ ONLY THESE 15 MODULE TYPES EXIST:
 
 1. `metric.kpi` (1x1) - Single KPI
 2. `metric.dual` (2x1) - EXACTLY 2 KPIs
@@ -175,10 +175,12 @@ Before creating modules, complete this thinking:
 7. `chart.grouped` - Multi-series comparison
 8. `chart.pie` (2x2 ONLY) - Pie chart
 9. `chart.donut` (2x2 ONLY) - Donut chart
-10. `table` - Data table
-11. `feed` - List/feed
-12. `deco.stats` (3x1, 4x1, 5x1) - Stat row
-13. `freeform` (1x1, 2x1, 3x1, 2x2) - HTML content (USE SPARINGLY!)
+10. `chart.radar` (2x2, 3x3) - Radar/spider chart
+11. `chart.waterfall` (3x3, 4x3, 5x3) - Waterfall chart
+12. `table` - Data table
+13. `feed` - List/feed
+14. `deco.stats` (3x1, 4x1, 5x1) - Stat row
+15. `freeform` (1x1, 2x1, 3x1, 2x2) - HTML content (USE SPARINGLY!)
 
 **Module Size Reference:**
 - `metric.kpi`: 1x1 only
@@ -186,6 +188,8 @@ Before creating modules, complete this thinking:
 - `chart.bar/line/area/hbar`: 2x2, 3x2, 4x2, 3x3, 4x3
 - `chart.grouped`: 2x2, 3x2, 3x3, 4x3
 - `chart.pie/donut`: 2x2 ONLY
+- `chart.radar`: 2x2, 3x3
+- `chart.waterfall`: 3x3, 4x3, 5x3
 - `table`: 3x1, 4x1, 5x1, 3x2, 4x2, 5x2, 3x3, 4x3, 5x3
 - `feed`: 2x1, 3x1, 4x1, 5x1, 2x2, 3x2, 4x2, 5x2
 - `deco.stats`: 3x1, 4x1, 5x1 only
@@ -305,6 +309,37 @@ Before creating modules, complete this thinking:
   }
 }
 ```
+
+**Radar Charts** (2x2, 3x3):
+```json
+{
+  "type": "chart.radar",
+  "size": "2x2",
+  "data": {
+    "title": "Competitive Strength Profile",
+    "subtitle": "Key dimensions",
+    "labels": ["Innovation", "Brand", "Price", "Performance", "Design"],
+    "series": [4.2, 4.8, 3.5, 4.5, 4.7]
+  }
+}
+```
+**CRITICAL:** Radar charts auto-detect scale (1-5, 1-10, or 1-100). Use appropriate scale for your data!
+
+**Waterfall Charts** (3x3, 4x3, 5x3):
+```json
+{
+  "type": "chart.waterfall",
+  "size": "4x3",
+  "data": {
+    "title": "Revenue Breakdown",
+    "subtitle": "FY2023",
+    "labels": ["Starting", "Product A", "Product B", "Services", "Ending"],
+    "series": [100, 50, 30, 20, 200],
+    "invisible": [0, 100, 150, 180, 0]
+  }
+}
+```
+**CRITICAL:** Waterfall requires both `series` and `invisible` arrays!
 
 **Tables**:
 ```json

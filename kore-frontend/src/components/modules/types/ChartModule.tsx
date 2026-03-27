@@ -385,5 +385,12 @@ function buildOption(
     }
   }
 
+  // ── Unsupported variant ──────────────────────────────────────────────────
+  console.error(`[ChartModule] Unsupported chart variant: "${variant}"`, {
+    supportedVariants: ['bar', 'grouped', 'hbar', 'line', 'area', 'donut', 'pie', 'waterfall', 'radar'],
+    receivedVariant: variant,
+    data
+  })
+  
   return base
 }
