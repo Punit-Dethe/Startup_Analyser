@@ -60,7 +60,7 @@ class GeminiClient:
         temperature: float = 0.7,
         max_tokens: int = 8192,
         json_mode: bool = True,
-        timeout: float = 150.0  # 2.5 minutes for complex queries
+        timeout: float = 300.0  # 5 minutes for complex queries
     ) -> dict[str, Any]:
         """
         Generate response from Gemini API.

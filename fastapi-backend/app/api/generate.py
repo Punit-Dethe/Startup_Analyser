@@ -48,7 +48,7 @@ async def generate_dashboard(
             except ValueError:
                 logger.warning(f"Invalid temperature value: {x_gemini_temperature}, using default")
         
-        # Generate dashboard with timeout (3 minutes for complex queries)
+        # Generate dashboard with timeout (5 minutes for complex queries)
         result = await asyncio.wait_for(
             service.generate(
                 request.query,
@@ -56,7 +56,7 @@ async def generate_dashboard(
                 model=x_gemini_model,
                 temperature=temperature
             ),
-            timeout=180.0
+            timeout=300.0
         )
         
         return result
@@ -66,7 +66,7 @@ async def generate_dashboard(
         raise HTTPException(
             status_code=status.HTTP_504_GATEWAY_TIMEOUT,
             detail={
-                "error": "Request timed out after 3 minutes",
+                "error": "Request timed out after 5 minutes",
                 "request_id": get_request_id()
             }
         )
