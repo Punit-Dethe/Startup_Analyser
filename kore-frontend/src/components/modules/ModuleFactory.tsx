@@ -6,6 +6,11 @@ import DualKpiModule from '@/components/modules/types/DualKpiModule'
 import TableModule  from '@/components/modules/types/TableModule'
 import FeedModule   from '@/components/modules/types/FeedModule'
 import BmcModule    from '@/components/modules/types/BmcModule'
+import LeanCanvasModule from '@/components/modules/types/LeanCanvasModule'
+import SwotModule   from '@/components/modules/types/SwotModule'
+import TamSamSomModule from '@/components/modules/types/TamSamSomModule'
+import CompetitiveMatrixModule from '@/components/modules/types/CompetitiveMatrixModule'
+import GtmStrategyModule from '@/components/modules/types/GtmStrategyModule'
 import DecoModule   from '@/components/modules/types/DecoModule'
 import FreeformModule from '@/components/modules/types/FreeformModule'
 
@@ -27,6 +32,17 @@ export default function ModuleFactory({ module }: { module: Module }) {
       return <FeedModule module={module} />
     case 'canvas':
       if (variant === 'bmc') return <BmcModule module={module} />
+      if (variant === 'lean') return <LeanCanvasModule module={module} />
+      return <PlaceholderModule type={module.type} />
+    case 'market':
+      if (variant === 'tamsamsom') return <TamSamSomModule module={module} />
+      return <PlaceholderModule type={module.type} />
+    case 'matrix':
+      if (variant === 'swot') return <SwotModule module={module} />
+      if (variant === 'competitive') return <CompetitiveMatrixModule module={module} />
+      return <PlaceholderModule type={module.type} />
+    case 'strategy':
+      if (variant === 'gtm') return <GtmStrategyModule module={module} />
       return <PlaceholderModule type={module.type} />
     case 'deco':
       return <DecoModule module={module} variant={variant} />

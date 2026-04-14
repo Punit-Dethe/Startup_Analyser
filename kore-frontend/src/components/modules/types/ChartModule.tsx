@@ -385,9 +385,61 @@ function buildOption(
     }
   }
 
+  // ── Funnel (TAM/SAM/SOM) ────────────────────────────────────────────────
+  if (variant === 'funnel') {
+    const segments = (data.segments as Array<{ label: string; value: number; sublabel?: string; color?: string }>) || []
+    return {
+      animation: true,
+      animationDuration: 800,
+      tooltip: {
+        trigger: 'item',
+        formatter: (params: any) => `${params.name}<br/>${params.value}${unit}`,
+      },
+      series: [{
+        type: 'funnel',
+        left: '10%',
+        top: 20,
+        bottom: 20,
+        width: '80%',
+        min: 0,
+        max: segments.length > 0 ? segments[0].value : 100,
+        minSize: '20%',
+        maxSize: '100%',
+        sort: 'descending',
+        gap: 8,
+        label: {
+          show: true,
+          position: 'inside',
+          formatter: (params: any) => {
+            const seg = segments[params.dataIndex]
+            return `{title|${seg.label}}\n{value|${params.value}${unit}}\n{sub|${seg.sublabel || ''}}`
+          },
+          rich: {
+            title: { fontSize: 13, fontWeight: 700, color: '#fff', lineHeight: 20 },
+            value: { fontSize: 20, fontWeight: 800, color: '#fff', lineHeight: 28 },
+            sub: { fontSize: 10, color: 'rgba(255,255,255,0.8)', lineHeight: 16 },
+          },
+        },
+        labelLine: { show: false },
+        itemStyle: {
+          borderColor: '#fff',
+          borderWidth: 2,
+        },
+        emphasis: {
+          label: { fontSize: 14 },
+        },
+        data: segments.map(s => ({
+          name: s.label,
+          value: s.value,
+          itemStyle: { color: s.color || color },
+        })),
+      }],
+    }
+  }
+
   // ── Unsupported variant ──────────────────────────────────────────────────
   console.error(`[ChartModule] Unsupported chart variant: "${variant}"`, {
-    supportedVariants: ['bar', 'grouped', 'hbar', 'line', 'area', 'donut', 'pie', 'waterfall', 'radar'],
+    supportedVariants: ['bar', 'grouped', 'hbar', 'line', 'area', 'donut', 'pie', 'waterfall', 'radar', 'funnel'],
     receivedVariant: variant,
     data
   })

@@ -20,6 +20,9 @@ export async function generateDashboard(query: string): Promise<GenerateResponse
     const temperature = typeof window !== 'undefined'
       ? localStorage.getItem('selectedTemperature')
       : null
+    const mode = typeof window !== 'undefined'
+      ? localStorage.getItem('analysisMode') || 'company'
+      : 'company'
 
     // Debug logging
     if (apiKey) {
@@ -33,6 +36,7 @@ export async function generateDashboard(query: string): Promise<GenerateResponse
     if (temperature) {
       console.log('[KORE] Using temperature:', temperature)
     }
+    console.log('[KORE] Using analysis mode:', mode)
 
     const res = await fetch('/api/generate', {
       method: 'POST',
@@ -41,6 +45,7 @@ export async function generateDashboard(query: string): Promise<GenerateResponse
         ...(apiKey ? { 'X-Gemini-API-Key': apiKey } : {}),
         ...(model ? { 'X-Gemini-Model': model } : {}),
         ...(temperature ? { 'X-Gemini-Temperature': temperature } : {}),
+        'X-Analysis-Mode': mode,
       },
       body: JSON.stringify({ query }),
     })

@@ -19,7 +19,8 @@ async def generate_dashboard(
     request: GenerateRequest,
     x_gemini_api_key: Optional[str] = Header(None),
     x_gemini_model: Optional[str] = Header(None),
-    x_gemini_temperature: Optional[str] = Header(None)
+    x_gemini_temperature: Optional[str] = Header(None),
+    x_analysis_mode: Optional[str] = Header("company")
 ):
     """
     Generate a complete dashboard from a user query.
@@ -29,6 +30,7 @@ async def generate_dashboard(
         x_gemini_api_key: Optional custom Gemini API key from header
         x_gemini_model: Optional model selection from header
         x_gemini_temperature: Optional temperature setting from header
+        x_analysis_mode: Analysis mode - "startup" or "company" (default: "company")
         
     Returns:
         GenerateResponse with dashboard, dashboard_state, and generated_at
@@ -48,13 +50,18 @@ async def generate_dashboard(
             except ValueError:
                 logger.warning(f"Invalid temperature value: {x_gemini_temperature}, using default")
         
+        # Determine which prompt file to use based on mode
+        prompt_file = "prompts/startupanalysis.md" if x_analysis_mode == "startup" else "prompts/generate.md"
+        logger.info(f"Using analysis mode: {x_analysis_mode}, prompt file: {prompt_file}")
+        
         # Generate dashboard with timeout (5 minutes for complex queries)
         result = await asyncio.wait_for(
             service.generate(
                 request.query,
                 api_key=x_gemini_api_key,
                 model=x_gemini_model,
-                temperature=temperature
+                temperature=temperature,
+                prompt_file=prompt_file
             ),
             timeout=300.0
         )

@@ -345,6 +345,7 @@ Background is white. Make sure all colors are dark/saturated enough to be clearl
 
 **Decorative:**
 - `deco.stats` (3x1, 4x1, 5x1): `{title?, metrics: [{label, value, delta?, sub?}]}`
+  - `delta` MUST be a STRING with +/- prefix (e.g., "+12%", "-5%", "+2.3x") - NOT a number!
 - `deco.timeline` (4x2, 5x2): `{title?, points: [{year, event}]}`
 - `freeform` (1x1, 2x1, 3x1, 2x2): `{html: string}` - Use sparingly!
 

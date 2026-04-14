@@ -54,6 +54,38 @@ class PromptService:
             logger.error(f"Failed to read prompt file {prompt_path}: {e}")
             raise PromptNotFoundError(f"Failed to read prompt file: {e}")
     
+    def get_prompt(self, file_path: str) -> str:
+        """
+        Load a prompt from a specific file path.
+        
+        Args:
+            file_path: Path to prompt file (e.g., "prompts/generate.md" or "prompts/startupanalysis.md")
+            
+        Returns:
+            Prompt content as string
+            
+        Raises:
+            PromptNotFoundError: Prompt file doesn't exist
+        """
+        prompt_path = Path(file_path)
+        
+        if not prompt_path.exists():
+            logger.error(f"Prompt file not found: {prompt_path}")
+            raise PromptNotFoundError(
+                f"Prompt file '{file_path}' not found"
+            )
+        
+        try:
+            with open(prompt_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            
+            logger.debug(f"Loaded prompt from {prompt_path}")
+            return content
+            
+        except Exception as e:
+            logger.error(f"Failed to read prompt file {prompt_path}: {e}")
+            raise PromptNotFoundError(f"Failed to read prompt file: {e}")
+    
     def get_generate_prompt(self) -> str:
         """Load the generation system prompt."""
         return self.load_prompt("generate")

@@ -38,7 +38,7 @@ export default function Topbar({
   // API Keys configuration
   const apiKeys = [
     { id: 'default', name: 'Default (Backend)', key: '' },
-    { id: 'key1', name: 'Leo', key: process.env.NEXT_PUBLIC_GEMINI_KEY_1 || '' },
+    { id: 'key1', name: 'TACO', key: process.env.NEXT_PUBLIC_GEMINI_KEY_1 || '' },
     { id: 'key2', name: 'Max', key: process.env.NEXT_PUBLIC_GEMINI_KEY_2 || '' },
     { id: 'key3', name: 'Sam', key: process.env.NEXT_PUBLIC_GEMINI_KEY_3 || '' },
     { id: 'key4', name: 'Alex', key: process.env.NEXT_PUBLIC_GEMINI_KEY_4 || '' },

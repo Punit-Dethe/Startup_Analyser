@@ -2,9 +2,12 @@
 
 import logging
 from datetime import datetime
-from typing import Any
+from typing import Any, Union
 
 from app.integrations.gemini_client import GeminiClient
+from app.integrations.groq_client import GroqClient
+from app.integrations.openrouter_client import OpenRouterClient
+from app.integrations.ai_client_factory import AIClientFactory
 from app.services.prompt_service import PromptService
 from app.validation.dashboard_validator import DashboardValidator
 from app.models.responses import GenerateResponse, CompactState, CompactTab, CompactModule
@@ -18,12 +21,12 @@ class GenerateService:
     
     def __init__(
         self,
-        gemini_client: GeminiClient,
+        ai_client: Union[GeminiClient, GroqClient, OpenRouterClient],
         prompt_service: PromptService,
         validator: DashboardValidator
     ):
         """Initialize with dependencies."""
-        self.gemini_client = gemini_client
+        self.ai_client = ai_client
         self.prompt_service = prompt_service
         self.validator = validator
     
@@ -32,16 +35,18 @@ class GenerateService:
         query: str,
         api_key: str | None = None,
         model: str | None = None,
-        temperature: float | None = None
+        temperature: float | None = None,
+        prompt_file: str = "prompts/generate.md"
     ) -> dict[str, Any]:
         """
         Generate complete dashboard from user query.
         
         Args:
             query: User's natural language query
-            api_key: Optional custom Gemini API key (overrides default)
+            api_key: Optional custom API key (Gemini or Groq - auto-detected)
             model: Optional model selection (overrides default)
             temperature: Optional temperature setting (overrides default)
+            prompt_file: Path to prompt file (default: "prompts/generate.md")
             
         Returns:
             GenerateResponse dict with dashboard and metadata
@@ -50,17 +55,18 @@ class GenerateService:
             ServiceError: Generation failed
         """
         try:
-            # Reconfigure client with custom API key if provided
+            # If custom API key provided, create new client with auto-detection
             if api_key:
-                self.gemini_client.reconfigure(api_key)
+                provider = AIClientFactory.detect_provider(api_key)
+                logger.info(f"Custom API key detected as {provider.upper()}")
+                self.ai_client = AIClientFactory.create_client(api_key=api_key, model=model)
+            elif model:
+                # Just reconfigure model if no custom key
+                self.ai_client.reconfigure_model(model)
             
-            # Reconfigure model if provided
-            if model:
-                self.gemini_client.reconfigure_model(model)
-            
-            # Load system prompt
-            system_prompt = self.prompt_service.get_generate_prompt()
-            logger.info(f"Generating dashboard for query: {query[:100]}")
+            # Load system prompt from specified file
+            system_prompt = self.prompt_service.get_prompt(prompt_file)
+            logger.info(f"Generating dashboard for query: {query[:100]} using prompt: {prompt_file}")
             
             # Format user prompt
             user_prompt = f"User Query: {query}"
@@ -68,8 +74,8 @@ class GenerateService:
             # Use provided temperature or default to 0.7
             temp = temperature if temperature is not None else 0.7
             
-            # Call Gemini API with retry
-            response = await self.gemini_client.generate_with_retry(
+            # Call AI API with retry
+            response = await self.ai_client.generate_with_retry(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
                 temperature=temp,

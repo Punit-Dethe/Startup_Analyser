@@ -10,6 +10,875 @@ export interface TabConfig {
 }
 
 export const dummyData: Record<string, TabConfig> = {
+  startup: {
+    id: 'startup',
+    label: 'Lean Canvas',
+    subject: 'Food Delivery Startup',
+    page_title: 'QuickBite - Food Delivery Startup',
+    chat_intro: "QuickBite is a hyperlocal food delivery platform targeting tier-2 Indian cities, focusing on home-cooked meals and local restaurants with 15-minute delivery promise.",
+    modules: [
+      {
+        id: 'startup-1', type: 'canvas.lean', size: '5x5', accent: 'primary',
+        data: {
+          title: 'QuickBite Lean Canvas',
+          cells: [
+            {
+              section: 'Problem',
+              points: [
+                'Limited food delivery options in tier-2 cities',
+                'Long delivery times (45-60 mins)',
+                'Lack of home-cooked meal options'
+              ]
+            },
+            {
+              section: 'Solution',
+              points: [
+                'Hyperlocal delivery network',
+                '15-minute delivery guarantee',
+                'Home chef marketplace',
+                'AI-powered route optimization'
+              ]
+            },
+            {
+              section: 'Key Metrics',
+              points: [
+                'Orders per day',
+                'Average delivery time',
+                'Customer retention rate',
+                'Home chef satisfaction'
+              ]
+            },
+            {
+              section: 'Unique Value Proposition',
+              points: [
+                'Fastest delivery in tier-2 cities',
+                'Authentic home-cooked meals',
+                'Support local economy'
+              ]
+            },
+            {
+              section: 'Unfair Advantage',
+              points: [
+                'Proprietary delivery algorithm',
+                'Exclusive home chef network',
+                'Deep local partnerships'
+              ]
+            },
+            {
+              section: 'Channels',
+              points: [
+                'Mobile app (iOS & Android)',
+                'WhatsApp ordering',
+                'Local influencer partnerships',
+                'College campus activations'
+              ]
+            },
+            {
+              section: 'Customer Segments',
+              points: [
+                'Working professionals (25-40)',
+                'College students',
+                'Families seeking variety',
+                'Health-conscious consumers'
+              ]
+            },
+            {
+              section: 'Cost Structure',
+              points: [
+                'Delivery fleet operations: 35%',
+                'Technology & platform: 20%',
+                'Marketing & acquisition: 25%',
+                'Operations & support: 15%',
+                'Admin & overhead: 5%'
+              ]
+            },
+            {
+              section: 'Revenue Streams',
+              points: [
+                'Delivery fees: ₹20-40 per order',
+                'Restaurant commission: 18-22%',
+                'Home chef commission: 15%',
+                'Subscription plans: ₹299/month',
+                'Advertising revenue'
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  market: {
+    id: 'market',
+    label: 'Market Size',
+    subject: 'Food Delivery Startup',
+    page_title: 'QuickBite - Market Analysis',
+    chat_intro: "Market sizing analysis for QuickBite's tier-2 city food delivery opportunity, showing TAM/SAM/SOM breakdown and growth projections.",
+    modules: [
+      {
+        id: 'market-1', type: 'market.tamsamsom', size: '3x3', accent: 'primary',
+        data: {
+          title: 'Market Opportunity Analysis',
+          subtitle: 'TAM → SAM → SOM Breakdown',
+          segments: [
+            { 
+              label: 'TAM', 
+              value: 12000, 
+              percentage: 100,
+              description: 'Total addressable market for food delivery across all of India. Represents the entire revenue opportunity if 100% market share was achieved.',
+              color: '#1F2937' 
+            },
+            { 
+              label: 'SAM', 
+              value: 3600, 
+              percentage: 30,
+              description: 'Serviceable available market in tier-2 cities only. This is 30% of TAM, representing our realistic geographic and demographic focus.',
+              color: '#F59E0B' 
+            },
+            { 
+              label: 'SOM', 
+              value: 180, 
+              percentage: 5,
+              description: 'Serviceable obtainable market by Year 3. Conservative 5% capture of SAM based on competitive landscape and growth projections.',
+              color: '#22C55E' 
+            }
+          ],
+          unit: '₹Cr'
+        }
+      },
+      {
+        id: 'market-2', type: 'metric.kpi', size: '1x1', accent: 'primary',
+        data: { 
+          title: 'TAM', 
+          value: '₹12K Cr', 
+          delta: 'Total Market', 
+          direction: 'up', 
+          sparkline: [8000, 9500, 10800, 12000] 
+        }
+      },
+      {
+        id: 'market-3', type: 'metric.kpi', size: '1x1', accent: 'secondary',
+        data: { 
+          title: 'SAM', 
+          value: '₹3.6K Cr', 
+          delta: '30% of TAM', 
+          direction: 'up', 
+          sparkline: [2400, 2900, 3200, 3600] 
+        }
+      },
+      {
+        id: 'market-4', type: 'metric.kpi', size: '1x1', accent: 'quaternary',
+        data: { 
+          title: 'SOM (Y3)', 
+          value: '₹180 Cr', 
+          delta: '5% of SAM', 
+          direction: 'up', 
+          sparkline: [20, 60, 120, 180] 
+        }
+      },
+      {
+        id: 'market-5', type: 'chart.area', size: '3x2', accent: 'tertiary',
+        data: {
+          title: 'Revenue Projection',
+          subtitle: '5-Year Growth Trajectory (₹Cr)',
+          labels: ['Y1', 'Y2', 'Y3', 'Y4', 'Y5'],
+          series: [20, 60, 180, 420, 850]
+        }
+      },
+      {
+        id: 'market-6', type: 'gauge', size: '2x2', accent: 'primary',
+        data: {
+          title: 'Market Penetration',
+          value: 5,
+          max: 100,
+          unit: '%',
+          label: 'Year 3 Target',
+          description: 'Capturing 5% of SAM represents ₹180 Cr in annual revenue by Year 3'
+        }
+      },
+      {
+        id: 'market-7', type: 'deco.stats', size: '5x1', accent: 'secondary',
+        data: {
+          title: 'Market Assumptions',
+          subtitle: 'Key drivers and constraints',
+          metrics: [
+            { label: 'Tier-2 Cities', value: '97 cities' },
+            { label: 'Target Population', value: '180M people' },
+            { label: 'Online Food Users', value: '24M (13%)' },
+            { label: 'Avg Order Value', value: '₹350' }
+          ]
+        }
+      },
+      {
+        id: 'market-8', type: 'chart.hbar', size: '2x2', accent: 'quaternary',
+        data: {
+          title: 'Competitive Market Share',
+          subtitle: 'Tier-2 Cities (Current)',
+          labels: ['Swiggy', 'Zomato', 'Local Players', 'Unorganized'],
+          series: [35, 30, 15, 20],
+          unit: '%'
+        }
+      }
+    ]
+  },
+  swot: {
+    id: 'swot',
+    label: 'SWOT',
+    subject: 'Food Delivery Startup',
+    page_title: 'QuickBite - SWOT Analysis',
+    chat_intro: "Strategic SWOT analysis identifying QuickBite's internal strengths and weaknesses, along with external opportunities and threats in the tier-2 food delivery market.",
+    modules: [
+      {
+        id: 'swot-1', type: 'matrix.swot', size: '4x4', accent: 'primary',
+        data: {
+          title: 'SWOT Analysis Matrix',
+          strengths: [
+            'Proprietary 15-min delivery algorithm',
+            'Exclusive home chef network',
+            'Deep local partnerships in tier-2 cities',
+            'Lower operational costs vs metro competitors',
+            'Strong founding team with local expertise'
+          ],
+          weaknesses: [
+            'Limited brand recognition',
+            'Smaller delivery fleet',
+            'Less capital than established players',
+            'Technology platform still maturing',
+            'Limited geographic coverage initially'
+          ],
+          opportunities: [
+            'Untapped tier-2 market with 180M population',
+            'Growing smartphone penetration (65% → 85%)',
+            'Rising disposable income in tier-2 cities',
+            'Competitor focus on metro markets',
+            'Government digital India initiatives'
+          ],
+          threats: [
+            'Swiggy/Zomato expansion to tier-2 cities',
+            'Price wars from well-funded competitors',
+            'Regulatory changes in gig economy',
+            'Rising fuel and operational costs',
+            'Customer loyalty to established brands'
+          ]
+        }
+      },
+      {
+        id: 'swot-2', type: 'metric.kpi', size: '1x1', accent: 'quaternary',
+        data: {
+          title: 'STRENGTHS',
+          value: '5',
+          delta: 'Key advantages',
+          direction: 'up',
+          sparkline: [3, 4, 5, 5]
+        }
+      },
+      {
+        id: 'swot-3', type: 'metric.kpi', size: '1x1', accent: 'secondary',
+        data: {
+          title: 'WEAKNESSES',
+          value: '5',
+          delta: 'Areas to improve',
+          direction: 'neutral',
+          sparkline: [6, 5, 5, 5]
+        }
+      },
+      {
+        id: 'swot-4', type: 'metric.kpi', size: '1x1', accent: 'tertiary',
+        data: {
+          title: 'OPPORTUNITIES',
+          value: '5',
+          delta: 'Market potential',
+          direction: 'up',
+          sparkline: [3, 4, 5, 5]
+        }
+      },
+      {
+        id: 'swot-5', type: 'metric.kpi', size: '1x1', accent: 'primary',
+        data: {
+          title: 'THREATS',
+          value: '5',
+          delta: 'Risk factors',
+          direction: 'down',
+          sparkline: [4, 5, 5, 5]
+        }
+      },
+      {
+        id: 'swot-6', type: 'chart.radar', size: '2x2', accent: 'primary',
+        data: {
+          title: 'Competitive Positioning',
+          subtitle: 'QuickBite vs Market Leaders',
+          labels: ['Speed', 'Coverage', 'Price', 'Quality', 'Tech'],
+          series: [95, 40, 85, 90, 70]
+        }
+      },
+      {
+        id: 'swot-7', type: 'chart.hbar', size: '3x2', accent: 'quaternary',
+        data: {
+          title: 'Strategic Priority Score',
+          subtitle: 'Focus areas for next 12 months',
+          labels: ['Fleet Expansion', 'Brand Building', 'Tech Platform', 'Chef Network', 'Fundraising'],
+          series: [95, 85, 75, 90, 80],
+          unit: ''
+        }
+      }
+    ]
+  },
+  competitive: {
+    id: 'competitive',
+    label: 'Competition',
+    subject: 'Food Delivery Startup',
+    page_title: 'QuickBite - Competitive Analysis',
+    chat_intro: "Competitive landscape analysis showing QuickBite's positioning against major players in the tier-2 food delivery market across key dimensions like price, speed, and market presence.",
+    modules: [
+      {
+        id: 'comp-1', type: 'matrix.competitive', size: '4x3', accent: 'primary',
+        data: {
+          title: 'Competitive Positioning Matrix',
+          subtitle: 'Price vs Speed Analysis',
+          xAxisLabel: 'Price (Lower → Higher)',
+          yAxisLabel: 'Delivery Speed (Slower → Faster)',
+          sizeLabel: 'Market Share (%)',
+          competitors: [
+            {
+              name: 'QuickBite',
+              x: 35,
+              y: 95,
+              size: 5,
+              color: '#FF6B35',
+              description: 'Our position: Fast delivery, competitive pricing'
+            },
+            {
+              name: 'Swiggy',
+              x: 60,
+              y: 65,
+              size: 35,
+              color: '#FC8019',
+              description: 'Market leader with premium pricing'
+            },
+            {
+              name: 'Zomato',
+              x: 55,
+              y: 60,
+              size: 30,
+              color: '#E23744',
+              description: 'Strong brand, moderate speed'
+            },
+            {
+              name: 'Local Players',
+              x: 25,
+              y: 40,
+              size: 15,
+              color: '#9CA3AF',
+              description: 'Low cost but slower delivery'
+            },
+            {
+              name: 'Dunzo',
+              x: 70,
+              y: 75,
+              size: 8,
+              color: '#0066FF',
+              description: 'Fast but expensive'
+            }
+          ]
+        }
+      },
+      {
+        id: 'comp-2', type: 'metric.kpi', size: '1x1', accent: 'primary',
+        data: {
+          title: 'OUR POSITION',
+          value: '#4',
+          delta: 'Market rank',
+          direction: 'up',
+          sparkline: [6, 5, 4, 4]
+        }
+      },
+      {
+        id: 'comp-3', type: 'metric.kpi', size: '1x1', accent: 'secondary',
+        data: {
+          title: 'MARKET SHARE',
+          value: '5%',
+          delta: 'Tier-2 cities',
+          direction: 'up',
+          sparkline: [1, 2, 3, 5]
+        }
+      },
+      {
+        id: 'comp-4', type: 'metric.kpi', size: '1x1', accent: 'tertiary',
+        data: {
+          title: 'DELIVERY TIME',
+          value: '15min',
+          delta: 'Fastest',
+          direction: 'up',
+          sparkline: [25, 20, 17, 15]
+        }
+      },
+      {
+        id: 'comp-5', type: 'chart.hbar', size: '3x2', accent: 'primary',
+        data: {
+          title: 'Feature Comparison Score',
+          subtitle: 'QuickBite vs Competitors (0-100)',
+          labels: ['Delivery Speed', 'Pricing', 'App UX', 'Restaurant Variety', 'Customer Service'],
+          series: [95, 85, 70, 60, 75],
+          unit: ''
+        }
+      },
+      {
+        id: 'comp-6', type: 'table', size: '2x2', accent: 'secondary',
+        data: {
+          title: 'Head-to-Head Comparison',
+          subtitle: 'Key metrics vs top competitors',
+          columns: [
+            { key: 'Metric', label: 'Metric' },
+            { key: 'QuickBite', label: 'QuickBite' },
+            { key: 'Swiggy', label: 'Swiggy' },
+            { key: 'Zomato', label: 'Zomato' }
+          ],
+          rows: [
+            { 'Metric': 'Avg Delivery', 'QuickBite': '15 min', 'Swiggy': '35 min', 'Zomato': '40 min' },
+            { 'Metric': 'Delivery Fee', 'QuickBite': '₹20-40', 'Swiggy': '₹30-60', 'Zomato': '₹25-50' },
+            { 'Metric': 'Commission', 'QuickBite': '15-18%', 'Swiggy': '20-25%', 'Zomato': '18-23%' },
+            { 'Metric': 'Min Order', 'QuickBite': '₹99', 'Swiggy': '₹149', 'Zomato': '₹129' }
+          ]
+        }
+      },
+      {
+        id: 'comp-7', type: 'deco.stats', size: '5x1', accent: 'quaternary',
+        data: {
+          title: 'Competitive Advantages',
+          subtitle: 'What sets QuickBite apart',
+          metrics: [
+            { label: 'Delivery Speed', value: '2.3x faster' },
+            { label: 'Home Chef Network', value: 'Exclusive' },
+            { label: 'Tier-2 Focus', value: 'First mover' },
+            { label: 'Local Partnerships', value: '500+ vendors' }
+          ]
+        }
+      }
+    ]
+  },
+  gtm: {
+    id: 'gtm',
+    label: 'Go-to-Market',
+    subject: 'Food Delivery Startup',
+    page_title: 'QuickBite - Go-to-Market Strategy',
+    chat_intro: "QuickBite's comprehensive go-to-market strategy outlining the 7 crucial steps from target market identification to optimization and scaling in tier-2 Indian cities.",
+    modules: [
+      {
+        id: 'gtm-1', type: 'strategy.gtm', size: '5x3', accent: 'primary',
+        data: {
+          title: 'Go-to-Market Strategy',
+          steps: [
+            {
+              title: 'Identify Target Market',
+              description: '',
+              icon: 'https://api.iconify.design/lucide:target.svg?color=white&width=48&height=48',
+              color: '#06B6D4',
+              points: [
+                'Tier-2 cities with 500K+ population',
+                'Working professionals & students',
+                'Smartphone penetration >65%',
+                'Existing food delivery gaps'
+              ]
+            },
+            {
+              title: 'Define Value Proposition',
+              description: '',
+              icon: 'https://api.iconify.design/lucide:sparkles.svg?color=white&width=48&height=48',
+              color: '#8B5CF6',
+              points: [
+                '15-minute delivery guarantee',
+                'Home-cooked meal options',
+                'Lower prices than metro competitors',
+                'Support local economy'
+              ]
+            },
+            {
+              title: 'Set Clear Objectives',
+              description: '',
+              icon: 'https://api.iconify.design/lucide:clipboard-check.svg?color=white&width=48&height=48',
+              color: '#F59E0B',
+              points: [
+                '10K users in first 6 months',
+                '500+ restaurant partners',
+                '₹5Cr GMV by Year 1',
+                '15-min avg delivery time'
+              ]
+            },
+            {
+              title: 'Develop Marketing Plan',
+              description: '',
+              icon: 'https://api.iconify.design/lucide:megaphone.svg?color=white&width=48&height=48',
+              color: '#EF4444',
+              points: [
+                'Local influencer partnerships',
+                'College campus activations',
+                'WhatsApp community marketing',
+                'Referral rewards program'
+              ]
+            },
+            {
+              title: 'Build Sales Pipeline',
+              description: '',
+              icon: 'https://api.iconify.design/lucide:trending-up.svg?color=white&width=48&height=48',
+              color: '#3B82F6',
+              points: [
+                'App download campaigns',
+                'First-order discounts (50% off)',
+                'Onboarding tutorial',
+                'Push notification engagement'
+              ]
+            },
+            {
+              title: 'Develop Pricing Strategy',
+              description: '',
+              icon: 'https://api.iconify.design/lucide:dollar-sign.svg?color=white&width=48&height=48',
+              color: '#10B981',
+              points: [
+                'Delivery fee: ₹20-40',
+                'Zero commission for first month',
+                'Subscription: ₹299/month',
+                'Dynamic surge pricing'
+              ]
+            },
+            {
+              title: 'Measure & Optimize',
+              description: '',
+              icon: 'https://api.iconify.design/lucide:bar-chart-3.svg?color=white&width=48&height=48',
+              color: '#EC4899',
+              points: [
+                'Track CAC, LTV, retention',
+                'A/B test marketing channels',
+                'Optimize delivery routes',
+                'Improve app conversion rate'
+              ]
+            }
+          ]
+        }
+      },
+      {
+        id: 'gtm-2', type: 'metric.kpi', size: '1x1', accent: 'primary',
+        data: {
+          title: 'TARGET CITIES',
+          value: '15',
+          delta: 'By Q2 2025',
+          direction: 'up',
+          sparkline: [3, 6, 10, 15]
+        }
+      },
+      {
+        id: 'gtm-3', type: 'metric.kpi', size: '1x1', accent: 'secondary',
+        data: {
+          title: 'CAC TARGET',
+          value: '₹150',
+          delta: 'Customer acquisition',
+          direction: 'down',
+          sparkline: [250, 200, 175, 150]
+        }
+      },
+      {
+        id: 'gtm-4', type: 'metric.kpi', size: '1x1', accent: 'tertiary',
+        data: {
+          title: 'CONVERSION',
+          value: '12%',
+          delta: 'App to order',
+          direction: 'up',
+          sparkline: [5, 8, 10, 12]
+        }
+      },
+      {
+        id: 'gtm-5', type: 'chart.area', size: '3x2', accent: 'quaternary',
+        data: {
+          title: 'Customer Acquisition Funnel',
+          subtitle: 'Monthly progression',
+          labels: ['Awareness', 'Interest', 'Download', 'First Order', 'Repeat'],
+          series: [100000, 25000, 10000, 3000, 1500]
+        }
+      },
+      {
+        id: 'gtm-6', type: 'chart.hbar', size: '2x2', accent: 'primary',
+        data: {
+          title: 'Marketing Channel ROI',
+          subtitle: 'Cost per acquisition by channel',
+          labels: ['Referrals', 'Social Media', 'Influencers', 'Campus Events', 'Paid Ads'],
+          series: [50, 120, 180, 200, 350],
+          unit: '₹'
+        }
+      },
+      {
+        id: 'gtm-7', type: 'deco.stats', size: '5x1', accent: 'secondary',
+        data: {
+          title: 'Launch Metrics (First 90 Days)',
+          subtitle: 'Target vs Actual',
+          metrics: [
+            { label: 'App Downloads', value: '15K / 10K' },
+            { label: 'First Orders', value: '3.5K / 3K' },
+            { label: 'Repeat Rate', value: '45% / 40%' },
+            { label: 'Avg Order Value', value: '₹385 / ₹350' }
+          ]
+        }
+      }
+    ]
+  },
+  milestones: {
+    id: 'milestones',
+    label: 'Milestones',
+    subject: 'Food Delivery Startup',
+    page_title: 'QuickBite - Milestones & Roadmap',
+    chat_intro: "QuickBite's journey from inception to scale, showing key milestones achieved and upcoming targets for growth in tier-2 Indian cities.",
+    modules: [
+      {
+        id: 'mile-1', type: 'deco.timeline', size: '5x2', accent: 'primary',
+        data: {
+          title: 'QuickBite Growth Timeline',
+          subtitle: 'Key milestones and future targets',
+          points: [
+            { year: 'Q1 2024', event: 'Company Founded', status: 'done' },
+            { year: 'Q2 2024', event: 'Seed Funding ₹5Cr', status: 'done' },
+            { year: 'Q3 2024', event: 'MVP Launch (3 cities)', status: 'done' },
+            { year: 'Q4 2024', event: 'First 10K Users', status: 'done' },
+            { year: 'Q1 2025', event: 'Expand to 15 Cities', status: 'active' },
+            { year: 'Q3 2025', event: 'Series A ₹50Cr', status: 'pending' },
+            { year: 'Q4 2025', event: '100K Daily Orders', status: 'pending' }
+          ]
+        }
+      },
+      {
+        id: 'mile-2', type: 'metric.kpi', size: '1x1', accent: 'quaternary',
+        data: {
+          title: 'MILESTONES',
+          value: '4/7',
+          delta: 'Completed',
+          direction: 'up',
+          sparkline: [1, 2, 3, 4]
+        }
+      },
+      {
+        id: 'mile-3', type: 'metric.kpi', size: '1x1', accent: 'primary',
+        data: {
+          title: 'CURRENT PHASE',
+          value: 'Growth',
+          delta: 'Q1 2025',
+          direction: 'up',
+          sparkline: [10, 20, 35, 50]
+        }
+      },
+      {
+        id: 'mile-4', type: 'metric.kpi', size: '1x1', accent: 'secondary',
+        data: {
+          title: 'NEXT TARGET',
+          value: 'Series A',
+          delta: 'Q3 2025',
+          direction: 'neutral',
+          sparkline: [0, 0, 0, 0]
+        }
+      },
+      {
+        id: 'mile-5', type: 'chart.area', size: '3x2', accent: 'tertiary',
+        data: {
+          title: 'User Growth Trajectory',
+          subtitle: 'Monthly Active Users',
+          labels: ['Q1 24', 'Q2 24', 'Q3 24', 'Q4 24', 'Q1 25', 'Q2 25'],
+          series: [0, 500, 3000, 10000, 25000, 50000]
+        }
+      },
+      {
+        id: 'mile-6', type: 'chart.hbar', size: '2x2', accent: 'quaternary',
+        data: {
+          title: 'Milestone Progress',
+          subtitle: 'Completion status by category',
+          labels: ['Product', 'Funding', 'Market', 'Team', 'Operations'],
+          series: [80, 60, 70, 90, 75],
+          unit: '%'
+        }
+      },
+      {
+        id: 'mile-7', type: 'deco.stats', size: '5x1', accent: 'primary',
+        data: {
+          title: 'Key Achievements',
+          subtitle: 'Major milestones reached',
+          metrics: [
+            { label: 'Cities Live', value: '3' },
+            { label: 'Restaurant Partners', value: '500+' },
+            { label: 'Home Chefs', value: '150+' },
+            { label: 'Delivery Partners', value: '200+' }
+          ]
+        }
+      }
+    ]
+  },
+  business_model: {
+    id: 'business_model',
+    label: 'Business Model',
+    subject: 'Food Delivery Startup',
+    page_title: 'QuickBite - Business Model Canvas',
+    chat_intro: "QuickBite's business model canvas detailing value proposition, customer segments, revenue streams, and key partnerships for the tier-2 food delivery market.",
+    modules: [
+      {
+        id: 'bmc-1', type: 'canvas.bmc', size: '5x4', accent: 'primary',
+        data: {
+          title: 'QuickBite Business Model Canvas',
+          cells: [
+            {
+              section: 'Key Partners',
+              points: [
+                'Local restaurants & cloud kitchens',
+                'Home chef network',
+                'Delivery fleet partners (gig workers)',
+                'Payment gateway providers',
+                'Local influencers & community leaders'
+              ]
+            },
+            {
+              section: 'Key Activities',
+              points: [
+                'Platform development & maintenance',
+                'Order fulfillment & delivery operations',
+                'Restaurant & chef onboarding',
+                'Marketing & customer acquisition',
+                'Quality control & customer support'
+              ]
+            },
+            {
+              section: 'Key Resources',
+              points: [
+                'Technology platform (app & backend)',
+                'Delivery fleet & logistics network',
+                'Restaurant & chef partnerships',
+                'Brand & local market presence',
+                'Customer data & insights'
+              ]
+            },
+            {
+              section: 'Value Proposition',
+              points: [
+                '15-minute delivery guarantee',
+                'Authentic home-cooked meals',
+                'Wide variety from local restaurants',
+                'Affordable pricing for tier-2 cities',
+                'Support local economy & home chefs'
+              ]
+            },
+            {
+              section: 'Customer Relationships',
+              points: [
+                'Self-service mobile app',
+                'WhatsApp ordering support',
+                '24/7 customer service',
+                'Loyalty rewards program',
+                'Personalized recommendations'
+              ]
+            },
+            {
+              section: 'Channels',
+              points: [
+                'Mobile app (iOS & Android)',
+                'WhatsApp Business',
+                'Social media marketing',
+                'Local influencer partnerships',
+                'College campus activations'
+              ]
+            },
+            {
+              section: 'Customer Segments',
+              points: [
+                'Working professionals (25-40 years)',
+                'College students',
+                'Families seeking meal variety',
+                'Health-conscious consumers',
+                'Time-constrained individuals'
+              ]
+            },
+            {
+              section: 'Cost Structure',
+              points: [
+                'Delivery operations: 35%',
+                'Technology & platform: 20%',
+                'Marketing & customer acquisition: 25%',
+                'Operations & support: 15%',
+                'Admin & overhead: 5%'
+              ]
+            },
+            {
+              section: 'Revenue Streams',
+              points: [
+                'Delivery fees: ₹20-40 per order',
+                'Restaurant commission: 18-22%',
+                'Home chef commission: 15%',
+                'Subscription plans: ₹299/month',
+                'Advertising revenue from partners'
+              ]
+            }
+          ]
+        }
+      },
+      {
+        id: 'bmc-2', type: 'metric.kpi', size: '1x1', accent: 'primary',
+        data: {
+          title: 'UNIT ECONOMICS',
+          value: '₹45',
+          delta: 'Profit/order',
+          direction: 'up',
+          sparkline: [20, 30, 38, 45]
+        }
+      },
+      {
+        id: 'bmc-3', type: 'metric.kpi', size: '1x1', accent: 'secondary',
+        data: {
+          title: 'CAC',
+          value: '₹180',
+          delta: 'Customer acquisition',
+          direction: 'down',
+          sparkline: [250, 220, 200, 180]
+        }
+      },
+      {
+        id: 'bmc-4', type: 'metric.kpi', size: '1x1', accent: 'tertiary',
+        data: {
+          title: 'LTV',
+          value: '₹2,400',
+          delta: 'Lifetime value',
+          direction: 'up',
+          sparkline: [1800, 2000, 2200, 2400]
+        }
+      },
+      {
+        id: 'bmc-5', type: 'metric.kpi', size: '1x1', accent: 'quaternary',
+        data: {
+          title: 'LTV:CAC',
+          value: '13.3x',
+          delta: 'Healthy ratio',
+          direction: 'up',
+          sparkline: [8, 10, 12, 13.3]
+        }
+      },
+      {
+        id: 'bmc-6', type: 'chart.pie', size: '2x2', accent: 'primary',
+        data: {
+          title: 'Revenue Mix',
+          subtitle: 'By source',
+          segments: [
+            { label: 'Restaurant Commission', value: 55, color_key: 'primary' },
+            { label: 'Delivery Fees', value: 30, color_key: 'secondary' },
+            { label: 'Subscriptions', value: 10, color_key: 'tertiary' },
+            { label: 'Advertising', value: 5, color_key: 'quaternary' }
+          ]
+        }
+      },
+      {
+        id: 'bmc-7', type: 'chart.pie', size: '2x2', accent: 'secondary',
+        data: {
+          title: 'Cost Breakdown',
+          subtitle: 'Operating expenses',
+          segments: [
+            { label: 'Delivery Operations', value: 35, color_key: 'primary' },
+            { label: 'Marketing', value: 25, color_key: 'secondary' },
+            { label: 'Technology', value: 20, color_key: 'tertiary' },
+            { label: 'Operations', value: 15, color_key: 'quaternary' },
+            { label: 'Admin', value: 5, color_key: 'primary' }
+          ]
+        }
+      }
+    ]
+  },
   overview: {
     id: 'overview',
     label: 'Overview',
@@ -151,8 +1020,8 @@ export const dummyData: Record<string, TabConfig> = {
       }
     ]
   },
-  market: {
-    id: 'market',
+  google_ : {
+    id: 'google_market',
     label: 'Market',
     subject: 'Alphabet (Google)',
     page_title: 'Google',
@@ -400,4 +1269,38 @@ export const dummyData: Record<string, TabConfig> = {
   }
 }
 
-export const DUMMY_PAYLOAD: DashboardPayload = {"meta":{"subject":"Acme Innovations Corp.","mode":"company","brand_color":"#4A90E2","colors":{"primary":"#4A90E2","secondary":"#50E3C2","tertiary":"#F5A623","quaternary":"#9013FE"},"logo_initials":"AIC","page_title":"Acme Innovations Corp. Performance Dashboard","page_subtitle":"Comprehensive insights into business operations and market standing."},"tabs":[{"id":"overview","label":"Overview"},{"id":"financials","label":"Financials"},{"id":"market","label":"Market"},{"id":"biz_model","label":"Business Model"},{"id":"competitors","label":"Competitors"}],"chat_intro":"Acme Innovations Corp. continues to demonstrate strong performance across key indicators. Revenue growth remains robust, driven by strategic product launches and expanding customer acquisition. Operational efficiency improvements are yielding positive results in profitability, while market sentiment remains favorable. The company is well-positioned for sustained growth and innovation.","modules":[{"id":"ov-1","tab":"overview","type":"chart.area","size":"4x2","accent":"primary","data":{"title":"Quarterly Revenue Growth","subtitle":"Q1-Q4 2023 (in $M)","labels":["Q1","Q2","Q3","Q4"],"series":[120,150,180,210]}},{"id":"ov-2","tab":"overview","type":"metric.kpi","size":"1x1","accent":"secondary","data":{"title":"QTD Revenue","value":"$210M","delta":"+8.7%","direction":"up","sparkline":[180,195,205,210]}},{"id":"ov-3","tab":"overview","type":"metric.kpi","size":"1x1","accent":"tertiary","data":{"title":"New Customers","value":"3,120","delta":"+15%","direction":"up","sparkline":[2500,2700,2900,3120]}},{"id":"ov-4","tab":"overview","type":"deco.stats","size":"3x1","accent":"quaternary","data":{"title":"Operational Highlights","subtitle":"Key performance indicators","metrics":[{"label":"Sales Cycle","value":"35 days"},{"label":"Product Launches","value":"2"},{"label":"Employee NPS","value":"72"}]}},{"id":"ov-5","tab":"overview","type":"metric.dual","size":"2x1","accent":"primary","data":{"title":"Profitability Metrics","kpis":[{"title":"Gross Margin","value":"65%","delta":"+1.2%","direction":"up","sparkline":[63,64,64.5,65]},{"title":"Operating Income","value":"$45M","delta":"+10%","direction":"up","sparkline":[38,40,43,45]}]}},{"id":"ov-6","tab":"overview","type":"table","size":"5x2","accent":"secondary","data":{"title":"Recent Key Activities","subtitle":"Summary of notable events","columns":[{"key":"date","label":"Date"},{"key":"activity","label":"Activity"},{"key":"status","label":"Status"}],"rows":[{"date":"2023-12-15","activity":"Product X v2 Launch","status":"Completed"},{"date":"2023-12-01","activity":"Strategic Partnership Signed","status":"Completed"},{"date":"2023-11-20","activity":"Quarterly Board Meeting","status":"Completed"},{"date":"2023-11-10","activity":"Market Expansion Initiative","status":"In Progress"}]}},{"id":"fi-1","tab":"financials","type":"chart.waterfall","size":"3x3","accent":"primary","data":{"title":"P&L Contribution Analysis","subtitle":"Annual breakdown (in $M)","labels":["Revenue","COGS","Gross Profit","OpEx","EBIT","Interest","Taxes","Net Income"],"invisible":[0,1,3,5,6],"series":[1000,-300,700,-250,450,-50,-100,300]}},{"id":"fi-2","tab":"financials","type":"metric.dual","size":"2x1","accent":"secondary","data":{"title":"Financial Health Ratios","kpis":[{"title":"Debt/Equity","value":"0.8x","delta":"-0.05x","direction":"down","sparkline":[0.9,0.88,0.85,0.8]},{"title":"Current Ratio","value":"1.7x","delta":"+0.1x","direction":"up","sparkline":[1.5,1.6,1.65,1.7]}]}},{"id":"fi-3","tab":"financials","type":"chart.donut","size":"2x2","accent":"tertiary","data":{"title":"Revenue Mix by Product Line","subtitle":"FY2023","segments":[{"label":"Product A","value":45,"color_key":"primary"},{"label":"Product B","value":30,"color_key":"secondary"},{"label":"Services","value":25,"color_key":"tertiary"}]}},{"id":"fi-4","tab":"financials","type":"table","size":"3x2","accent":"quaternary","data":{"title":"Balance Sheet Snapshot","subtitle":"As of Dec 31, 2023 (in $M)","columns":[{"key":"item","label":"Item"},{"key":"current","label":"Current"},{"key":"previous","label":"Previous"}],"rows":[{"item":"Cash","current":150,"previous":120},{"item":"Receivables","current":80,"previous":70},{"item":"Payables","current":-60,"previous":-55},{"item":"Equity","current":500,"previous":480}]}},{"id":"fi-5","tab":"financials","type":"chart.grouped","size":"2x2","accent":"primary","data":{"title":"Operating Expenses Trend","subtitle":"Q1-Q4 2023 (in $M)","labels":["Q1","Q2","Q3","Q4"],"series_list":[{"name":"R&D","values":[50,55,60,62]},{"name":"Marketing","values":[30,32,35,38]},{"name":"G&A","values":[20,21,22,23]}]}},{"id":"ma-1","tab":"market","type":"chart.line","size":"3x2","accent":"primary","data":{"title":"Market Share Evolution","subtitle":"Last 12 months (%)","labels":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"series":[15.2,15.5,15.8,16,16.1,16.3,16.5,16.4,16.6,16.8,17,17.2]}},{"id":"ma-2","tab":"market","type":"chart.bar","size":"2x2","accent":"secondary","data":{"title":"Regional Sales Performance","subtitle":"Q4 2023 (in $M)","labels":["North America","Europe","Asia","South America"],"series":[120,95,80,30]}},{"id":"ma-3","tab":"market","type":"feed.news","size":"3x2","accent":"tertiary","data":{"title":"Industry News & Trends","subtitle":"Latest headlines","items":[{"headline":"New AI regulations could impact tech sector","source":"TechCrunch","date":"2024-01-20","sentiment":"negative"},{"headline":"Acme Innovations announces record Q4 earnings","source":"BusinessWire","date":"2024-01-18","sentiment":"positive"},{"headline":"Competitor Z launches new product line","source":"Market Insights","date":"2024-01-15","sentiment":"neutral"}]}},{"id":"ma-4","tab":"market","type":"metric.dual","size":"2x1","accent":"quaternary","data":{"title":"Market Valuation Metrics","kpis":[{"title":"Market Cap","value":"$2.5B","delta":"+5%","direction":"up","sparkline":[2.3,2.4,2.45,2.5]},{"title":"P/E Ratio","value":"25x","delta":"-0.5x","direction":"down","sparkline":[26,25.8,25.5,25]}]}},{"id":"ma-5","tab":"market","type":"metric.kpi","size":"1x1","accent":"primary","data":{"title":"Brand Sentiment","value":"85%","delta":"+2%","direction":"up","sparkline":[80,82,83,85]}},{"id":"ma-6","tab":"market","type":"metric.kpi","size":"1x1","accent":"secondary","data":{"title":"Website Traffic","value":"1.2M","delta":"+10%","direction":"up","sparkline":[1000000,1100000,1150000,1200000]}},{"id":"ma-7","tab":"market","type":"deco.stats","size":"5x1","accent":"tertiary","data":{"title":"Key Market Indicators","subtitle":"Snapshot of relevant metrics","metrics":[{"label":"Industry Growth","value":"8%"},{"label":"Customer Satisfaction","value":"92%"},{"label":"Innovation Index","value":"7.8/10"},{"label":"Regulatory Risk","value":"Medium"}]}},{"id":"bm-1","tab":"biz_model","type":"gauge","size":"1x1","accent":"primary","data":{"title":"Customer Retention Rate","value":92,"max":100,"unit":"%","label":"High","description":"Percentage of customers retained over the last year."}},{"id":"bm-2","tab":"biz_model","type":"metric.kpi","size":"1x1","accent":"secondary","data":{"title":"ARR Growth","value":"+28%","delta":"+3%","direction":"up","sparkline":[20,22,25,28]}},{"id":"bm-3","tab":"biz_model","type":"metric.kpi","size":"1x1","accent":"tertiary","data":{"title":"Churn Rate","value":"5.5%","delta":"-0.5%","direction":"down","sparkline":[6.5,6.2,6,5.5]}},{"id":"bm-4","tab":"biz_model","type":"metric.dual","size":"2x1","accent":"quaternary","data":{"title":"Acquisition & Value","kpis":[{"title":"CAC","value":"$150","delta":"-$10","direction":"down","sparkline":[170,165,160,150]},{"title":"LTV/CAC Ratio","value":"5.2x","delta":"+0.2x","direction":"up","sparkline":[4.8,4.9,5,5.2]}]}},{"id":"bm-5","tab":"biz_model","type":"canvas.bmc","size":"5x4","accent":"primary","data":{"title":"Acme Innovations Business Model Canvas","cells":[{"section":"Key Partners","points":["Strategic Alliances","Technology Providers","Distribution Channels"]},{"section":"Key Activities","points":["Product Development","Marketing & Sales","Customer Support","Platform Maintenance"]},{"section":"Key Resources","points":["Talented Workforce","Proprietary Technology","Brand Reputation","Financial Capital"]},{"section":"Value Propositions","points":["Innovative Solutions","Enhanced Efficiency","Scalability","Reliable Support"]},{"section":"Customer Relationships","points":["Personalized Service","Community Engagement","Self-Service Portals"]},{"section":"Channels","points":["Direct Sales","Online Platform","Partner Network","Conferences"]},{"section":"Customer Segments","points":["Small & Medium Businesses","Enterprise Clients","Tech Enthusiasts"]},{"section":"Cost Structure","points":["R&D Expenses","Marketing Costs","Operational Overheads","Personnel Salaries"]},{"section":"Revenue Streams","points":["Subscription Fees","Service Packages","Premium Features","Licensing"]}]}},{"id":"co-1","tab":"competitors","type":"chart.grouped","size":"4x2","accent":"primary","data":{"title":"Competitive Revenue Comparison","subtitle":"Q4 2023 (in $M)","labels":["Acme","Comp A","Comp B","Comp C"],"series_list":[{"name":"Product X","values":[120,90,75,50]},{"name":"Product Y","values":[90,80,60,40]}]}},{"id":"co-2","tab":"competitors","type":"metric.kpi","size":"1x1","accent":"secondary","data":{"title":"Competitor A Market Share","value":"15%","delta":"-1%","direction":"down","sparkline":[16,15.5,15.2,15]}},{"id":"co-3","tab":"competitors","type":"metric.kpi","size":"1x1","accent":"tertiary","data":{"title":"Competitor B Innovation Score","value":"7.1/10","delta":"+0.2","direction":"up","sparkline":[6.8,6.9,7,7.1]}},{"id":"co-4","tab":"competitors","type":"table","size":"3x3","accent":"quaternary","data":{"title":"Competitor SWOT Analysis - Key Players","subtitle":"Summary for Top 3 Competitors","columns":[{"key":"competitor","label":"Competitor"},{"key":"strengths","label":"Strengths"},{"key":"weaknesses","label":"Weaknesses"},{"key":"opportunities","label":"Opportunities"},{"key":"threats","label":"Threats"}],"rows":[{"competitor":"Comp A","strengths":"Strong brand, large user base","weaknesses":"Legacy tech, slow adaptation","opportunities":"New market entry","threats":"Disruptive startups"},{"competitor":"Comp B","strengths":"Niche expertise, agile development","weaknesses":"Limited scale, high pricing","opportunities":"Partnerships","threats":"Market consolidation"},{"competitor":"Comp C","strengths":"Aggressive pricing, global reach","weaknesses":"Quality issues, poor support","opportunities":"Emerging markets","threats":"Regulatory scrutiny"}]}},{"id":"co-5","tab":"competitors","type":"chart.radar","size":"2x2","accent":"primary","data":{"title":"Acme Competitive Feature Matrix","subtitle":"Acme's standing on key product features","labels":["Innovation","Usability","Pricing","Support","Performance"],"series":[90,85,70,80,95]}},{"id":"co-6","tab":"competitors","type":"metric.dual","size":"2x1","accent":"secondary","data":{"title":"Competitive Pricing Index","kpis":[{"title":"Acme Price Index","value":"100","delta":"0","direction":"neutral","sparkline":[100,100,100,100]},{"title":"Avg Comp Price Index","value":"95","delta":"-2","direction":"down","sparkline":[98,97,96,95]}]}}]};
+export const DUMMY_PAYLOAD: DashboardPayload = {
+  meta: {
+    subject: 'QuickBite - Food Delivery Startup',
+    mode: 'startup',
+    brand_color: '#FF6B35',
+    colors: {
+      primary: '#FF6B35',
+      secondary: '#F7B801',
+      tertiary: '#0496FF',
+      quaternary: '#22C55E'
+    },
+    logo_initials: 'QB',
+    page_title: 'QuickBite Analysis',
+    page_subtitle: 'Hyperlocal food delivery for tier-2 Indian cities'
+  },
+  tabs: [
+    { id: 'startup', label: 'Lean Canvas' },
+    { id: 'market', label: 'Market Size' },
+    { id: 'swot', label: 'SWOT' },
+    { id: 'competitive', label: 'Competition' },
+    { id: 'gtm', label: 'Go-to-Market' },
+    { id: 'milestones', label: 'Milestones' },
+    { id: 'business_model', label: 'Business Model' }
+  ],
+  chat_intro: dummyData.startup.chat_intro,
+  modules: [
+    ...dummyData.startup.modules.map(m => ({ ...m, tab: 'startup' })),
+    ...dummyData.market.modules.map(m => ({ ...m, tab: 'market' })),
+    ...dummyData.swot.modules.map(m => ({ ...m, tab: 'swot' })),
+    ...dummyData.competitive.modules.map(m => ({ ...m, tab: 'competitive' })),
+    ...dummyData.gtm.modules.map(m => ({ ...m, tab: 'gtm' })),
+    ...dummyData.milestones.modules.map(m => ({ ...m, tab: 'milestones' })),
+    ...dummyData.business_model.modules.map(m => ({ ...m, tab: 'business_model' }))
+  ]
+};

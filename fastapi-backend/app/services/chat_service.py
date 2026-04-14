@@ -1,9 +1,12 @@
 """Chat interaction service."""
 
 import logging
-from typing import Any
+from typing import Any, Union
 
 from app.integrations.gemini_client import GeminiClient
+from app.integrations.groq_client import GroqClient
+from app.integrations.openrouter_client import OpenRouterClient
+from app.integrations.ai_client_factory import AIClientFactory
 from app.services.prompt_service import PromptService
 from app.validation.chat_validator import ChatValidator
 from app.models.requests import ChatMessage, DashboardContext
@@ -17,12 +20,12 @@ class ChatService:
     
     def __init__(
         self,
-        gemini_client: GeminiClient,
+        ai_client: Union[GeminiClient, GroqClient, OpenRouterClient],
         prompt_service: PromptService,
         validator: ChatValidator
     ):
         """Initialize with dependencies."""
-        self.gemini_client = gemini_client
+        self.ai_client = ai_client
         self.prompt_service = prompt_service
         self.validator = validator
     
@@ -42,7 +45,7 @@ class ChatService:
             message: User's message
             history: Conversation history
             context: Current dashboard context
-            api_key: Optional custom Gemini API key (overrides default)
+            api_key: Optional custom API key (Gemini or Groq - auto-detected)
             model: Optional model selection (overrides default)
             temperature: Optional temperature setting (overrides default)
             
@@ -53,13 +56,14 @@ class ChatService:
             ServiceError: Chat processing failed
         """
         try:
-            # Reconfigure client with custom API key if provided
+            # If custom API key provided, create new client with auto-detection
             if api_key:
-                self.gemini_client.reconfigure(api_key)
-            
-            # Reconfigure model if provided
-            if model:
-                self.gemini_client.reconfigure_model(model)
+                provider = AIClientFactory.detect_provider(api_key)
+                logger.info(f"Custom API key detected as {provider.upper()}")
+                self.ai_client = AIClientFactory.create_client(api_key=api_key, model=model)
+            elif model:
+                # Just reconfigure model if no custom key
+                self.ai_client.reconfigure_model(model)
             
             # Load system prompt
             system_prompt = self.prompt_service.get_chat_prompt()
@@ -83,8 +87,8 @@ User Message: {message}
             # Use provided temperature or default to 0.7
             temp = temperature if temperature is not None else 0.7
             
-            # Call Gemini API with retry
-            response = await self.gemini_client.generate_with_retry(
+            # Call AI API with retry
+            response = await self.ai_client.generate_with_retry(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
                 temperature=temp,

@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
   const apiKey = req.headers.get('x-gemini-api-key')
   const model = req.headers.get('x-gemini-model')
   const temperature = req.headers.get('x-gemini-temperature')
+  const mode = req.headers.get('x-analysis-mode') || 'company'
 
   // Determine which backend to use
   const backendUrl = BACKEND_TYPE === 'fastapi' 
@@ -40,6 +41,8 @@ export async function POST(req: NextRequest) {
     if (temperature) {
       headers['X-Gemini-Temperature'] = temperature
     }
+    // Forward analysis mode to backend
+    headers['X-Analysis-Mode'] = mode
 
     const upstream = await fetch(backendUrl, {
       method: 'POST',

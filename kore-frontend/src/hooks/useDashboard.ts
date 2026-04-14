@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { DashboardPayload, CompactState, ChatMessage, Module } from '@/lib/types'
 import { generateDashboard as apiGenerate, sendChatMessage, ChatPayload } from '@/lib/api'
 import { summarizeDashboard } from '@/lib/summarize'
+import { DUMMY_PAYLOAD } from '@/lib/dummyData'
 
 const LS_DASHBOARD = 'kore_dashboard'
 const LS_STATE     = 'kore_state'
@@ -284,6 +285,27 @@ export function useDashboard() {
     setState(INITIAL)
   }, [])
 
+  // ── Load Dummy Data ──────────────────────────────────────────────────────
+
+  const loadDummyData = useCallback(() => {
+    const dashboard = DUMMY_PAYLOAD
+    const dashboardState = summarizeDashboard(dashboard)
+    const newHistory = dashboard.chat_intro 
+      ? addMsg([], 'assistant', dashboard.chat_intro)
+      : []
+    
+    persist(dashboard, dashboardState, newHistory)
+    setState(s => ({
+      ...s,
+      dashboard,
+      dashboardState,
+      chatHistory: newHistory,
+      activeTab: dashboard.tabs[0]?.id ?? '',
+      isLoading: false,
+      error: null,
+    }))
+  }, [])
+
   return {
     dashboard:      state.dashboard,
     dashboardState: state.dashboardState,
@@ -296,6 +318,7 @@ export function useDashboard() {
     sendChat,
     setActiveTab,
     clearDashboard,
+    loadDummyData,
     addTemporaryTab,
     removeTemporaryTab,
     // Legacy aliases — keep page.tsx working without changes
