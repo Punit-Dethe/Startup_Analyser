@@ -98,7 +98,9 @@ export default function SettingsDropdown() {
     setSelectedApiKey(keyId)
     if (keyId) {
       localStorage.setItem('currentGeminiApiKey', keyId)
-      console.log('[KORE] API Key switched to:', API_KEYS.find(k => k.id === keyId)?.label || 'Unknown')
+      const keyLabel = API_KEYS.find(k => k.id === keyId)?.label || 'Unknown'
+      console.log('[KORE] API Key switched to:', keyLabel)
+      console.log('[KORE] API Key value:', keyId.substring(0, 20) + '...')
     } else {
       localStorage.removeItem('currentGeminiApiKey')
       console.log('[KORE] API Key switched to: Default (using backend default)')
