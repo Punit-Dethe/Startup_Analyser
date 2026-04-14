@@ -75,13 +75,16 @@ Module 1: Large Module (4x4) = 16 cells
   → Occupies: columns 1-4, rows 1-4
   → Remaining: column 5 rows 1-4 (4 cells) + row 5 all columns (5 cells) = 9 cells
 
-Module 2: [Your choice] = 4 cells
+Module 2: [Your choice that fits] = 4 cells
   → Fills: column 5, rows 1-4 ✓
 
-Module 3: [Your choice] = 5 cells
+Module 3: [Your choice that fits] = 5 cells
   → Fills: row 5, columns 1-5 ✓
 
 Total: 16 + 4 + 5 = 25 ✓ NO GAPS!
+
+Note: The "4 cells" and "5 cells" can be ANY combination of modules that add up to those totals.
+For example: 4 cells could be 1x4, or 2x2, or 1x2+1x2, or 1x1+1x1+1x1+1x1
 ```
 
 **Example: Tab with 4x4 Module (WRONG - CREATES GAPS!)**
@@ -180,26 +183,50 @@ When you add a 4x4 module (like SWOT), you have 9 empty cells remaining:
 
 **The ONLY rule: Fill all 9 cells to reach exactly 25 total.**
 
-**IMPORTANT FOR SWOT TAB: PREFER RICH VISUALIZATIONS OVER SIMPLE METRICS**
+**🔒 MANDATORY SWOT TAB LAYOUT (FOLLOW EXACTLY):**
 
-The SWOT tab is where you can add strategic depth. After the SWOT matrix, you need 9 more cells - consider using rich visualizations instead of just gauges/KPIs/stats:
+For the SWOT tab, use this EXACT layout:
 
-**Consider these options for strategic insights:**
-- **feed.list** (1x4) - Key risks, opportunities, or strategic priorities as a list
-- **table** (1x4 or 2x2) - Risk assessment table, strategic initiatives comparison
-- **chart.bar** (2x2) - Risk distribution, opportunity sizing, strategic focus areas
-- **chart.pie** (2x2) - Threat categories, strength distribution
-- **deco.timeline** (5x1) - Strategic milestones, risk mitigation timeline
-- **feed.news** (2x2) - Industry threats, competitive moves, market opportunities
-- **Gauges/KPIs/stats** - Use when you have a specific, meaningful metric (e.g., "Overall Risk Score: 6.5/10")
+```json
+"modules": [
+  {"type": "matrix.swot", "size": "4x4"},      // 16 cells - SWOT matrix (columns 1-4, rows 1-4)
+  {"type": "table", "size": "1x2"},            // 2 cells - Table (column 5, rows 1-2)
+  {"type": "metric.kpi", "size": "1x1"},       // 1 cell - KPI (column 5, row 3)
+  {"type": "metric.gauge", "size": "1x1"},     // 1 cell - Gauge (column 5, row 4)
+  {"type": "deco.stats", "size": "5x1"}        // 5 cells - Stats (row 5, all columns)
+]
+// Total: 16 + 2 + 1 + 1 + 5 = 25 ✓
+```
 
-**Good SWOT tab examples:**
-- SWOT (4x4) + Risk table (1x4) + Timeline (5x1) = 25 ✓
-- SWOT (4x4) + Threat feed (2x2) + Opportunity chart (2x2) + Stats (5x1) = 25 ✓
-- SWOT (4x4) + Strategic priorities list (1x4) + Key initiatives table (5x1) = 25 ✓
-- SWOT (4x4) + Risk gauge (1x2) + Opportunity gauge (1x2) + Stats (5x1) = 25 ✓ (Also valid!)
+**Visual Layout:**
+```
+┌─────────────────┬─────┐
+│                 │Table│  Rows 1-2: SWOT (4x4) + Table (1x2)
+│                 │ 1x2 │
+│   SWOT (4x4)    ├─────┤
+│                 │ KPI │  Row 3: SWOT continues + KPI (1x1)
+│                 │ 1x1 │
+├─────────────────┼─────┤
+│                 │Gauge│  Row 4: SWOT continues + Gauge (1x1)
+│                 │ 1x1 │
+├─────────────────┴─────┤
+│   Stats (5x1)         │  Row 5: Stats (5x1)
+└───────────────────────┘
+```
 
-Choose modules based on what makes sense for the startup, not a template. You have the full catalog available:
+**Module Content Guidelines:**
+- **Table (1x2)**: Risk assessment, strategic initiatives, or key priorities
+- **KPI (1x1)**: Overall risk score, strategic readiness, or opportunity score
+- **Gauge (1x1)**: Execution confidence, market timing, or competitive strength
+- **Stats (5x1)**: 5 key strategic metrics or priorities
+
+**DO NOT deviate from this layout for SWOT tab!**
+
+---
+
+**FOR OTHER TABS (Market, Competition, Execution):**
+
+Choose modules based on what makes sense for the startup. You have the full catalog available:
 - Charts (bar, line, pie, area, radar, waterfall)
 - Tables, feeds (list, news), timelines
 - Gauges, KPIs, dual metrics, stats
@@ -211,10 +238,16 @@ Choose modules based on what makes sense for the startup, not a template. You ha
 Main module: 4x4 = 16 cells → Total: 16
 Remaining: 25 - 16 = 9 cells needed
 
-Module 2: 1x4 = 4 cells → Total: 16 + 4 = 20 (not 25, continue)
-Module 3: 5x1 = 5 cells → Total: 20 + 5 = 25 ✓ STOP!
+Module 2: [any size that fits] = X cells → Total: 16 + X
+Module 3: [any size that fits] = Y cells → Total: 16 + X + Y
 
-DO NOT add Module 4! Total is already 25.
+Keep adding until total = 25, then STOP!
+
+Example: If X=4 and Y=5, then 16+4+5=25 ✓
+Example: If X=2, Y=2, Z=5, then 16+2+2+5=25 ✓
+Example: If X=3, Y=3, Z=3, then 16+3+3+3=25 ✓
+
+Many combinations work - choose what makes sense for the startup!
 ```
 
 **CRITICAL: AFTER REACHING 25, DO NOT ADD ANY MORE MODULES TO THAT TAB!**
@@ -230,59 +263,6 @@ DO NOT add Module 4! Total is already 25.
 - NO fabricated numbers or excessive projections
 - NO repetition across modules
 - Each module must add NEW information
-
----
-
-## WORKING MODULE ORDERING EXAMPLES
-
-**EXAMPLE 1: Market Tab with TAM/SAM/SOM (3x3) - WITH FILLERS**
-```json
-"modules": [
-  {"type": "market.tamsamsom", "size": "3x3"},  // 9 cells - MAIN MODULE
-  {"type": "feed.list", "size": "2x3"},         // 6 cells - Market news (VERTICAL OK)
-  {"type": "chart.line", "size": "3x2"},        // 6 cells - Growth chart
-  {"type": "metric.kpi", "size": "1x1"},        // 1 cell - FILLER: Growth rate
-  {"type": "metric.kpi", "size": "1x1"},        // 1 cell - FILLER: Market size
-  {"type": "metric.dual", "size": "2x1"}        // 2 cells - FILLER: Key metrics (HORIZONTAL!)
-]
-// Total: 9 + 6 + 6 + 1 + 1 + 2 = 25 ✓
-```
-
-**EXAMPLE 2: Competition Tab with Matrix (4x3) - WITH FILLERS**
-```json
-"modules": [
-  {"type": "matrix.competitive", "size": "4x3"}, // 12 cells - MAIN MODULE
-  {"type": "feed.list", "size": "1x3"},          // 3 cells - Competitor news (VERTICAL OK)
-  {"type": "table.data", "size": "3x2"},         // 6 cells - Feature comparison
-  {"type": "metric.kpi", "size": "1x1"},         // 1 cell - FILLER: Market share
-  {"type": "metric.kpi", "size": "1x1"},         // 1 cell - FILLER: Growth
-  {"type": "metric.dual", "size": "2x1"}         // 2 cells - FILLER: Metrics (HORIZONTAL!)
-]
-// Total: 12 + 3 + 6 + 1 + 1 + 2 = 25 ✓
-```
-
-**EXAMPLE 3: Execution Tab with GTM (5x3) - SIMPLE**
-```json
-"modules": [
-  {"type": "strategy.gtm", "size": "5x3"},      // 15 cells - MAIN MODULE
-  {"type": "deco.timeline", "size": "5x2"}      // 10 cells - Timeline
-]
-// Total: 15 + 10 = 25 ✓ (No fillers needed!)
-```
-
-**EXAMPLE 4: Business Model Tab - LEAN CANVAS ONLY**
-```json
-"modules": [
-  {"type": "canvas.lean", "size": "5x5"}        // 25 cells - FILLS ENTIRE TAB
-]
-// Total: 25 ✓ (Perfect! No other modules needed)
-```
-
-**KEY INSIGHTS:**
-- Calculate remaining cells after main modules
-- Choose modules that make sense for the startup, not from a template
-- Keep fillers relevant, not random
-- Dense grid fills gaps automatically
 
 ---
 
@@ -320,10 +300,12 @@ DO NOT add Module 4! Total is already 25.
 **Tab 4: Execution** - GTM Strategy (5x3) = 15 cells + 10 cells of NEW execution insights:
 - Timeline/milestones, customer acquisition metrics, key execution KPIs
 
-**Tab 5: SWOT** - SWOT Matrix (4x4) = 16 cells + 9 cells of NEW strategic insights:
-- Risk assessment, strategic priorities, key success factors
-- **TIP: Consider using tables, feeds, charts, or timelines for richer strategic insights**
-- Think: What strategic insights would help this startup most?
+**Tab 5: SWOT** - SWOT Matrix (4x4) = 16 cells + 9 cells in FIXED layout:
+- **MANDATORY LAYOUT**: SWOT (4x4) + Table (1x2) + KPI (1x1) + Gauge (1x1) + Stats (5x1)
+- Table: Risk assessment or strategic initiatives
+- KPI: Overall risk/opportunity score
+- Gauge: Execution confidence or competitive strength
+- Stats: 5 key strategic priorities
 
 **CRITICAL PRINCIPLES:**
 - Use startup-specific modules as anchors
@@ -613,8 +595,7 @@ Create secondary, tertiary, quaternary colors that complement the primary. Ensur
 
 **Common mistakes to avoid:**
 - ❌ SWOT tab with 23 cells (missing 2 cells in row 5)
-- ❌ SWOT tab with only gauges/KPIs/stats (consider tables, feeds, charts for variety)
-- ❌ SWOT tab ALWAYS using the same layout - **VARY IT!**
+- ❌ SWOT tab NOT following the mandatory layout (must be: SWOT + Table + KPI + Gauge + Stats)
 - ❌ Market tab filled with 8 KPI cards (prefer charts for market data)
 - ❌ Competition tab with 6 KPI cards (prefer tables/charts for comparisons)
 - ❌ Any tab with 24, 26, or 27 cells
@@ -1248,17 +1229,22 @@ The `chat_intro` field is a comprehensive startup analysis report (1000-3000 wor
 **FORMATTING TOOLS:**
 - **Markdown tables** for data presentation
 - **Inline HTML** for colored highlights:
-  - Positive: `<span style="color:#16A34A;font-weight:700">? Strong growth</span>`
-  - Risks: `<span style="color:#DC2626;font-weight:700">? High competition</span>`
+  - Positive: `<span style="color:#16A34A;font-weight:700">✓ Strong growth</span>`
+  - Risks: `<span style="color:#DC2626;font-weight:700">⚠ High competition</span>`
   - Key numbers: `<span style="color:#2563EB;font-weight:700">$50B TAM</span>`
 - **Blockquotes** for key insights (`> "quote"`)
 - **Lists** for clarity (bullet points, numbered lists)
-- **HTML/CSS** for creating visuals when needed:
-  - Charts (bar charts, line charts, pie charts)
-  - Graphs (comparison graphs, trend graphs)
-  - Tables (styled HTML tables with colors)
-  - Visual elements (progress bars, indicators, badges)
-  - Use full extent of HTML/CSS capabilities when it enhances understanding
+
+**💡 YOU CAN USE HTML/CSS FOR RICHER VISUALS:**
+
+Create custom elements when it enhances understanding:
+- **Styled tables** with colors and borders
+- **Progress bars** for metrics (e.g., market penetration %)
+- **Comparison bars** for competitor analysis
+- **Metric cards** with colored backgrounds
+- **Timelines** with visual milestones
+
+Use inline styles with divs, spans, and standard HTML elements. Keep it simple and readable.
 
 ---
 ---

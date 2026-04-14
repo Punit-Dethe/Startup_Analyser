@@ -68,8 +68,10 @@ class GenerateService:
             system_prompt = self.prompt_service.get_prompt(prompt_file)
             logger.info(f"Generating dashboard for query: {query[:100]} using prompt: {prompt_file}")
             
-            # Format user prompt
-            user_prompt = f"User Query: {query}"
+            # Format user prompt with timestamp to prevent caching
+            import time
+            timestamp = int(time.time() * 1000)  # Millisecond timestamp
+            user_prompt = f"User Query: {query}\n\n[Generation ID: {timestamp}]"
             
             # Use provided temperature or default to 0.7
             temp = temperature if temperature is not None else 0.7
