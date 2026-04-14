@@ -27,7 +27,6 @@ const API_KEYS = [
   { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_3 || null) as string | null, label: 'Sam', color: '#0496FF' },
   { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_4 || null) as string | null, label: 'Alex', color: '#22C55E' },
   { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_5 || null) as string | null, label: 'Jordan', color: '#A855F7' },
-  { id: (process.env.NEXT_PUBLIC_GEMINI_KEY_6 || null) as string | null, label: 'Nova', color: '#EC4899' },
 ]
 
 export default function SettingsDropdown() {
