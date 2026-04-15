@@ -450,6 +450,91 @@ Before creating modules, complete this thinking:
 └─────┴─────┴─────┴─────┴─────┘
 ```
 
+**MOST COMMON MISTAKE: LEAVING GAPS IN THE GRID**
+
+When you add a large module (like 4x4 or 3x3), you create gaps. **YOU MUST FILL THESE GAPS!**
+
+**Example of the mistake:**
+- Large module (4x4) = 16 cells → leaves column 5 rows 1-4 empty + row 5 all empty
+- Add 2 KPIs (1x1 each) = 2 cells → fills part of column 5
+- Add Stats (3x1) = 3 cells → fills row 5 columns 1-3
+- **Total: 21 cells → GAP: 4 cells empty!**
+- Result: Next module pushed outside grid (thin grey line at bottom)
+
+**The fix:**
+- After adding Stats (3x1), you have 4 cells remaining
+- Add modules to fill those 4 cells (e.g., 2x2, or 2x1+2x1, or 1x1+1x1+1x1+1x1)
+- Total: 25 cells ✓ NO GAPS!
+
+**CRITICAL: UNDERSTAND CSS GRID AUTO-PLACEMENT**
+
+The grid fills LEFT-TO-RIGHT, TOP-TO-BOTTOM. When you add a 4x4 module, it occupies columns 1-4, rows 1-4. **Column 5 is EMPTY!**
+
+**MANDATORY PROCESS FOR TALL/WIDE MODULES:**
+
+**Step 1: Identify what space the main module occupies**
+- 4x4 module → columns 1-4, rows 1-4 = 16 cells
+- 4x3 module → columns 1-4, rows 1-3 = 12 cells
+- 3x3 module → columns 1-3, rows 1-3 = 9 cells
+- 5x3 module → columns 1-5, rows 1-3 = 15 cells
+
+**Step 2: Calculate EXACTLY what gaps remain**
+- After 4x4: Column 5 rows 1-4 = 4 cells + Row 5 all columns = 5 cells = **9 cells needed**
+- After 4x3: Column 5 rows 1-3 = 3 cells + Rows 4-5 all columns = 10 cells = **13 cells needed**
+- After 3x3: Columns 4-5 rows 1-3 = 6 cells + Rows 4-5 all columns = 10 cells = **16 cells needed**
+- After 5x3: Rows 4-5 all columns = 10 cells = **10 cells needed**
+
+**Step 3: Fill gaps with modules that FIT**
+
+**Example: Tab with 4x4 Module (CORRECT)**
+```
+Module 1: Large Module (4x4) = 16 cells
+  → Occupies: columns 1-4, rows 1-4
+  → Remaining: column 5 rows 1-4 (4 cells) + row 5 all columns (5 cells) = 9 cells
+
+Module 2: [Your choice that fits] = 4 cells
+  → Fills: column 5, rows 1-4 ✓
+
+Module 3: [Your choice that fits] = 5 cells
+  → Fills: row 5, columns 1-5 ✓
+
+Total: 16 + 4 + 5 = 25 ✓ NO GAPS!
+
+Note: The "4 cells" and "5 cells" can be ANY combination of modules that add up to those totals.
+For example: 4 cells could be 1x4, or 2x2, or 1x2+1x2, or 1x1+1x1+1x1+1x1
+```
+
+**Step 4: Verify NO GAPS**
+- Count total cells: MUST equal 25
+- Check visually: Are there any empty spaces?
+- If gaps exist: Add modules to fill them BEFORE moving on
+
+**MANDATORY COUNTING PROCESS:**
+```
+YOU MUST FOLLOW THIS EXACT PROCESS FOR EVERY TAB:
+
+Step 1: Add main module
+  - Calculate cells: W × H
+  - Running total: [cells]
+  - Identify what space it occupies (columns X-Y, rows A-B)
+  - Identify what gaps remain
+
+Step 2: Fill gaps from Step 1
+  - Add modules that fit the EXACT gaps
+  - Calculate cells: W × H
+  - Running total: [previous] + [new] = [total]
+  - CHECK: Is total = 25? If YES, STOP! If NO, continue.
+
+Step 3: Add next module (if needed)
+  - Calculate cells: W × H
+  - Running total: [previous] + [new] = [total]
+  - CHECK: Is total = 25? If YES, STOP! If NO, continue.
+
+Repeat until total = 25, then STOP ADDING MODULES.
+
+CRITICAL: COUNT EVERY SINGLE MODULE AS YOU ADD IT!
+```
+
 **PLAN ROW-BY-ROW:**
 - Each row MUST add up to width 5
 - Count cells as you go: (width × height)
@@ -509,6 +594,18 @@ Total: 25 ✓
 2. Maximum width: 5 (never 6, 7, 8...)
 3. Maximum height: 5 (never 6, 7, 8...)
 4. Calculate as you go until = 25
+
+**VERIFICATION CHECKLIST:**
+- ✅ Is EVERY cell filled? (No gaps?)
+- ✅ Does each row have modules that span exactly 5 columns?
+- ✅ Do all modules stay within the 5x5 boundary?
+- ✅ Total cells = 25?
+- ✅ No modules pushed to row 6 or beyond?
+
+**If you find gaps:**
+1. Identify WHERE the gap is (which row, which columns)
+2. Add a module that FITS that exact gap
+3. Re-verify the grid
 
 ---
 
