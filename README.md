@@ -9,22 +9,23 @@ Powered by Gemini & Groq · Built on Next.js 16 + FastAPI · Deployed on Vercel 
 
 <br/>
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-Python-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Gemini](https://img.shields.io/badge/Gemini-2.5Flash-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
-[![Groq](https://img.shields.io/badge/Groq-LLaMA--3.3--70B-FF6B35?style=for-the-badge)](https://groq.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Python-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Gemini](https://img.shields.io/badge/Gemini-2.5_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![Groq](https://img.shields.io/badge/Groq-LLaMA_3.3_70B-FF6B35?style=for-the-badge&logo=groq&logoColor=white)](https://groq.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 </div>
 
 ---
 
-## 🧠 What is KORE?
+## What is KORE?
 
 **KORE** (Knowledge-Oriented Research Engine) is a full-stack AI platform that transforms a plain-text query like `"Analyse Apple Inc."` into a richly visualised, multi-tab business intelligence dashboard — in **15–30 seconds**.
 
 It's not a report generator. It's a **live analytical workspace** where you can:
+
 - Explore AI-generated dashboards across multiple thematic tabs
 - Chat with the AI directly about what you see
 - Ask it to **refresh specific modules**, **create temporary analysis tabs**, or **reload for a different subject** — all from a single chat input
@@ -33,25 +34,25 @@ It's not a report generator. It's a **live analytical workspace** where you can:
 
 ---
 
-## ✨ Features at a Glance
+## Features
 
-| Feature | Description |
-|---|---|
-| 🏢 **Company Analysis** | Full financial, market, competitor, and business model breakdowns |
-| 🚀 **Startup Analysis** | Lean Canvas, TAM/SAM/SOM, SWOT, GTM strategy, competitive matrix |
-| 💬 **AI Chat** | Three-action chat system: `CHAT`, `TEMPORARY_TAB`, `NEW_DASHBOARD` |
-| 📊 **13 Module Types** | KPIs, bar/line/area/grouped charts, pie/donut, tables, feeds, stats, freeform |
-| 🎨 **5×5 Grid System** | Rigid 25-cell layout engine — no gaps, no overflows, guaranteed |
-| 🔄 **Multi-Provider AI** | Auto-detects Gemini (`AIzaSy…`) or Groq (`gsk_…`) from your API key prefix |
-| 💾 **Persistent State** | Dashboard + chat history survive page refresh via localStorage |
-| ⚡ **Groq Mode** | Ultra-fast inference via LLaMA-3.3-70B for sub-10s responses |
-| 🌐 **Google Search Grounding** | Live data fetched during research — no hallucinated numbers |
+| | Feature | Description |
+|---|---|---|
+| ![company](https://img.shields.io/badge/-Company_Analysis-1a1a2e?style=flat-square&logo=building-columns&logoColor=white) | **Company Analysis** | Full financial, market, competitor, and business model breakdowns |
+| ![startup](https://img.shields.io/badge/-Startup_Analysis-1a1a2e?style=flat-square&logo=rocket&logoColor=white) | **Startup Analysis** | Lean Canvas, TAM/SAM/SOM, SWOT, GTM strategy, competitive matrix |
+| ![chat](https://img.shields.io/badge/-AI_Chat-1a1a2e?style=flat-square&logo=openai&logoColor=white) | **AI Chat** | Three-action system: `CHAT`, `TEMPORARY_TAB`, `NEW_DASHBOARD` |
+| ![modules](https://img.shields.io/badge/-13_Module_Types-1a1a2e?style=flat-square&logo=chartdotjs&logoColor=white) | **Module Types** | KPIs, bar/line/area/grouped charts, pie/donut, tables, feeds, stats |
+| ![grid](https://img.shields.io/badge/-5×5_Grid_Engine-1a1a2e?style=flat-square&logo=grid&logoColor=white) | **Grid System** | Rigid 25-cell layout — no gaps, no overflows, guaranteed |
+| ![multi](https://img.shields.io/badge/-Multi_Provider_AI-1a1a2e?style=flat-square&logo=ai&logoColor=white) | **Multi-Provider AI** | Auto-detects Gemini (`AIzaSy…`) or Groq (`gsk_…`) from key prefix |
+| ![persist](https://img.shields.io/badge/-Persistent_State-1a1a2e?style=flat-square&logo=databricks&logoColor=white) | **Persistent State** | Dashboard + chat history survive page refresh via localStorage |
+| ![groq](https://img.shields.io/badge/-Groq_Mode-1a1a2e?style=flat-square&logo=lightning&logoColor=white) | **Groq Mode** | Ultra-fast inference via LLaMA-3.3-70B for sub-10s responses |
+| ![search](https://img.shields.io/badge/-Search_Grounding-1a1a2e?style=flat-square&logo=googlesearch&logoColor=white) | **Google Search Grounding** | Live data fetched during research — no hallucinated numbers |
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
-KORE is a clean two-service architecture. The frontend proxies all AI calls through a FastAPI backend, which routes to the correct AI provider based on API key type.
+KORE is a clean two-service architecture. The Next.js frontend proxies all AI calls through a FastAPI backend, which routes to the correct AI provider based on API key type.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -110,9 +111,9 @@ AI decides action:
 
 ---
 
-## 🧩 Module System
+## Module System
 
-The dashboard is built on a **5×5 grid (25 cells)**. Every module occupies a `width × height` slice. Modules are rendered from a strict JSON schema.
+The dashboard is built on a **5×5 grid (25 cells)**. Every module occupies a `width × height` slice, rendered from a strict JSON schema.
 
 | Type | Sizes | Use Case |
 |---|---|---|
@@ -130,46 +131,56 @@ The dashboard is built on a **5×5 grid (25 cells)**. Every module occupies a `w
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend**
-- [Next.js 16](https://nextjs.org/) + [React 19](https://react.dev/) + TypeScript 5
-- [ECharts](https://echarts.apache.org/) for complex data visualisations
+
+[![Next.js](https://img.shields.io/badge/Next.js-black?style=flat-square&logo=nextdotjs)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![ECharts](https://img.shields.io/badge/ECharts-AA344D?style=flat-square&logo=apache&logoColor=white)](https://echarts.apache.org/)
+[![Three.js](https://img.shields.io/badge/Three.js-black?style=flat-square&logo=threedotjs)](https://threejs.org/)
+
+- [ECharts](https://echarts.apache.org/) for data visualisations
 - [Three.js](https://threejs.org/) + [OGL](https://github.com/oframe/ogl) for landing page animations
 - [React Flow](https://reactflow.dev/) for node-based layouts
 - [React Markdown](https://github.com/remarkjs/react-markdown) + `rehype-raw` for rich chat formatting
-- Tailwind CSS 4
 
 **Backend**
-- [FastAPI](https://fastapi.tiangolo.com/) + Python 3.9+
-- [Google Generative AI SDK](https://ai.google.dev/) (Gemini 2.5 Flash / gemini-3-flash-preview)
-- [Groq SDK](https://groq.com/) (LLaMA-3.3-70B-Versatile)
-- Async/await, retry logic with exponential backoff
-- Prompt-from-disk architecture (no prompt caching — always fresh)
+
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Python](https://img.shields.io/badge/Python_3.9+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org/)
+[![Gemini](https://img.shields.io/badge/Gemini_API-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev/)
+[![Groq](https://img.shields.io/badge/Groq_API-FF6B35?style=flat-square)](https://groq.com/)
+
+- Async/await with exponential backoff retry logic
+- Prompt-from-disk architecture — no caching, always fresh
 
 **AI & Orchestration**
-- **Research Phase:** Gemini with Google Search grounding (live data, no hallucinations)
-- **Orchestration Phase:** Structured JSON output with strict schema validation
-- **Chat Phase:** Context-aware with compact `dashboard_state` summary per request
+
+- **Research Phase** — Gemini with Google Search grounding (live data, no hallucinations)
+- **Orchestration Phase** — Structured JSON output with strict schema validation
+- **Chat Phase** — Context-aware with compact `dashboard_state` summary per request
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### Prerequisites
+**Prerequisites**
 
 - Node.js 18+ and npm
 - Python 3.9+
 - A [Gemini API Key](https://ai.google.dev/) (`AIzaSy…`) or [Groq API Key](https://console.groq.com/) (`gsk_…`)
 
-### 1. Clone
+**1. Clone**
 
 ```bash
 git clone https://github.com/your-username/Startup_Analyser.git
 cd Startup_Analyser
 ```
 
-### 2. Backend Setup
+**2. Backend Setup**
 
 ```bash
 cd fastapi-backend
@@ -184,61 +195,55 @@ pip install -r requirements.txt
 
 # Configure environment
 cp .env.example .env
-# Edit .env and set: GEMINI_API_KEY=AIzaSy... or gsk_...
+# Edit .env → set GEMINI_API_KEY=AIzaSy... or gsk_...
 
-# Run the server
+# Start server
 uvicorn app.main:app --reload --port 8000
 ```
 
-### 3. Frontend Setup
+**3. Frontend Setup**
 
 ```bash
 cd kore-frontend
 
-# Install dependencies
 npm install
 
-# Configure environment
 cp .env.local.example .env.local
-# Edit .env.local:
-#   NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+# Edit .env.local → set NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 
-# Run the dev server
 npm run dev
 ```
 
-### 4. Open
-
-Navigate to [http://localhost:3000](http://localhost:3000) and type any company or startup name.
+**4. Open** → [http://localhost:3000](http://localhost:3000) and type any company or startup name.
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
-### Backend (`fastapi-backend/.env`)
+**Backend** (`fastapi-backend/.env`)
 
 ```env
-GEMINI_API_KEY=AIzaSy...         # Gemini key (default AI provider)
+GEMINI_API_KEY=AIzaSy...    # Gemini (auto-detected from prefix)
 # or
-GEMINI_API_KEY=gsk_...           # Groq key — auto-detected from prefix
+GEMINI_API_KEY=gsk_...      # Groq   (auto-detected from prefix)
 ```
 
-### Frontend (`kore-frontend/.env.local`)
+**Frontend** (`kore-frontend/.env.local`)
 
 ```env
 NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 
-# Optional: named API key slots for the key-switcher UI
-NEXT_PUBLIC_GEMINI_KEY_1=gsk_...      # TACO (Groq — ultra-fast)
-NEXT_PUBLIC_GEMINI_KEY_2=AIzaSy...    # Max  (Gemini)
-NEXT_PUBLIC_GEMINI_KEY_3=AIzaSy...    # Sam  (Gemini)
+# Optional: named key slots for the key-switcher UI
+NEXT_PUBLIC_GEMINI_KEY_1=gsk_...      # TACO — Groq (ultra-fast)
+NEXT_PUBLIC_GEMINI_KEY_2=AIzaSy...    # Max  — Gemini
+NEXT_PUBLIC_GEMINI_KEY_3=AIzaSy...    # Sam  — Gemini
 ```
 
-> **Key Detection:** The backend auto-detects the AI provider from the key prefix. No manual configuration needed.
+> The backend auto-detects the AI provider from the API key prefix. No manual provider selection needed.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Startup_Analyser/
@@ -256,7 +261,7 @@ Startup_Analyser/
 │
 ├── fastapi-backend/            # Python FastAPI service
 │   ├── app/
-│   │   ├── main.py             # FastAPI app entry point
+│   │   ├── main.py             # Entry point
 │   │   ├── integrations/
 │   │   │   ├── gemini_client.py
 │   │   │   ├── groq_client.py
@@ -274,45 +279,45 @@ Startup_Analyser/
 
 ---
 
-## 🎮 How to Use
+## Usage
 
-1. **Enter a query** on the landing page — e.g. `Analyse Zomato` or `Startup: AI code review tool`
-2. **Watch KORE generate** a complete multi-tab dashboard with live research data
+1. **Enter a query** — e.g. `Analyse Zomato` or `Startup: AI code review tool`
+2. **KORE generates** a full multi-tab dashboard using live research data
 3. **Switch tabs** — Overview, Financials, Market, Business Model, Competitors
-4. **Open the chat panel** and ask anything:
-   - *"Why did revenue drop in Q3?"* → AI answers with context
-   - *"Compare with its top 3 competitors"* → Creates a new temporary tab
-   - *"Now analyse Swiggy instead"* → Regenerates the entire dashboard
-5. **Your dashboard persists** — refresh the page and it's still there
+4. **Open the chat panel** and ask:
+   - *"Why did revenue drop in Q3?"* → Analytical answer in chat
+   - *"Compare with its top 3 competitors"* → New temporary tab created
+   - *"Now analyse Swiggy instead"* → Full dashboard regenerated
+5. **State persists** — refresh the page and your dashboard is still there
 
 ---
 
-## 🚢 Deployment
+## Deployment
 
 | Platform | Component | Notes |
 |---|---|---|
-| **Vercel** | Frontend | `cd kore-frontend && vercel` |
-| **Railway** | Backend | Uses `Procfile` or `nixpacks.toml` |
-| **Render** | Backend | Uses `render.yaml` — free tier supported |
-| **Docker** | Backend | `Dockerfile` included |
+| [![Vercel](https://img.shields.io/badge/Vercel-black?style=flat-square&logo=vercel)](https://vercel.com/) | Frontend | `cd kore-frontend && vercel` |
+| [![Railway](https://img.shields.io/badge/Railway-0B0D0E?style=flat-square&logo=railway)](https://railway.app/) | Backend | Uses `Procfile` / `nixpacks.toml` |
+| [![Render](https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=black)](https://render.com/) | Backend | Uses `render.yaml` — free tier supported |
+| [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com/) | Backend | `Dockerfile` included |
 
-Set `NEXT_PUBLIC_BACKEND_URL` in Vercel to your deployed Railway/Render URL.
+Set `NEXT_PUBLIC_BACKEND_URL` in Vercel to your Railway/Render backend URL.
 
 ---
 
-## ⚡ Performance
+## Performance
 
 | Operation | Time |
 |---|---|
-| Dashboard generation (simple) | 15–30 seconds |
-| Dashboard generation (complex) | 30–60 seconds |
-| Groq mode (LLaMA-3.3-70B) | ~5–10 seconds |
-| Chat response | 5–15 seconds |
-| Temporary tab creation | 10–20 seconds |
+| Dashboard generation (simple) | 15–30 s |
+| Dashboard generation (complex) | 30–60 s |
+| Groq mode (LLaMA-3.3-70B) | ~5–10 s |
+| Chat response | 5–15 s |
+| Temporary tab creation | 10–20 s |
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] PDF / PowerPoint export of dashboards
 - [ ] Dashboard templates and saved presets
@@ -323,19 +328,19 @@ Set `NEXT_PUBLIC_BACKEND_URL` in Vercel to your deployed Railway/Render URL.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-Pull requests are welcome. For major changes, open an issue first to discuss what you'd like to change.
+Pull requests are welcome. For major changes, open an issue first.
 
 1. Fork the repo
-2. Create your branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create your branch: `git checkout -b feature/your-feature`
+3. Commit: `git commit -m 'Add your feature'`
+4. Push: `git push origin feature/your-feature`
 5. Open a Pull Request
 
 ---
 
-## 📄 License
+## License
 
 MIT License — see [LICENSE](LICENSE) for details.
 
@@ -343,8 +348,10 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-Built with Next.js · FastAPI · Google Gemini · Groq
-
-*For questions or collaboration, open an issue.*
+Built with
+[![Next.js](https://img.shields.io/badge/Next.js-black?style=flat-square&logo=nextdotjs)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Gemini](https://img.shields.io/badge/Gemini-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev/)
+[![Groq](https://img.shields.io/badge/Groq-FF6B35?style=flat-square)](https://groq.com/)
 
 </div>
